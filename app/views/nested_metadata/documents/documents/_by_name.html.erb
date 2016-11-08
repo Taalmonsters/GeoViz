@@ -1,0 +1,54 @@
+<% if paginate %>
+	<div class="pagination-container">
+		<%= will_paginate documents if documents.any? %>
+	</div>
+<% end %>
+<div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<% Rails.application.config.document_fields.each do |field, optional| %>
+					<% unless @document && optional %>
+						<th>
+							<%= i18n_set?(field.gsub(/[^A-Za-z0-9]/,'')) ? t(:"#{field.gsub(/[^A-Za-z0-9]/,'')}").capitalize : field.capitalize %>
+						</th>
+					<% end %>
+				<% end %>
+				<th># GeoParser locations</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% documents.each do |document| %>
+			<tr class="<%= 'active' if @document && @document.id == document.id %> clickable" data-path="<%= request.path %>?letter=<%= @current_letter %>&page=<%= @page %><%= "&id=#{document.id}" unless @document && @document.id == document.id %>&tab=<%= @tab %><%= "&#{@filter_params}" unless @filter_params.length == 0 %><%= "&group=#{@group.name}" if @group %>">
+				<td class="document-id">
+					<%= document.id %>
+				</td>
+				<% Rails.application.config.document_fields.each do |field, optional| %>
+					<% unless @document && optional %>
+						<td>
+							<% if document.respond_to? field %>
+								<%= document.send(field.to_sym) %>
+							<% else %>
+								<% metadata_group, metadata_key = field.split('.',2) %>
+								<% if metadata_group && metadata_key %>
+									<% metadata = NestedMetadata::MetadatumValue.key(metadata_key).in_group(metadata_group).for_document(document) %>
+									<%= metadata.first.content if metadata.any? %>
+								<% end %>
+							<% end %>
+						</td>
+					<% end %>
+				<% end %>
+				<td>
+					<%= NestedMetadata::MetadataGroup.with_name("GeoParser").first.entities(document).count %>
+				</td>
+			</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>
+<% if paginate %>
+	<div class="pagination-container">
+		<%= will_paginate documents if documents.any? %>
+	</div>
+<% end %>
