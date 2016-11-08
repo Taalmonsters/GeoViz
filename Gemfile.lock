@@ -28,6 +28,14 @@ PATH
       sprockets-rails (= 2.3.3)
 
 PATH
+  remote: /Users/matje/Projects/Encyclopedie_GIS/blacklab_rails
+  specs:
+    blacklab_rails (0.0.1)
+      rails (~> 4.2)
+      source_documents (= 0.0.1)
+      taalmonsters (= 0.0.1)
+
+PATH
   remote: /Users/matje/Projects/rubygems/nested_metadata
   specs:
     nested_metadata (0.0.1)
@@ -234,6 +242,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  blacklab_rails!
   byebug
   coffee-rails (~> 4.1.0)
   jbuilder (~> 2.0)

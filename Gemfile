@@ -45,14 +45,14 @@ group :development do
   gem 'spring'
 end
 
-gem "nested_metadata", :path => "/Users/matje/Projects/rubygems/nested_metadata"
-gem "taalmonsters.charts", :path => "/Users/matje/Development/TM_viz/taalmonsters_charts"
-gem "taalmonsters.geonames", :path => "/Users/matje/Development/TM_viz/taalmonsters_geonames"
-gem "taalmonsters.maps", :path => "/Users/matje/Development/TM_viz/taalmonsters_maps"
-
 source 'https://rubygems.taalmonsters.nl' do
   gem "taalmonsters"
   gem "source_documents"
   # gem "nested_metadata"
 end
 
+gem "blacklab_rails", :path => "/Users/matje/Projects/Encyclopedie_GIS/blacklab_rails"
+gem "nested_metadata", :path => "/Users/matje/Projects/rubygems/nested_metadata"
+gem "taalmonsters.charts", :path => "/Users/matje/Development/TM_viz/taalmonsters_charts"
+gem "taalmonsters.geonames", :path => "/Users/matje/Development/TM_viz/taalmonsters_geonames"
+gem "taalmonsters.maps", :path => "/Users/matje/Development/TM_viz/taalmonsters_maps"

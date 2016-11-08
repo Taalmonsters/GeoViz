@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  generated_id: MyString
+  name: MyText
+  blacklab_pid: MyString
+
+two:
+  generated_id: MyString
+  name: MyText
+  blacklab_pid: MyString
