@@ -1,10 +1,12 @@
 require 'digest/md5'
-module NestedMetadata
-  class WhitelabCondensed::MetadataLoader < NestedMetadata::MetadataLoader
+require 'active_support/core_ext/hash/conversions'
+module GeoViz
+  class GeoParser::MetadataLoader < NestedMetadata::MetadataLoader
     
     def self.load_data
       root = Rails.root
       input_dir = root.join('data','new')
+      output_dir = root.join('data','added')
       config = Rails.application.config
       fields = {}
       current_index = 0
@@ -19,28 +21,37 @@ module NestedMetadata
           gaz_file = "#{input_dir}/#{title}.gaz.xml"
           generated_id = Digest::MD5.hexdigest(title)
           document_id += 1
+          entity_count = 0
           self.add_document(document_id, generated_id, title)
+          self.set_blacklab_pid(document_id, title)
           xml_doc = Nokogiri::XML(File.read(gaz_file))
           xml_doc.css("placename").each do |placename|
+            entity_count += 1
             place = placename.css("place").first
-            self.add_metadata_to_document(document_id, fields["GeoParser"]["id"], [placename["id"]]) if placename.has_key?("id")
-            self.add_metadata_to_document(document_id, fields["GeoParser"]["name"], [placename["name"]]) if placename.has_key?("name")
-            self.add_metadata_to_document(document_id, fields["GeoParser"]["latitude"], [place["lat"].to_f]) if place.has_key?("lat")
-            self.add_metadata_to_document(document_id, fields["GeoParser"]["longitude"], [place["long"].to_f]) if place.has_key?("long")
-            self.add_metadata_to_document(document_id, fields["GeoParser"]["population"], [place["pop"].to_i]) if place.has_key?("pop")
-            if place.has_key?("gazetteer")
-              self.add_metadata_to_document(document_id, fields["GeoParser"]["gazetteer"], [place["gazetteer"]])
-              self.add_metadata_to_document(document_id, fields["GeoParser"]["gazref"], [place["gazref"]]) if place.has_key?("gazref")
-            elsif place.has_key?("gazref")
-              self.add_metadata_to_document(document_id, fields["GeoParser"]["gazetteer"], [place["gazref"].split(":")[0]])
-              self.add_metadata_to_document(document_id, fields["GeoParser"]["gazref"], [place["gazref"]])
+            self.add_metadata_to_document(document_id, fields["GeoParser"]["id"], [placename["id"]], entity_count) if placename["id"]
+            self.add_metadata_to_document(document_id, fields["GeoParser"]["name"], [placename["name"]], entity_count) if placename["name"]
+            self.add_metadata_to_document(document_id, fields["GeoParser"]["latitude"], [place["lat"].to_f], entity_count) if place["lat"]
+            self.add_metadata_to_document(document_id, fields["GeoParser"]["longitude"], [place["long"].to_f], entity_count) if place["long"]
+            self.add_metadata_to_document(document_id, fields["GeoParser"]["population"], [place["pop"].to_i], entity_count) if place["pop"]
+            if place["gazetteer"]
+              self.add_metadata_to_document(document_id, fields["GeoParser"]["gazetteer"], [place["gazetteer"]], entity_count)
+              self.add_metadata_to_document(document_id, fields["GeoParser"]["gazref"], [place["gazref"]], entity_count) if place["gazref"]
+            elsif place["gazref"]
+              self.add_metadata_to_document(document_id, fields["GeoParser"]["gazetteer"], [place["gazref"].split(":")[0]], entity_count)
+              self.add_metadata_to_document(document_id, fields["GeoParser"]["gazref"], [place["gazref"]], entity_count)
             end
-            self.add_metadata_to_document(document_id, fields["GeoParser"]["type"], [place["type"]]) if place.has_key?("type")
-            self.add_metadata_to_document(document_id, fields["GeoParser"]["country"], [place["in-cc"]]) if place.has_key?("in-cc")
+            self.add_metadata_to_document(document_id, fields["GeoParser"]["type"], [place["type"]], entity_count) if place["type"]
+            self.add_metadata_to_document(document_id, fields["GeoParser"]["country"], [place["in-cc"]], entity_count) if place["in-cc"]
           end
+          FileUtils.mv(file, "#{output_dir}/#{entry}")
+          FileUtils.mv(gaz_file, "#{output_dir}/#{title}.gaz.xml")
         end
       end
       return fields
+    end
+    
+    def self.set_blacklab_pid(document_id, title)
+      Extract.connection.execute "UPDATE #{Extract.table_name} SET blacklab_pid = '#{BlacklabRails::Blacklab.docs(nil,"HeadWord:#{title}")["docs"].first["docPid"]}' WHERE id = #{document_id};"
     end
     
   end
