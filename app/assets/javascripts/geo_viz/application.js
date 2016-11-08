@@ -14,3 +14,8 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+
+function processAnnotationSelection(parentId, selectedElements) {
+	addClassToSelected(parentId, selectedElements, "selected-for-annotation");
+	
+}
