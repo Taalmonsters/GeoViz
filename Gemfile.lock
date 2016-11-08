@@ -36,6 +36,14 @@ PATH
       taalmonsters (= 0.0.1)
 
 PATH
+  remote: /Users/matje/Projects/rubygems/annotations
+  specs:
+    annotations (0.0.1)
+      jquery-rails
+      rails (~> 4.2)
+      sass-rails (~> 5.0)
+
+PATH
   remote: /Users/matje/Projects/rubygems/nested_metadata
   specs:
     nested_metadata (0.0.1)
@@ -93,6 +101,10 @@ GEM
     autoprefixer-rails (6.5.2)
       execjs
     bcrypt (3.1.11)
+    better_errors (2.1.1)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+      rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bootstrap-sass (3.3.7)
@@ -101,6 +113,7 @@ GEM
     builder (3.2.2)
     byebug (9.0.6)
     chartkick (2.1.1)
+    coderay (1.1.1)
     coffee-rails (4.1.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.1.x)
@@ -242,6 +255,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  annotations!
+  better_errors
   blacklab_rails!
   byebug
   coffee-rails (~> 4.1.0)

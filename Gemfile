@@ -22,6 +22,7 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
+gem "better_errors"
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -52,6 +53,7 @@ source 'https://rubygems.taalmonsters.nl' do
 end
 
 gem "blacklab_rails", :path => "/Users/matje/Projects/Encyclopedie_GIS/blacklab_rails"
+gem "annotations", :path => "/Users/matje/Projects/rubygems/annotations"
 gem "nested_metadata", :path => "/Users/matje/Projects/rubygems/nested_metadata"
 gem "taalmonsters.charts", :path => "/Users/matje/Development/TM_viz/taalmonsters_charts"
 gem "taalmonsters.geonames", :path => "/Users/matje/Development/TM_viz/taalmonsters_geonames"
