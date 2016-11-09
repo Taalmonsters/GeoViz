@@ -1,1 +1,0 @@
-Geonames.lang = 'fr'
