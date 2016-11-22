@@ -3,13 +3,14 @@ module GeoViz
     
     def geocode
       @response = nil
-      if params.has_key?(:query)
-        @response = Taalmonsters::Geonames::Client.geocode(params[:query], true)
-      elsif params.has_key?(:latitude) && params.has_key?(:longitude)
-        @response = Taalmonsters::Geonames::Client.find_nearby_place_name({ "lat" => params[:latitude], "lng" => params[:longitude] })
+      if params.has_key?(:q)
+        @response = Taalmonsters::Geonames::Client.search(geocode_params(params))
+      elsif params.has_key?(:lat) && params.has_key?(:lng)
+        @response = Taalmonsters::Geonames::Client.find_nearby_place_name(find_nearby_params(params))
       end
       @target = params[:target] if params.has_key?(:target)
       if @response
+        puts @response.to_json
         @marker = Taalmonsters::Maps::Google::SimpleMapMarker.new
         @marker.set_coordinates(@response[0]["lat"].to_f,@response[0]["lng"].to_f)
         @marker.label = @response[0]["toponymName"]
@@ -18,6 +19,18 @@ module GeoViz
         @marker.infowindow = "<div>#{@response[0]["toponymName"]}</div>"
         @marker.draggable = true
       end
+    end
+    
+    private
+    
+    def geocode_params(params)
+      params = params.slice(:q)
+      params["maxRows"] = 10
+      return params
+    end
+    
+    def find_nearby_params(params)
+      params.slice(:lat, :lng)
     end
     
   end

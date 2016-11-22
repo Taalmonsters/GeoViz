@@ -44,6 +44,16 @@ $(document).on("click", "#new-marker", function(e) {
 	});
 });
 
+$(document).on("change", "#extract-controls #name_content", function(e) {
+	$.getScript("/placenames/geocode.js?q="+$(this).val()+"&target=extract-controls");
+});
+
+$(document).on("keypress", "form", function (e) {
+    if (e.keyCode == 13) {
+        return false;
+    }
+});
+
 function addMarkerToMap(item) {
 	var marker = newMapMarker(extractMap, item, "extract-map");
 	google.maps.event.addListener(marker, 'dragend', function(e) {
@@ -51,7 +61,7 @@ function addMarkerToMap(item) {
 		var lng = e.latLng.lng();
 		$("#extract-annotation").find("#latitude_content").first().val(lat);
 		$("#extract-annotation").find("#longitude_content").first().val(lng);
-		$.getScript("/placenames/geocode.js?latitude="+lat+"&longitude="+lng+"&target=extract-controls");
+		$.getScript("/placenames/geocode.js?lat="+lat+"&lng="+lng+"&target=extract-controls");
 	});
 	mapMarkers.push(marker);
 	extractMap.setCenter(marker.getPosition());
