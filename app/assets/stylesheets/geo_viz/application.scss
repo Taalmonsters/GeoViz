@@ -16,6 +16,10 @@
 
 @import "annotations/application";
 
+div.row.main-content {
+    height: calc(100% - 56px);
+}
+
 div.paragraph {
   display: block;
   // border: 1px solid white;
@@ -47,7 +51,11 @@ div.paragraph {
   vertical-align: top;
   padding: 0;
   // top: 15px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+}
+
+#extract-controls {
+  height: auto !important;
 }
 
 .modal-dialog {
