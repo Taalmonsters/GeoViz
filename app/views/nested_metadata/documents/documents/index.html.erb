@@ -19,11 +19,13 @@
 		<div id="extracts">
 			<h4>Extracts</h4>
 			<hr />
-			<div class="alphabet-container">
-				<% @letters.each do |letter| %>
-				<a class="<%= 'active' if letter.eql?(@current_letter) %>" href="<%= letter.eql?(@current_letter) ? '#' : @filter_params.length > 0 ? "#{request.path}?letter=#{letter}&tab=#{@tab}&number=#{@number}&#{@filter_params}" : "#{request.path}?letter=#{letter}&tab=#{@tab}&number=#{@number}" %>"><%= letter %></a>
-				<% end %>
-			</div>
+			<% if @letters %>
+				<div class="alphabet-container">
+					<% @letters.each do |letter| %>
+					<a class="<%= 'active' if letter.eql?(@current_letter) %>" href="<%= letter.eql?(@current_letter) ? '#' : @filter_params.length > 0 ? "#{request.path}?letter=#{letter}&tab=#{@tab}&number=#{@number}&#{@filter_params}" : "#{request.path}?letter=#{letter}&tab=#{@tab}&number=#{@number}" %>"><%= letter %></a>
+					<% end %>
+				</div>
+			<% end %>
 			<div class="per-page">
 				Show <%= select_tag "number", options_for_select([10, 25, 50], @number), :onchange => "update_documents_per_page(this, $(this).val(), '#{request.original_url}');" %> per page
 			</div>
