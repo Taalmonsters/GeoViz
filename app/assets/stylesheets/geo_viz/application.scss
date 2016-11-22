@@ -36,6 +36,7 @@ div.paragraph {
       }
       &.annotated {
         background-color: #FF936E;
+        cursor: pointer;
       }
     }
   }
@@ -65,6 +66,10 @@ div.paragraph {
     &:hover {
       background-color: #17aed4;
       color: #fff;
+    }
+    &.selected:hover {
+      background-color: initial;
+      color: initial;
     }
   }
 }

@@ -60,10 +60,26 @@ $(document).on("keypress", "form", function (e) {
 });
 
 $(document).on("click", "tr.alternative", function(e) {
-	var json = $(this).data("json");
-	// Move currently selected row to alternatives table
-	// Move newly selected row from alternatives table to selected table
-	// Update fields in extract-controls
+	if (!$(this).hasClass("selected")) {
+		var json = $(this).data("json");
+		// Move currently selected row to alternatives table
+		var selected = $("#selected-body").find("tr").first().remove();
+		$(selected).removeClass("selected");
+		$("#alternatives-body").append(selected);
+		// Move newly selected row from alternatives table to selected table
+		var alternative = $(this).remove();
+		$(alternative).addClass("selected");
+		$("#selected-body").append(alternative);
+		// Update fields in extract-controls
+		var data = $(this).data("json");
+		$("#extract-controls #latitude_content").val(data["lat"]);
+		$("#extract-controls #longitude_content").val(data["lng"]);
+		$("#extract-controls #name_content").val(data["toponymName"]);
+		$("#extract-controls #country_content").val(data["countryCode"]);
+		$("#extract-controls #population_content").val(data["population"]);
+		$("#extract-controls #gazref_content").val(data["geonameId"]);
+		$("#extract-controls #type_content").val(data["fcode"]);
+	}
 });
 
 function addMarkerToMap(item) {

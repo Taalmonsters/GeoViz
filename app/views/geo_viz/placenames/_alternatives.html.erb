@@ -1,4 +1,4 @@
-<div class="modal-dialog" role="document">
+<div id="alternatives-dialog" class="modal-dialog" role="document">
 	<div class="model-content">
 		<div class="modal-header">
 			<button aria-hidden="true" class="close" data-dismiss="modal" type="button">
@@ -17,8 +17,8 @@
         				<th>Country</th>
         			</tr>
         		</thead>
-        		<tbody>
-	            	<tr>
+        		<tbody id="selected-body">
+	            	<tr class="alternative selected" data-json="<%= @response[0].to_json %>">
 	            		<td><%= @response[0]["toponymName"] %></td>
 	            		<td><%= @response[0]["lat"] %></td>
 	            		<td><%= @response[0]["lng"] %></td>
@@ -36,7 +36,7 @@
         				<th>Country</th>
         			</tr>
         		</thead>
-        		<tbody>
+        		<tbody id="alternatives-body">
 	            <% @response[1..@response.count-1].each do |location| %>
 	            	<tr class="alternative" data-json='<%= location.to_json %>'>
 	            		<td><%= location["toponymName"] %></td>
