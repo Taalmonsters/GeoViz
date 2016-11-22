@@ -49,3 +49,14 @@ div.paragraph {
   // top: 15px;
   margin-bottom: 30px;
 }
+
+.modal-dialog {
+  background-color: #EEE;
+  tr.alternative {
+    cursor: pointer;
+    &:hover {
+      background-color: #17aed4;
+      color: #fff;
+    }
+  }
+}

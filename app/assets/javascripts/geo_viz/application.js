@@ -26,6 +26,11 @@ geoVizStarted = function() {
 		$("#extract-map").width(width);
 		$("#extract-controls").width(width);
 	}
+
+	if ($("#alternatives .modal-dialog").length > 0) {
+		$('#alternatives').modal('options');
+		var body = $( 'show' );
+	}
 };
 
 $(document).ready(geoVizStarted);
@@ -52,6 +57,13 @@ $(document).on("keypress", "form", function (e) {
     if (e.keyCode == 13) {
         return false;
     }
+});
+
+$(document).on("click", "tr.alternative", function(e) {
+	var json = $(this).data("json");
+	// Move currently selected row to alternatives table
+	// Move newly selected row from alternatives table to selected table
+	// Update fields in extract-controls
 });
 
 function addMarkerToMap(item) {
@@ -88,7 +100,7 @@ function processAnnotationSelection(parentId, selectedElements) {
 	var placename = elementListToString(selectedElements);
 	$("#"+parentId).parent().find(".edit_metadata_group #id_content").first().val(elementIdsToString(selectedElements));
 	$("#"+parentId).parent().find(".edit_metadata_group #name_content").first().val(placename);
-	$.getScript("/placenames/geocode.js?query="+placename+"&target="+$("#"+parentId).parent().attr("id"));
+	$.getScript("/placenames/geocode.js?q="+placename+"&target="+$("#"+parentId).parent().attr("id"));
 }
 
 function processAnnotationStart(parentId) {
