@@ -10,7 +10,6 @@ module GeoViz
       end
       @target = params[:target] if params.has_key?(:target)
       if @response
-        puts @response.to_json
         @marker = Taalmonsters::Maps::Google::SimpleMapMarker.new
         @marker.set_coordinates(@response[0]["lat"].to_f,@response[0]["lng"].to_f)
         @marker.label = @response[0]["toponymName"]
