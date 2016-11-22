@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+//= require annotations/application.js
 
 var geoVizStarted;
 var extractMap = null;
@@ -54,6 +55,22 @@ function addMarkerToMap(item) {
 	});
 	mapMarkers.push(marker);
 	extractMap.setCenter(marker.getPosition());
+}
+
+function elementIdsToString(elements) {
+	var arr = [];
+	for (var i = 0; i < elements.length; i++) {
+		arr.push($(elements[i]).attr("id"));
+	}
+	return arr.join(" ");
+}
+
+function elementListToString(elements) {
+	var arr = [];
+	for (var i = 0; i < elements.length; i++) {
+		arr.push($(elements[i]).html());
+	}
+	return arr.join(" ");
 }
 
 function processAnnotationSelection(parentId, selectedElements) {
