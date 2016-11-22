@@ -26,6 +26,9 @@ module GeoViz
     # Hide demo banner
     config.demo = false
     
+    # Allow sign up of more than one user
+    config.prevent_sign_up = false
+    
     # Blacklab configuration
     config.blacklab_index_name = "geoviz"
   end
