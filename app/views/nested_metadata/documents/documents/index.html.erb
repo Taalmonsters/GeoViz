@@ -1,9 +1,10 @@
+<% @group = NestedMetadata::MetadataGroup.with_name("Annotations").first %>
 <% content_for(:header) do %>
 	<%= stylesheet_link_tag 'nested_metadata/application', media: 'all' %>
 	<%= stylesheet_link_tag 'annotations/application', media: 'all' %>
 	<%= stylesheet_link_tag 'geo_viz/application', media: 'all' %>
-	<%= javascript_include_tag 'nested_metadata/application' %>
 	<%= javascript_include_tag 'annotations/application' %>
+	<%= javascript_include_tag 'nested_metadata/application' %>
 	<%= javascript_include_tag 'geo_viz/application' %>
 <% end %>
 <h3>Documents</h3>

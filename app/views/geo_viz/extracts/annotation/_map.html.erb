@@ -1,0 +1,9 @@
+<%= render partial: "taalmonsters/maps/header" %>
+<button id="new-marker" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-plus"></span> Add marker</button>
+<br/>
+<div id="extract-map">
+</div>
+<script>
+	extractMap = displayGoogleMap(<%= @document.get_map.markers.to_json.html_safe %>, "extract-map");
+	resetMapBounds();
+</script>

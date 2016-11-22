@@ -28,6 +28,22 @@ div.paragraph {
         margin-left: -4px;
         // border: 1px solid red;
       }
+      &.annotated {
+        background-color: #FF936E;
+      }
     }
   }
+}
+
+#new-marker {
+  margin-top: 15px;
+}
+
+#extract-map, #extract-controls {
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  padding: 0;
+  // top: 15px;
+  margin-bottom: 30px;
 }

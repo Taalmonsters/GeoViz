@@ -12,7 +12,7 @@ module GeoViz
       current_index = 0
       geoparser_keys = ["id", "name", "latitude", "longitude", "population", "gazetteer", "gazref", "type", "country"]
       ActiveRecord::Base.transaction do
-        fields = self.add_groups_and_keys({ "GeoParser" => geoparser_keys })
+        fields = self.add_groups_and_keys({ "Annotations" => geoparser_keys, "GeoParser" => geoparser_keys })
         NestedMetadata::MetadataGroup.with_name("GeoParser").first.update_attribute(:group_keys_into_entity, true)
         document_id = self.get_last_document_id
         Dir.entries(input_dir).select{|entry| !entry.start_with?('.') && entry.end_with?('.xml') && !entry.end_with?('.gaz.xml') }.each do |entry|
@@ -46,8 +46,19 @@ module GeoViz
           FileUtils.mv(file, "#{output_dir}/#{entry}")
           FileUtils.mv(gaz_file, "#{output_dir}/#{title}.gaz.xml")
         end
+        fields.each do |group, metadata_keys|
+          metadata_keys.each do |key, metadata_key|
+            metadata_key.update_attribute(:preferred_value_type, self.get_preferred_value_type(key))
+          end
+        end
       end
-      return fields
+      return {}
+    end
+    
+    def self.get_preferred_value_type(key)
+      return :float if ["latitude", "longitude"].include?(key)
+      return :integer if ["pop"].include?(key)
+      return :string
     end
     
     def self.set_blacklab_pid(document_id, title)

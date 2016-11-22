@@ -15,7 +15,8 @@
 						</th>
 					<% end %>
 				<% end %>
-				<th># GeoParser locations</th>
+				<th># GeoParser locs</th>
+				<th># Annotated locs</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -41,6 +42,9 @@
 				<% end %>
 				<td>
 					<%= NestedMetadata::MetadataGroup.with_name("GeoParser").first.entities(document).count %>
+				</td>
+				<td>
+					<%= NestedMetadata::MetadataGroup.with_name("Annotations").first.entities(document).count %>
 				</td>
 			</tr>
 			<% end %>

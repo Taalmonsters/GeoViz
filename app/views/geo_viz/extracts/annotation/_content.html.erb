@@ -4,7 +4,7 @@
 			<% paragraph.css("s").each do |sentence| %>
 				<div class="sentence">
 					<% sentence.css("w").each do |word| %>
-						<div id="<%= word["id"] %>" class="word <%= "no-space" if word["pws"].eql?("no") %>"><%= word.content %></div>
+						<div id="<%= word["id"] %>" class="word <%= "no-space" if word["pws"].eql?("no") %> <%= "annotated" if @document.word_annotated(word["id"]) %>"><%= word.content %></div>
 					<% end %>
 				</div>
 			<% end %>

@@ -15,7 +15,8 @@ PATH
   specs:
     taalmonsters.geonames (0.0.1)
       httparty
-      rails (~> 4.2.5.2)
+      rails (~> 4.2)
+      taalmonsters (= 0.0.1)
 
 PATH
   remote: /Users/matje/Development/TM_viz/taalmonsters_maps
