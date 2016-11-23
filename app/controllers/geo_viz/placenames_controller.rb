@@ -3,6 +3,7 @@ module GeoViz
     
     def geocode
       @response = nil
+      @entity_id = params[:entity_id].to_i if params.has_key?(:entity_id)
       if params.has_key?(:q)
         @location_query = params[:q]
         @response = Taalmonsters::Geonames::Client.search(geocode_params(params))

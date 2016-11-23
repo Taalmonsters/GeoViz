@@ -3,5 +3,5 @@ Rails.application.routes.draw do
   mount NestedMetadata::Engine => "/"
   
   get "/documents/:id/entities/:entity_id" => "geo_viz/documents#entity"
-  get "/placenames/geocode" => "geo_viz/placenames#geocode"
+  get "/documents/:id/placenames/geocode" => "geo_viz/placenames#geocode"
 end

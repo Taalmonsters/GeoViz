@@ -1,5 +1,14 @@
 <% if @response && @response[0] %>
+	var id = $("#extract-controls #id_content").val();
+	var group_entity = $("#extract-controls").find("div.group-entity").first();
+	if ($(group_entity).hasClass("update")) {
+		<% @data = @response[0] %>
+		$("#extract-controls").html('<%= escape_javascript(raw render partial: "geo_viz/extracts/annotation/controls/edit") %>');
+	} else {
+		$("#extract-controls").html('<%= escape_javascript(raw render partial: "geo_viz/extracts/annotation/controls/new") %>');
+	}
 	setExtractControls(<%= @response[0].to_json.html_safe %>);
+	$("#extract-controls #id_content").val(id);
 	clearMapMarkers();
 	addMarkerToMap(<%= @marker.to_json.html_safe %>);
 	<% if @response.count > 1 %>

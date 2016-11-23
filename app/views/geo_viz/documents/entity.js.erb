@@ -1,5 +1,5 @@
 <% if @data && @marker %>
-	clearExtractControls();
+	$("#extract-controls").html('<%= escape_javascript(raw render partial: "geo_viz/extracts/annotation/controls/edit") %>');
 	setExtractControls(<%= @data.to_json.html_safe %>);
 	clearMapMarkers();
 	addMarkerToMap(<%= @marker.to_json.html_safe %>);

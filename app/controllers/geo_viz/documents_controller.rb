@@ -1,17 +1,15 @@
 module GeoViz
   class DocumentsController < ApplicationController
-    before_action :set_document
     
     def entity
       if @document && params.has_key?(:entity_id)
+        @entity_id = params[:entity_id].to_i
         @data = {}
-        NestedMetadata::MetadataGroup.with_name("Annotations").with_keys.first.metadata_keys.each do |metadata_key|
-          @data[metadata_key.name] = metadata_key.metadatum_values.for_entity(params[:entity_id].to_i).for_document(@document).first.value.content
+        @group.metadata_keys.each do |metadata_key|
+          @data[metadata_key.name] = metadata_key.metadatum_values.for_entity(@entity_id).for_document(@document).first.value.content
         end
         @data = map_to_geonames(@data)
         @marker = get_marker(@data)
-        puts @data.to_json
-        puts @marker.to_json
       end
     end
     
@@ -35,10 +33,6 @@ module GeoViz
         end
       end
       return hash
-    end
-    
-    def set_document
-      @document = Extract.find(params[:id].to_i) if params.has_key?(:id)
     end
     
   end
