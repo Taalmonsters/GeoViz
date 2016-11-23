@@ -1,12 +1,5 @@
-<% if @response && @response[0] && @target %>
-	$("#<%= @target %>").find("#name_content").first().val("<%= @response[0]["toponymName"] %>");
-	$("#<%= @target %>").find("#latitude_content").first().val(<%= @response[0]["lat"] %>);
-	$("#<%= @target %>").find("#longitude_content").first().val(<%= @response[0]["lng"] %>);
-	$("#<%= @target %>").find("#population_content").first().val(<%= @response[0]["population"] %>);
-	$("#<%= @target %>").find("#gazetteer_content").first().val("geonames");
-	$("#<%= @target %>").find("#gazref_content").first().val("<%= @response[0]["geonameId"] %>");
-	$("#<%= @target %>").find("#type_content").first().val("<%= @response[0]["fcode"] %>");
-	$("#<%= @target %>").find("#country_content").first().val("<%= @response[0]["countryCode"] %>");
+<% if @response && @response[0] %>
+	setExtractControls(<%= @response[0].to_json.html_safe %>);
 	clearMapMarkers();
 	addMarkerToMap(<%= @marker.to_json.html_safe %>);
 	<% if @response.count > 1 %>

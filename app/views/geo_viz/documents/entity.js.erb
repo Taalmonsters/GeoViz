@@ -1,0 +1,8 @@
+<% if @data && @marker %>
+	clearExtractControls();
+	setExtractControls(<%= @data.to_json.html_safe %>);
+	clearMapMarkers();
+	addMarkerToMap(<%= @marker.to_json.html_safe %>);
+<% else %>
+	console.log("No data found!");
+<% end %>

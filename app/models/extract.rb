@@ -21,7 +21,7 @@ class Extract < ActiveRecord::Base
   end
   
   def word_annotated(word_id)
-    self.metadatum_values.key("id").in_group("Annotations").where("content = ? OR content LIKE ? OR content LIKE ?", word_id, "%#{word_id}", "%#{word_id} %").any?
+    self.metadatum_values.key("id").in_group("Annotations").where("content = ? OR content LIKE ? OR content LIKE ?", word_id, "%#{word_id}", "%#{word_id} %").first
   end
   
 end
