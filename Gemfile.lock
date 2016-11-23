@@ -1,3 +1,18 @@
+PATH
+  remote: /Users/matje/Projects/rubygems/nested_metadata
+  specs:
+    nested_metadata (0.0.2)
+      bootstrap-sass
+      devise
+      jquery-rails
+      jquery-ui-rails
+      rails (~> 4.2)
+      sass-rails (~> 5.0)
+      taalmonsters-charts (= 0.0.1)
+      taalmonsters-geonames (= 0.0.1)
+      taalmonsters-maps (= 0.0.1)
+      will_paginate (~> 3.0)
+
 GEM
   remote: https://rubygems.org/
   remote: https://rubygems.taalmonsters.nl/
@@ -107,17 +122,6 @@ GEM
     multi_json (1.12.1)
     multi_xml (0.5.5)
     mysql2 (0.4.5)
-    nested_metadata (0.0.2)
-      bootstrap-sass
-      devise
-      jquery-rails
-      jquery-ui-rails
-      rails (~> 4.2)
-      sass-rails (~> 5.0)
-      taalmonsters-charts (= 0.0.1)
-      taalmonsters-geonames (= 0.0.1)
-      taalmonsters-maps (= 0.0.1)
-      will_paginate (~> 3.0)
     nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
     orm_adapter (0.5.0)
@@ -227,7 +231,7 @@ DEPENDENCIES
   byebug
   jbuilder (~> 2.0)
   mysql2
-  nested_metadata (= 0.0.2)!
+  nested_metadata!
   rails (~> 4.2)
   sdoc (~> 0.4.0)
   source_documents (= 0.0.2)!

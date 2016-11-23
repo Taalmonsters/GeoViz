@@ -24,11 +24,12 @@ module GeoViz
           entity_count = 0
           self.add_document(document_id, generated_id, title)
           self.set_blacklab_pid(document_id, title)
+          main_xml_doc = Nokogiri::XML(File.read(file))
           xml_doc = Nokogiri::XML(File.read(gaz_file))
           xml_doc.css("placename").each do |placename|
             entity_count += 1
             place = placename.css("place").first
-            self.add_metadata_to_document(document_id, fields["GeoParser"]["id"], [placename["id"]], entity_count) if placename["id"]
+            self.add_metadata_to_document(document_id, fields["GeoParser"]["id"], [self.get_placename_id(placename["id"], main_xml_doc)], entity_count) if placename["id"]
             self.add_metadata_to_document(document_id, fields["GeoParser"]["name"], [placename["name"]], entity_count) if placename["name"]
             self.add_metadata_to_document(document_id, fields["GeoParser"]["latitude"], [place["lat"].to_f], entity_count) if place["lat"]
             self.add_metadata_to_document(document_id, fields["GeoParser"]["longitude"], [place["long"].to_f], entity_count) if place["long"]
@@ -53,6 +54,10 @@ module GeoViz
         end
       end
       return {}
+    end
+    
+    def self.get_placename_id(enamex_id, main_xml_doc)
+      main_xml_doc.css("enamex[id=#{enamex_id}]")[0].css("w").map{|w| w["id"] }.join(" ")
     end
     
     def self.get_preferred_value_type(key)
