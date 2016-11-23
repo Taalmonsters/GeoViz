@@ -2,10 +2,8 @@ var geoVizStarted;
 var extractMap = null;
 geoVizStarted = function() {
 	if ($("#extract-annotation").length > 0) {
-		var height = $("#extract-annotation").innerHeight() - $("#extract-content").height() - 100;
+		var height = $("#extract-annotation").innerHeight() - $("#extract-content").height() - 155;
 		var width = $("#extract-annotation").innerWidth() / 2 - 20;
-		$("#extract-map").height(height);
-		$("#extract-controls").height(height);
 		$("#extract-map").width(width);
 		$("#extract-controls").width(width);
 	}
