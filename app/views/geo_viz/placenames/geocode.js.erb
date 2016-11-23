@@ -1,16 +1,7 @@
 <% if @response && @response[0] %>
 	<% @data = @response[0] %>
 	var id = $("#extract-controls #id_content").val();
-	console.log("A");
-	var group_entity = $("#extract-controls").find("div.group-entity").first();
-	console.log("B");
-	if (group_entity.hasClass("update")) {
-		console.log("updating");
-		$("#extract-controls").html('<%= escape_javascript(raw render partial: "geo_viz/extracts/annotation/controls/edit") %>');
-	} else {
-		console.log("not updating");
-		$("#extract-controls").html('<%= escape_javascript(raw render partial: "geo_viz/extracts/annotation/controls/new") %>');
-	}
+	$("#extract-controls").html('<%= escape_javascript(raw render partial: @entity_id ? "geo_viz/extracts/annotation/controls/edit" : "geo_viz/extracts/annotation/controls/new") %>');
 	setExtractControls(<%= @response[0].to_json.html_safe %>);
 	$("#extract-controls #id_content").val(id);
 	clearMapMarkers();

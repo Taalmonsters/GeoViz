@@ -72,7 +72,12 @@ function addMarkerToMap(item) {
 		var lng = e.latLng.lng();
 		$("#extract-annotation").find("#latitude_content").first().val(lat);
 		$("#extract-annotation").find("#longitude_content").first().val(lng);
-		$.getScript("/documents/"+$("#extract-content").data("document-id")+"/placenames/geocode.js?lat="+lat+"&lng="+lng);
+		var group_entity = $("#extract-controls").find("div.group-entity").first();
+		if ($(group_entity).hasClass("update")) {
+			$.getScript("/documents/"+$("#extract-content").data("document-id")+"/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&lat="+lat+"&lng="+lng);
+		} else {
+			$.getScript("/documents/"+$("#extract-content").data("document-id")+"/placenames/geocode.js?lat="+lat+"&lng="+lng);
+		}
 	});
 	mapMarkers.push(marker);
 	extractMap.setCenter(marker.getPosition());
@@ -126,7 +131,13 @@ function processAnnotationSelection(parentId, selectedElements) {
 	var placename = elementListToString(selectedElements);
 	$("#"+parentId).parent().find(".edit_metadata_group #id_content").first().val(elementIdsToString(selectedElements));
 	$("#"+parentId).parent().find(".edit_metadata_group #name_content").first().val(placename);
-	$.getScript("/documents/"+$("#extract-content").data("document-id")+"/placenames/geocode.js?q="+placename);
+	
+	var group_entity = $("#extract-controls").find("div.group-entity").first();
+	if ($(group_entity).hasClass("update")) {
+		$.getScript("/documents/"+$("#extract-content").data("document-id")+"/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&q="+placename);
+	} else {
+		$.getScript("/documents/"+$("#extract-content").data("document-id")+"/placenames/geocode.js?q="+placename);
+	}
 }
 
 function processAnnotationStart(parentId) {
