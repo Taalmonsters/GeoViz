@@ -21,5 +21,16 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
-  database: db/production.sqlite3
+  adapter: mysql2
+  timeout: 6000
+  encoding: utf8 
+  username: <%= ENV["MYSQL_USER"] %> 
+  password: <%= ENV["MYSQL_PASSWORD"] %>
+  host: <%= ENV["MYSQL_HOST"] %>
+  port: <%= ENV["MYSQL_PORT"] %>
+  reconnect: true
+  pool: 20
+  database: <%= Rails.application.config.app_name.parameterize.underscore %>_production
+  <% if ENV["MYSQL_SOCKET"] %>
+  socket: <%= ENV["MYSQL_SOCKET"] %>
+  <% end %>
