@@ -32,6 +32,6 @@ module GeoViz
     # Blacklab configuration
     config.blacklab_index_name = "geoviz"
     
-    config.pages = [["home", "/", "", 0], ["annotation", "/documents", "", 1], ["metadata", "/metadata", "", 2], ["users", "/users", "", 3]]
+    config.pages = [["home", "/", "", 0], ["extracts", "/documents", "", 1], ["metadata", "/metadata", "", 2], ["users", "/users", "", 3]]
   end
 end
