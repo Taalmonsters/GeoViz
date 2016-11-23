@@ -6,9 +6,13 @@
 	<%= javascript_include_tag 'annotations/application' %>
 	<%= javascript_include_tag 'nested_metadata/application' %>
 	<%= javascript_include_tag 'geo_viz/application' %>
+	<%= stylesheet_link_tag 'taalmonsters/maps/application', media: 'all' %>
+	<%= javascript_include_tag 'taalmonsters/maps/application' %>
+	<script src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.config.google_maps_api_key %>&callback=initializeMaps" async defer></script>
+	<script src="//cdn.rawgit.com/mahnunchik/markerclustererplus/master/dist/markerclusterer.min.js"></script>
 <% end %>
-<h3>Documents</h3>
-<div id="documents" class="row main-content" data-path="<%= request.path %>" data-filter="<%= @filter_params %>" data-tab="<%= @tab %>">
+<h3>Places</h3>
+<div id="places" class="row main-content" data-path="<%= request.path %>" data-filter="<%= @filter_params %>" data-tab="<%= @tab %>">
 	<div class="col-xs-4 col-md-3 col-lg-2 content-box content-box-light-contrast">
 		<div id="filters">
 			<%= render partial: "nested_metadata/filters/header", locals: { page: request.path } %>
@@ -16,9 +20,6 @@
 		</div>
 	</div>
 	<div class="col-xs-8 col-md-9 col-lg-10 content-box">
-		<div id="extracts">
-			<h4>Extracts</h4>
-			<hr />
-		</div>
+		<div id="map" class="google-map" data-url="/map.json?<%= @filter_params %>" style="width: 100%; height: 100%;"></div>
 	</div>
 </div>

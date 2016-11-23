@@ -4,9 +4,27 @@ module Taalmonsters
     before_action :set_tab
     before_action :set_filters
     before_action :set_documents
-    before_action :set_locations
+    before_action :set_locations, :only => [:locations]
     
     def index
+    end
+    
+    def locations
+      @map = Taalmonsters::Maps::Google::SimpleMap.new
+      @locations.each do |coordinates, places|
+        marker = Taalmonsters::Maps::Google::SimpleMapMarker.new
+        marker.set_coordinates(coordinates[0].to_f,coordinates[1].to_f)
+        marker.label = places[0]["name"]
+        marker.letter = marker.label[0]
+        marker.color = "98598E"
+        marker.infowindow = "<div>#{places[0]["name"]} (#{places.count})</div>"
+        @map.add_marker(marker)
+      end
+      respond_to do |format|
+        format.json {
+          render :json => @map.markers
+        }
+      end
     end
     
     private

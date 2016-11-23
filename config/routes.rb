@@ -4,4 +4,6 @@ Rails.application.routes.draw do
   
   get "/documents/:id/entities/:entity_id" => "geo_viz/documents#entity"
   get "/documents/:id/placenames/geocode" => "geo_viz/placenames#geocode"
+  
+  get "/map" => "taalmonsters/visitors#locations"
 end
