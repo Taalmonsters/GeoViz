@@ -1,5 +1,7 @@
 module GeoViz
   class PlacenamesController < ApplicationController
+    before_action :set_document
+    before_action :set_group
     
     def geocode
       @response = nil

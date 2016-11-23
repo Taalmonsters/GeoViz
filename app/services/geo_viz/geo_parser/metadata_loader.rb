@@ -57,7 +57,7 @@ module GeoViz
     
     def self.get_preferred_value_type(key)
       return :float if ["latitude", "longitude"].include?(key)
-      return :integer if ["pop"].include?(key)
+      return :integer if ["population"].include?(key)
       return :string
     end
     

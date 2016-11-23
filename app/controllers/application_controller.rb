@@ -1,7 +1,5 @@
 class ApplicationController < Taalmonsters::ApplicationController
   include GeoViz::ApplicationHelper
-  before_action :set_document
-  before_action :set_group
     
   protected
     

@@ -1,5 +1,7 @@
 module GeoViz
   class DocumentsController < ApplicationController
+    before_action :set_document
+    before_action :set_group
     
     def entity
       if @document && params.has_key?(:entity_id)
