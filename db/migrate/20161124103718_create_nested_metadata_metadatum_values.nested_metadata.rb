@@ -2,7 +2,7 @@
 class CreateNestedMetadataMetadatumValues < ActiveRecord::Migration
   def change
     create_table :nested_metadata_metadatum_values do |t|
-      t.integer :metadata_key_id
+      t.references :metadata_key, index: true
       t.integer :value_id
       t.string :value_type
       t.string :content
