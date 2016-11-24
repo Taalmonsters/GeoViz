@@ -14,10 +14,12 @@ module Taalmonsters
       @locations.each do |coordinates, places|
         marker = Taalmonsters::Maps::Google::SimpleMapMarker.new
         marker.set_coordinates(coordinates[0].to_f,coordinates[1].to_f)
-        marker.label = places[0]["name"]
-        marker.letter = marker.label[0]
         marker.color = "98598E"
-        marker.infowindow = "<div>#{places[0]["name"]} (#{places.count})</div>"
+        if places[0]["name"]
+          marker.label = places[0]["name"]
+          marker.letter = marker.label[0]
+          marker.infowindow = "<div>#{places[0]["name"]} (#{places.count})</div>"
+        end
         @map.add_marker(marker)
       end
       respond_to do |format|
