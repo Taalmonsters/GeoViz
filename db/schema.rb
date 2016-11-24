@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161124103718) do
+ActiveRecord::Schema.define(version: 20161124104139) do
 
   create_table "extracts", force: :cascade do |t|
     t.string   "generated_id", limit: 255
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 20161124103718) do
 
   create_table "nested_metadata_metadata_groups", force: :cascade do |t|
     t.string   "name",                   limit: 255
+    t.integer  "metadata_group_id",      limit: 4
     t.boolean  "group_keys_into_entity",             default: false, null: false
     t.boolean  "requires_attachment",                default: false, null: false
     t.integer  "attachment_type",        limit: 4,   default: 0,     null: false
@@ -67,6 +68,8 @@ ActiveRecord::Schema.define(version: 20161124103718) do
     t.datetime "created_at",                                         null: false
     t.datetime "updated_at",                                         null: false
   end
+
+  add_index "nested_metadata_metadata_groups", ["metadata_group_id"], name: "index_nested_metadata_metadata_groups_on_metadata_group_id", using: :btree
 
   create_table "nested_metadata_metadata_keys", force: :cascade do |t|
     t.string   "name",                 limit: 255
