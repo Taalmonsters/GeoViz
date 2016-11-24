@@ -35,5 +35,15 @@ module GeoViz
     config.blacklab_index_name = "geoviz"
     
     config.pages = [["home", "/", "", 0], ["extracts", "/documents", "", 1], ["metadata", "/metadata", "", 2], ["users", "/users", "", 3]]
+    
+    config.admin_name = ENV["ADMIN_NAME"]
+    config.admin_email = ENV["ADMIN_EMAIL_ADDRESS"]
+    config.admin_password = ENV["ADMIN_PASSWORD"]
+    config.email_provider_username = ENV["SMTP_EMAIL_ADDRESS"]
+    config.email_provider_password = ENV["SMTP_EMAIL_PASSWORD"]
+    config.domain_name = ENV["DOMAIN_NAME"]
+    config.email_server_address = ENV["SMTP_EMAIL_SERVER"]
+    config.email_server_port = ENV["SMTP_EMAIL_PORT"]
+    config.application_host = ENV["GEOVIZ_APPLICATION_HOST"]
   end
 end
