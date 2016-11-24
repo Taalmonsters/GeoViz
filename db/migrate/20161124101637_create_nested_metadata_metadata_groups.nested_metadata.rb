@@ -3,7 +3,6 @@ class CreateNestedMetadataMetadataGroups < ActiveRecord::Migration
   def change
     create_table :nested_metadata_metadata_groups do |t|
       t.string :name
-      t.references :metadata_group, index: true, foreign_key: true
       t.boolean :group_keys_into_entity, null: false, default: false
       t.boolean :requires_attachment, null: false, default: false
       t.integer :attachment_type, null: false, default: 0
