@@ -29,4 +29,5 @@ source 'https://rubygems.taalmonsters.nl' do
 end
 
 gem "taalmonsters", path: "/Users/matje/Projects/rubygems/taalmonsters"
+gem "taalmonsters-maps", path: "/Users/matje/Projects/rubygems/taalmonsters-maps"
 gem "nested_metadata", path: "/Users/matje/Projects/rubygems/nested_metadata"
