@@ -3,6 +3,14 @@ class Extract < ActiveRecord::Base
   include BlacklabRails::BlacklabDocument
   include SourceDocuments::Base
   
+  def annotated_locs
+    return self.get_group_entity_count("Annotations")
+  end
+  
+  def geoparser_locs
+    return self.get_group_entity_count("GeoParser")
+  end
+  
   def get_map(groups = [])
     map = Taalmonsters::Maps::Google::SimpleMap.new
     groups.each do |group|
@@ -22,6 +30,12 @@ class Extract < ActiveRecord::Base
   
   def word_annotated(word_id)
     self.metadatum_values.key("id").in_group("Annotations").where("content = ? OR content LIKE ? OR content LIKE ?", word_id, "%#{word_id}", "%#{word_id} %").first
+  end
+  
+  private
+  
+  def get_group_entity_count(group)
+    NestedMetadata::MetadataGroup.has_name(group).first.entity_mentions.has_document(self).count
   end
   
 end
