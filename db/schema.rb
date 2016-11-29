@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161124104139) do
+ActiveRecord::Schema.define(version: 20161129130028) do
 
   create_table "extracts", force: :cascade do |t|
     t.string   "generated_id", limit: 255
@@ -32,6 +32,18 @@ ActiveRecord::Schema.define(version: 20161124104139) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "nested_metadata_entity_mentions", force: :cascade do |t|
+    t.string   "entity_type",        limit: 255, default: "undefined", null: false
+    t.integer  "metadata_group_id",  limit: 4,                         null: false
+    t.integer  "source_document_id", limit: 4,                         null: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
+  end
+
+  add_index "nested_metadata_entity_mentions", ["entity_type"], name: "index_nested_metadata_entity_mentions_on_entity_type", using: :btree
+  add_index "nested_metadata_entity_mentions", ["metadata_group_id"], name: "index_nested_metadata_entity_mentions_on_metadata_group_id", using: :btree
+  add_index "nested_metadata_entity_mentions", ["source_document_id"], name: "index_nested_metadata_entity_mentions_on_source_document_id", using: :btree
 
   create_table "nested_metadata_float_values", force: :cascade do |t|
     t.float    "content",    limit: 24
@@ -57,7 +69,7 @@ ActiveRecord::Schema.define(version: 20161124104139) do
   end
 
   create_table "nested_metadata_metadata_groups", force: :cascade do |t|
-    t.string   "name",                   limit: 255
+    t.string   "name",                   limit: 255,                 null: false
     t.integer  "metadata_group_id",      limit: 4
     t.boolean  "group_keys_into_entity",             default: false, null: false
     t.boolean  "requires_attachment",                default: false, null: false
@@ -72,7 +84,7 @@ ActiveRecord::Schema.define(version: 20161124104139) do
   add_index "nested_metadata_metadata_groups", ["metadata_group_id"], name: "index_nested_metadata_metadata_groups_on_metadata_group_id", using: :btree
 
   create_table "nested_metadata_metadata_keys", force: :cascade do |t|
-    t.string   "name",                 limit: 255
+    t.string   "name",                 limit: 255,                 null: false
     t.integer  "metadata_group_id",    limit: 4
     t.integer  "preferred_value_type", limit: 4,   default: 5,     null: false
     t.boolean  "editable",                         default: true,  null: false
@@ -86,28 +98,29 @@ ActiveRecord::Schema.define(version: 20161124104139) do
   add_index "nested_metadata_metadata_keys", ["metadata_group_id"], name: "index_nested_metadata_metadata_keys_on_metadata_group_id", using: :btree
 
   create_table "nested_metadata_metadatum_values", force: :cascade do |t|
-    t.integer  "metadata_key_id", limit: 4
-    t.integer  "value_id",        limit: 4
-    t.string   "value_type",      limit: 255
-    t.string   "content",         limit: 255
-    t.integer  "group_entity_id", limit: 4,   default: 0, null: false
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.integer  "metadata_key_id",    limit: 4
+    t.integer  "value_id",           limit: 4
+    t.string   "value_type",         limit: 255
+    t.string   "content",            limit: 255
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.integer  "entity_mention_id",  limit: 4
+    t.integer  "source_document_id", limit: 4
   end
 
+  add_index "nested_metadata_metadatum_values", ["entity_mention_id"], name: "index_nested_metadata_metadatum_values_on_entity_mention_id", using: :btree
   add_index "nested_metadata_metadatum_values", ["metadata_key_id"], name: "index_nested_metadata_metadatum_values_on_metadata_key_id", using: :btree
+  add_index "nested_metadata_metadatum_values", ["source_document_id"], name: "index_nested_metadata_metadatum_values_on_source_document_id", using: :btree
 
   create_table "nested_metadata_source_documents", force: :cascade do |t|
-    t.integer  "metadatum_value_id",   limit: 4
-    t.integer  "source_document_id",   limit: 4
-    t.string   "source_document_type", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer  "source_document_id",   limit: 4,   null: false
+    t.string   "source_document_type", limit: 255, null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
-  add_index "nested_metadata_source_documents", ["metadatum_value_id", "source_document_id"], name: "index_values_documents", using: :btree
-  add_index "nested_metadata_source_documents", ["source_document_id", "metadatum_value_id"], name: "index_documents_values", using: :btree
-  add_index "nested_metadata_source_documents", ["source_document_id", "source_document_type"], name: "index_documents_types", using: :btree
+  add_index "nested_metadata_source_documents", ["source_document_id"], name: "index_nested_metadata_source_documents_on_source_document_id", using: :btree
+  add_index "nested_metadata_source_documents", ["source_document_type"], name: "index_nested_metadata_source_documents_on_source_document_type", using: :btree
 
   create_table "nested_metadata_string_values", force: :cascade do |t|
     t.text     "content",    limit: 65535

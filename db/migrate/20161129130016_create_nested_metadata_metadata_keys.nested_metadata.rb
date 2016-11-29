@@ -2,7 +2,7 @@
 class CreateNestedMetadataMetadataKeys < ActiveRecord::Migration
   def change
     create_table :nested_metadata_metadata_keys do |t|
-      t.string :name
+      t.string :name, null: false
       t.references :metadata_group, index: true
       t.integer :preferred_value_type, null: false, default: 5
       t.boolean :editable, null: false, default: true
