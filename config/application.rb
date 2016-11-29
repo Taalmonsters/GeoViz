@@ -34,8 +34,8 @@ module GeoViz
     # Blacklab configuration
     config.blacklab_index_name = "geoviz"
     
+    # Taalmonsters configuration
     config.pages = [["home", "/", "", 0], ["extracts", "/documents", "", 1], ["metadata", "/metadata", "", 2], ["users", "/users", "", 3]]
-    
     config.admin_name = ENV["ADMIN_NAME"]
     config.admin_email = ENV["ADMIN_EMAIL_ADDRESS"]
     config.admin_password = ENV["ADMIN_PASSWORD"]
@@ -45,5 +45,9 @@ module GeoViz
     config.email_server_address = ENV["SMTP_EMAIL_SERVER"]
     config.email_server_port = ENV["SMTP_EMAIL_PORT"]
     config.application_host = ENV["GEOVIZ_APPLICATION_HOST"]
+    
+    # Nested metadata configuration
+    config.document_fields = ["geoparser_locs", "annotated_locs"]
+    config.hide_document_lock_in_index = true
   end
 end
