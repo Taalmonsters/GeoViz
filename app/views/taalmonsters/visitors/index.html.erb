@@ -2,10 +2,10 @@
 <% content_for(:header) do %>
 	<%= stylesheet_link_tag 'nested_metadata/application', media: 'all' %>
 	<%= stylesheet_link_tag 'annotations/application', media: 'all' %>
-	<%= stylesheet_link_tag 'geo_viz/application', media: 'all' %>
+	<%= stylesheet_link_tag 'application', media: 'all' %>
 	<%= javascript_include_tag 'annotations/application' %>
 	<%= javascript_include_tag 'nested_metadata/application' %>
-	<%= javascript_include_tag 'geo_viz/application' %>
+	<%= javascript_include_tag 'application' %>
 	<%= stylesheet_link_tag 'taalmonsters/maps/application', media: 'all' %>
 	<%= javascript_include_tag 'taalmonsters/maps/application' %>
 	<script src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.config.google_maps_api_key %>&callback=initializeMaps" async defer></script>

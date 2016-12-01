@@ -32,7 +32,7 @@ class Extract < ActiveRecord::Base
     self.metadatum_values.key("id").in_group("Annotations").where("content = ? OR content LIKE ? OR content LIKE ?", word_id, "%#{word_id}", "%#{word_id} %").first
   end
   
-  private
+  protected
   
   def get_group_entity_count(group)
     NestedMetadata::MetadataGroup.has_name(group).first.entity_mentions.has_document(self).count
