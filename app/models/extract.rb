@@ -7,6 +7,11 @@ class Extract < ActiveRecord::Base
     return self.get_group_entity_count("Annotations")
   end
   
+  def annotated_word_ids
+    id_key = NestedMetadata::MetadataGroup.has_name("Annotations").first.metadata_keys.has_name("id").first
+    self.source_document.entity_mentions.has_group_name("Annotations").with_value_for_key(id_key, "word_id").uniq.map{|entity_mention| [entity_mention.word_id, entity_mention.id] }.to_h
+  end
+  
   def geoparser_locs
     return self.get_group_entity_count("GeoParser")
   end
@@ -29,13 +34,15 @@ class Extract < ActiveRecord::Base
   end
   
   def word_annotated(word_id)
-    self.metadatum_values.key("id").in_group("Annotations").where("content = ? OR content LIKE ? OR content LIKE ?", word_id, "%#{word_id}", "%#{word_id} %").first
+    id_key = NestedMetadata::MetadataGroup.has_name("Annotations").first.metadata_keys.has_name("id").first
+    self.source_document.entity_mentions.has_group_name("Annotations").with_metadatum_values.select("(SELECT mv1.content FROM #{NestedMetadata::MetadatumValue.table_name} AS mv1 WHERE mv1.metadata_key_id = #{id_key.id} AND mv1.entity_mention_id = #{NestedMetadata::EntityMention.table_name}.id) AS word_id, #{NestedMetadata::EntityMention.table_name}.*").all.select{|em| em.word_id =~ / *#{word_id} / || em.word_id =~ / *#{word_id}$/ }.first
   end
   
   protected
   
   def get_group_entity_count(group)
-    NestedMetadata::MetadataGroup.has_name(group).first.entity_mentions.has_document(self).count
+    self.source_document.entity_mentions.has_group_name(group).count
+    # NestedMetadata::MetadataGroup.has_name(group).first.entity_mentions.has_document(self).count
   end
   
 end

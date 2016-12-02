@@ -1,0 +1,14 @@
+<% if @group.name.eql?("Annotations") %>
+	<%= render partial: "geo_viz/extracts/annotate" %>
+<% else %>
+	<div class="entities">
+		<% entity_mentions.each do |entity_mention| %>
+			<%= render partial: "nested_metadata/documents/entity_mentions/#{@group.editable_entity_mentions && @is_annotator && (!@document.locked? || @group.editable_when_locked) ? 'edit' : 'show'}", locals: { entity_mention: entity_mention } %>
+		<% end %>
+	</div>
+	<% if @group.editable_entity_mentions && @is_annotator && (!@document.locked? || @group.editable_when_locked) %>
+		<div class="controls">
+			<button class="btn btn-primary add-new-value" onclick="$.getScript('<%= new_documents_source_document_metadata_group_entity_mention_path(source_document_id: @source_document ? @source_document.id : NestedMetadata::SourceDocument.has_document(@document).first.id, metadata_group_id: @group.id) %>.js');"><span class="glyphicon glyphicon-plus"></span> Add entity mention</button>
+		</div>
+	<% end %>
+<% end %>

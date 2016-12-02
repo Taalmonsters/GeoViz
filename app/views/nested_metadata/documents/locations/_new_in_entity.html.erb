@@ -1,0 +1,37 @@
+<% value = metadatum_value.value %>
+<% key = metadata_key.name %>
+<div class="input-group input-group-sm input-group-map">
+	<span class="input-group-addon map-addon">
+		<%= render partial: "taalmonsters/maps/header" %>
+		<div id="new_map" class="map"></div>
+		<script>
+			var map = displayGoogleMap(<%= value.get_map.markers.to_json.html_safe %>, 'new_map');
+			var listener = google.maps.event.addListener(map, "idle", function() { 
+				map.setZoom(8); 
+				google.maps.event.removeListener(listener); 
+			});
+		</script>
+		<div class="zoom-button">
+			<span class="glyphicon glyphicon-fullscreen" onclick="$('#new_map').toggleClass('fullscreen');"></span>
+		</div>
+	</span>
+	<span class="input-group-content" style="width: 100%;">
+		<div class="input-group input-group-sm">
+			<span class="input-group-addon">Place name</span>
+			<%= text_field_tag "#{key}[content]", value.content, :class => "form-control", :data => { :initial => value.content } %>
+		</div>
+		<div class="input-group input-group-sm">
+			<span class="input-group-addon">Latitude</span>
+			<%= number_field_tag "#{key}[latitude]", value.latitude, :class => "form-control", :data => { :initial => value.latitude }, :step => "0.00001" %>
+		</div>
+		<div class="input-group input-group-sm">
+			<span class="input-group-addon">Longitude</span>
+			<%= number_field_tag "#{key}[longitude]", value.longitude, :class => "form-control", :data => { :initial => value.longitude }, :step => "0.00001" %>
+		</div>
+		<div class="input-group input-group-sm">
+			<span class="input-group-addon">Geonames ID</span>
+			<%= number_field_tag "#{key}[geonames_id]", value.geonames_id, :class => "form-control", :data => { :initial => value.geonames_id } %>
+			<span class="input-group-addon btn glyphicon glyphicon-globe" onclick="window.open('http://www.geonames.org/<%= value.geonames_id %>/');"></span>
+		</div>
+	</span>
+</div>
