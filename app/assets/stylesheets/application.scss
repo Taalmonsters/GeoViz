@@ -42,8 +42,8 @@ div.paragraph {
   }
 }
 
-form#new_entity_mention > div, form#edit_entity_mention > div {
-  padding: 0;
+form.new_entity_mention > div, form.edit_entity_mention > div {
+  padding: 0 !important;
 }
 
 #new-marker {
