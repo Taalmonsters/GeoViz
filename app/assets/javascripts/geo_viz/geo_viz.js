@@ -1,20 +1,21 @@
 var geoVizStarted;
 var extractMap = null;
 geoVizStarted = function() {
-	if ($("#extract-annotation").length > 0) {
-		var height = $("#extract-annotation").innerHeight() - $("#extract-content").height() - 155;
-		var width = $("#extract-annotation").innerWidth() / 2 - 20;
-		$("#extract-map").width(width);
-		$("#extract-controls").width(width);
-	}
-
 	if ($("#alternatives .modal-dialog").length > 0) {
-		$('#alternatives').modal('options');
+		$('#alternatives').modal("hide");
 		var body = $( 'show' );
 	}
 };
 
 $(document).ready(geoVizStarted);
+
+$(document).ajaxComplete(function() {
+	taalmonstersReady();
+	annotationsReady();
+	nestedMetadataReady();
+	initializeMaps();
+	geoVizStarted();
+});
 
 $(document).on("click", "#new-marker", function(e) {
 	e.preventDefault();
@@ -33,9 +34,9 @@ $(document).on("click", "#new-marker", function(e) {
 $(document).on("change", "#extract-controls #name_content", function(e) {
 	var group_entity = $("#extract-controls").find("div.group-entity").first();
 	if ($(group_entity).hasClass("update")) {
-		$.getScript("/documents/"+$("#extract-content").data("document-id")+"/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&q="+$(this).val());
+		$.getScript("/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&q="+$(this).val());
 	} else {
-		$.getScript("/documents/"+$("#extract-content").data("document-id")+"/placenames/geocode.js?q="+$(this).val());
+		$.getScript("/placenames/geocode.js?q="+$(this).val());
 	}
 });
 
@@ -46,7 +47,7 @@ $(document).on("keypress", "form", function (e) {
 });
 
 $(document).on("click", "div.word.annotated", function(e) {
-	$.getScript("/documents/"+$("#extract-content").data("document-id")+"/entities/"+$(this).data("entity-id")+".js");
+	$.getScript("/extracts/sources/"+$("#extract-content").data("source-document-id")+"/metadata_groups/"+$("#extract-content").data("metadata-group-id")+"/entity_mentions/"+$(this).data("entity-mention-id")+".js");
 });
 
 $(document).on("click", "tr.alternative", function(e) {
@@ -70,13 +71,13 @@ function addMarkerToMap(item) {
 	google.maps.event.addListener(marker, 'dragend', function(e) {
 		var lat = e.latLng.lat();
 		var lng = e.latLng.lng();
-		$("#extract-annotation").find("#latitude_content").first().val(lat);
-		$("#extract-annotation").find("#longitude_content").first().val(lng);
+		$("#extract-controls").find("#latitude_content").first().val(lat);
+		$("#extract-controls").find("#longitude_content").first().val(lng);
 		var group_entity = $("#extract-controls").find("div.group-entity").first();
 		if ($(group_entity).hasClass("update")) {
-			$.getScript("/documents/"+$("#extract-content").data("document-id")+"/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&lat="+lat+"&lng="+lng);
+			$.getScript("/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&lat="+lat+"&lng="+lng);
 		} else {
-			$.getScript("/documents/"+$("#extract-content").data("document-id")+"/placenames/geocode.js?lat="+lat+"&lng="+lng);
+			$.getScript("/placenames/geocode.js?lat="+lat+"&lng="+lng);
 		}
 	});
 	mapMarkers.push(marker);
@@ -129,14 +130,14 @@ function processAnnotationSelection(parentId, selectedElements) {
 	clearMapMarkers();
 	clearExtractControls();
 	var placename = elementListToString(selectedElements);
-	$("#"+parentId).parent().find(".edit_metadata_group #id_content").first().val(elementIdsToString(selectedElements));
-	$("#"+parentId).parent().find(".edit_metadata_group #name_content").first().val(placename);
+	$("#"+parentId).parent().find("#id_content").first().val(elementIdsToString(selectedElements));
+	$("#"+parentId).parent().find("#name_content").first().val(placename);
 	
 	var group_entity = $("#extract-controls").find("div.group-entity").first();
 	if ($(group_entity).hasClass("update")) {
-		$.getScript("/documents/"+$("#extract-content").data("document-id")+"/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&q="+placename);
+		$.getScript("/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&q="+placename);
 	} else {
-		$.getScript("/documents/"+$("#extract-content").data("document-id")+"/placenames/geocode.js?q="+placename);
+		$.getScript("/placenames/geocode.js?q="+placename);
 	}
 }
 

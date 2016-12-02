@@ -1,5 +1,9 @@
-<%= render partial: "geo_viz/extracts/annotation/content" %>
 <%= render partial: "geo_viz/extracts/annotation/map" %>
 <div id="extract-controls">
-	<%= render partial: "geo_viz/extracts/annotation/controls/new" %>
+	<% entity_mention = @source_document.entity_mentions.has_group(@group).new %>
+	<% @group.metadata_keys.order(:sort_order).each do |key| %>
+		<% entity_mention.metadatum_values.has_key(key).build %>
+	<% end %>
+	<%= render partial: "geo_viz/extracts/annotation/controls/new", locals: { entity_mention: entity_mention } %>
 </div>
+<%= render partial: "geo_viz/extracts/annotation/content" %>

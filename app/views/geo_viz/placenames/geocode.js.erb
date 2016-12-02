@@ -1,7 +1,6 @@
 <% if @response && @response[0] %>
 	<% @data = @response[0] %>
 	var id = $("#extract-controls #id_content").val();
-	$("#extract-controls").html('<%= escape_javascript(raw render partial: @entity_id ? "geo_viz/extracts/annotation/controls/edit" : "geo_viz/extracts/annotation/controls/new") %>');
 	setExtractControls(<%= @response[0].to_json.html_safe %>);
 	$("#extract-controls #id_content").val(id);
 	clearMapMarkers();

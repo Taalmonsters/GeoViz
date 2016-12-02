@@ -1,30 +1,32 @@
-<% entity_id = @group.next_entity_id(@document) %>
-<div class="group-entity" id="group<%= @group.id %>_entity<%= entity_id %>">
-	<%= form_for [:documents, @group], :url => "/documents/metadata_groups/entity", :method => :post do |f| %>
-		<input type="hidden" name="document_id" value="<%= @document.id %>" />
-		<input type="hidden" name="group" value="<%= @group.name %>" />
-		<input type="hidden" name="group_entity_id" value="<%= @group.next_entity_id(@document) %>" />
-		<% @group.metadata_keys.order(:sort_order).each do |metadata_key| %>
-			<div class="key-values" id="group<%= @group.id %>_entity<%= entity_id %>_key<%= metadata_key.id %>">
-				<div class="col-xs-12 col-lg-3">
-					<label><%= metadata_key.name %></label>
-				</div>
-				<div class="col-xs-12 col-lg-9">
-					<div class="values">
-						<% metadatum_value = metadata_key.metadatum_values.new %>
-						<% metadatum_value.value = metadata_key.typed_values.new %>
-						<% value_type = metadata_key.preferred_value_type %>
-						<% if value_type.eql?("location")%>
-							<%= render partial: "nested_metadata/documents/metadatum_values/locations/new_in_entity", locals: { document: @document, metadata_key: metadata_key, metadatum_value: metadatum_value } %>
+<div class="group-entity new">
+	<%= form_for [:documents, @source_document, @group, entity_mention], :url => "/documents/sources/#{@source_document.id}/metadata_groups/#{@group.id}/entity_mentions/#{entity_mention.id}", :remote => true do |f| %>
+		<%= f.hidden_field :entity_type, :value => "location" %>
+		<%= f.fields_for :metadatum_values do |ff| %>
+			<% metadatum_value = ff.object %>
+			<% key = metadatum_value.metadata_key %>
+			<%= ff.hidden_field :metadata_key_id, :value => key.id %>
+			<% metadatum_value.value = key.typed_values.build %>
+			<div class="col-xs-12 col-lg-3">
+				<label><%= key.name %></label>
+			</div>
+			<div class="col-xs-12 col-lg-9">
+				<div class="values">
+					<div class="input-group input-group-sm" style="width:100%;">
+						<% if key.date? %>
+							<%= ff.date_field :content, :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : nil, :class => "form-control", :disabled => !key.editable %>
+						<% elsif key.boolean? %>
+							<%= ff.check_box :content, :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : false, :class => "form-control", :disabled => !key.editable %>
+						<% elsif key.float? || key.integer? %>
+							<%= ff.number_field :content, :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : nil, :class => "form-control", :step => key.integer? ? "1" : "0.0000001", :disabled => !key.editable %>
 						<% else %>
-							<%= render partial: "nested_metadata/documents/metadatum_values/new_in_entity", locals: { document: @document, metadata_key: metadata_key, metadatum_value: metadatum_value } %>
+							<%= ff.text_field :content, :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : nil, :class => "form-control", :disabled => !key.editable %>
 						<% end %>
 					</div>
 				</div>
 			</div>
 		<% end %>
 		<div class="controls">
-			<%= button_tag "Save", class: "btn btn-success", onclick: "$(this).parent().submit();" %>
+			<%= button_tag "Save", class: "btn btn-xs btn-success", onclick: "event.stopPropagation(); $(this).parent().submit();" %>
 		</div>
 	<% end %>
 </div>
