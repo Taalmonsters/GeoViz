@@ -42,8 +42,25 @@ div.paragraph {
   }
 }
 
+form#new_entity_mention > div, form#edit_entity_mention > div {
+  padding: 0;
+}
+
 #new-marker {
   margin-top: 15px;
+}
+
+#source-document-group {
+  padding-bottom: 0 !important;
+}
+
+#extract-content {
+  border-top: 1px solid #EEE;
+  margin: 0;
+  padding: 10px 0;
+  width: 100%;
+  height: calc(100% - 355px);
+  overflow-y: auto;
 }
 
 #extract-map, #extract-controls {
@@ -52,7 +69,21 @@ div.paragraph {
   vertical-align: top;
   padding: 0;
   margin-bottom: 20px;
-  height: 355px;
+  height: 335px;
+  width: 50%;
+  .controls .btn {
+    float: right;
+    margin-left: 4px;
+  }
+}
+
+#extract-map {
+  width: calc(50% - 2px)
+}
+
+#extract-controls {
+  padding-left: 5px;
+  width: calc(50% - 2px)
 }
 
 .modal-dialog {
