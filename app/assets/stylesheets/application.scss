@@ -42,7 +42,7 @@ div.paragraph {
   }
 }
 
-form#new_entity_mention > div {
+form#new_entity_mention > div, form#edit_entity_mention > div {
   padding: 0;
 }
 
