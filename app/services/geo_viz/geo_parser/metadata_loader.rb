@@ -27,7 +27,7 @@ module GeoViz
           document_id += 1
           source_document_id += 1
           self.add_document(source_document_id, document_id, generated_id, title)
-          self.set_blacklab_pid(document_id, title)
+          self.set_blacklab_pid_and_token_count(document_id, title)
           main_xml_doc = Nokogiri::XML(File.read(file))
           xml_doc = Nokogiri::XML(File.read(gaz_file))
           xml_doc.css("placename").each do |placename|
@@ -71,8 +71,10 @@ module GeoViz
       return :string
     end
     
-    def self.set_blacklab_pid(document_id, title)
-      Extract.connection.execute "UPDATE #{Extract.table_name} SET blacklab_pid = '#{BlacklabRails::Blacklab.docs(nil,"HeadWord:#{title}")["docs"].first["docPid"]}' WHERE id = #{document_id};"
+    def self.set_blacklab_pid_and_token_count(document_id, title)
+      blacklab_document = BlacklabRails::Blacklab.docs(nil,"HeadWord:#{title}")["docs"].first
+      Extract.connection.execute "UPDATE #{Extract.table_name} SET blacklab_pid = '#{blacklab_document["docPid"]}' WHERE id = #{document_id};"
+      Extract.connection.execute "UPDATE #{Extract.table_name} SET token_count = #{blacklab_document["docInfo"]["lengthInTokens"]} WHERE id = #{document_id};"
     end
     
   end
