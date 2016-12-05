@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161129130028) do
+ActiveRecord::Schema.define(version: 20161205181730) do
 
   create_table "extracts", force: :cascade do |t|
     t.string   "generated_id", limit: 255
@@ -69,16 +69,17 @@ ActiveRecord::Schema.define(version: 20161129130028) do
   end
 
   create_table "nested_metadata_metadata_groups", force: :cascade do |t|
-    t.string   "name",                   limit: 255,                 null: false
+    t.string   "name",                   limit: 255,                      null: false
     t.integer  "metadata_group_id",      limit: 4
-    t.boolean  "group_keys_into_entity",             default: false, null: false
-    t.boolean  "requires_attachment",                default: false, null: false
-    t.integer  "attachment_type",        limit: 4,   default: 0,     null: false
+    t.boolean  "group_keys_into_entity",             default: false,      null: false
+    t.boolean  "requires_attachment",                default: false,      null: false
+    t.integer  "attachment_type",        limit: 4,   default: 0,          null: false
     t.string   "attachment_extension",   limit: 255
-    t.boolean  "editable_when_locked",               default: false, null: false
-    t.integer  "sort_order",             limit: 4,   default: 0,     null: false
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
+    t.boolean  "editable_when_locked",               default: false,      null: false
+    t.integer  "sort_order",             limit: 4,   default: 0,          null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
+    t.string   "entity_mention_type",    limit: 255, default: "location", null: false
   end
 
   add_index "nested_metadata_metadata_groups", ["metadata_group_id"], name: "index_nested_metadata_metadata_groups_on_metadata_group_id", using: :btree
