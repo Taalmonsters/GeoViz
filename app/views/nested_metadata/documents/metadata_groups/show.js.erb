@@ -1,0 +1,7 @@
+$("#source-document-group").html('<%= escape_javascript(raw render partial: "nested_metadata/documents/metadata_groups/show") %>');
+<% if @group.name.eql?("Annotations") %>
+	clearMapMarkers("extract-map-fullscreen");
+	clearMapMarkers("extract-map");
+	$("#annotate-fullscreen").html("<%= escape_javascript(raw render partial: "geo_viz/extracts/annotation/fullscreen", layout: false) %>");
+	initializeMaps();
+<% end %>

@@ -26,10 +26,23 @@ module GeoViz
       end
     end
     
+    def new
+      if @is_annotator
+        @entity_mention = @source_document.entity_mentions.has_group(@group).create
+        @group.metadata_keys.order(:sort_order).each do |key|
+          key_sym = key.name.to_sym
+          metadatum_value = @entity_mention.metadatum_values.has_key(key).has_source_document(@source_document).create
+        end
+      else
+        unauthorized_request
+        redirect_to :controller => 'documents', :action => 'index'
+      end
+    end
+    
     private
     
     def set_entity_mention
-      @entity_mention = NestedMetadata::EntityMention.find(params[:id].to_i) if params.has_key?(:id)
+      @entity_mention = params.has_key?(:id) ? NestedMetadata::EntityMention.find(params[:id].to_i) : NestedMetadata::EntityMention.new
     end
     
   end

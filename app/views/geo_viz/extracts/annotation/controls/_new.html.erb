@@ -6,26 +6,31 @@
 			<% key = metadatum_value.metadata_key %>
 			<%= ff.hidden_field :metadata_key_id, :value => key.id %>
 			<% metadatum_value.value = key.typed_values.build %>
-			<div class="col-xs-12 col-lg-3">
-				<label><%= key.name %></label>
-			</div>
-			<div class="col-xs-12 col-lg-9">
-				<div class="values">
-					<div class="input-group input-group-sm" style="width:100%;">
-						<% if key.date? %>
-							<%= ff.date_field :content, :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : nil, :class => "form-control", :disabled => !key.editable %>
-						<% elsif key.boolean? %>
-							<%= ff.check_box :content, :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : false, :class => "form-control", :disabled => !key.editable %>
-						<% elsif key.float? || key.integer? %>
-							<%= ff.number_field :content, :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : nil, :class => "form-control", :step => key.integer? ? "1" : "0.0000001", :disabled => !key.editable %>
-						<% else %>
-							<%= ff.text_field :content, :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : nil, :class => "form-control", :disabled => !key.editable %>
-						<% end %>
+			<div class="entity-mention-value">
+				<div class="col-xs-12 col-lg-3">
+					<label><%= key.name %></label>
+				</div>
+				<div class="col-xs-12 col-lg-9">
+					<div class="values">
+						<div class="input-group input-group-sm" style="width:100%;">
+							<% if key.date? %>
+								<%= ff.date_field :content, :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : nil, :class => "form-control", :disabled => !key.editable %>
+							<% elsif key.boolean? %>
+								<%= ff.check_box :content, :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : false, :class => "form-control", :disabled => !key.editable %>
+							<% elsif key.float? || key.integer? %>
+								<%= ff.number_field :content, :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : nil, :class => "form-control", :step => key.integer? ? "1" : "0.0000001", :disabled => !key.editable %>
+							<% else %>
+								<%= ff.text_field :content, :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : nil, :class => "form-control", :disabled => !key.editable %>
+							<% end %>
+						</div>
 					</div>
 				</div>
 			</div>
 		<% end %>
 		<div class="controls">
+			<% if entity_mention.id %>
+				<%= link_to 'Cancel', {:controller => "geo_viz/entity_mentions", :action => 'destroy', :id => entity_mention.id, :source_document_id => entity_mention.source_document.id, :metadata_group_id => entity_mention.metadata_group.id, :target => '#source-document-group', :format => :js, :remote => true }, :method => :delete, :class => "btn btn-xs btn-danger" %>
+			<% end %>
 			<%= submit_tag "Save", class: "btn btn-xs btn-success" %>
 		</div>
 	<% end %>

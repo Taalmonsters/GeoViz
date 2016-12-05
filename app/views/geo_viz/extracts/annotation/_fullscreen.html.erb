@@ -4,49 +4,25 @@
 			<button aria-hidden="true" class="close" data-dismiss="modal" type="button">
 				&times;
 			</button>
-			<h4 class="modal-title" id="annotateFullScreen">Select an alternative location for: "<%= @location_query %>"</h4>
+			<h4 class="modal-title" id="annotateFullScreen">Annotating <%= @document.name %></h4>
 		</div>
         <div class="modal-body">
-        	<h4>Currently selected:</h4>
-        	<table class="table table-condensed table-striped">
-        		<thead>
-        			<tr>
-        				<th>Toponym</th>
-        				<th>Lat</th>
-        				<th>Lng</th>
-        				<th>Country</th>
-        			</tr>
-        		</thead>
-        		<tbody id="selected-body">
-	            	<tr class="alternative selected" data-json="<%= @response[0].to_json %>">
-	            		<td><%= @response[0]["toponymName"] %></td>
-	            		<td><%= @response[0]["lat"] %></td>
-	            		<td><%= @response[0]["lng"] %></td>
-	            		<td><%= @response[0]["countryCode"] %></td>
-	            	</tr>
-            	</tbody>
-            </table>
-        	<h4>Alternatives:</h4>
-        	<table class="table table-condensed table-striped">
-        		<thead>
-        			<tr>
-        				<th>Toponym</th>
-        				<th>Lat</th>
-        				<th>Lng</th>
-        				<th>Country</th>
-        			</tr>
-        		</thead>
-        		<tbody id="alternatives-body">
-	            <% @response[1..@response.count-1].each do |location| %>
-	            	<tr class="alternative" data-json='<%= location.to_json %>'>
-	            		<td><%= location["toponymName"] %></td>
-	            		<td><%= location["lat"] %></td>
-	            		<td><%= location["lng"] %></td>
-	            		<td><%= location["countryCode"] %></td>
-	            	</tr>
-	            <% end %>
-            	</tbody>
-            </table>
+        	<div class="col-xs-6">
+        		<button id="new-marker" class="btn btn-xs btn-success disabled new"><span class="glyphicon glyphicon-map-marker"></span> Add marker</button><br/>
+        		<div id="extract-map-fullscreen" class="google-map new" data-url="/map.json?source_document_id=<%= @source_document.id %>&<%= @filter_params %>"></div>
+        	</div>
+        	<div class="col-xs-6">
+        		<div id="extract-controls">
+					<% entity_mention = @source_document.entity_mentions.has_group(@group).new %>
+					<% @group.metadata_keys.order(:sort_order).each do |key| %>
+						<% entity_mention.metadatum_values.has_key(key).build %>
+					<% end %>
+					<%= render partial: "geo_viz/extracts/annotation/controls/new", locals: { entity_mention: entity_mention } %>
+				</div>
+				<hr />
+				<h4><%= t(:document).titleize %></h4>
+				<%= render partial: "geo_viz/extracts/annotation/content" %>
+        	</div>
         </div>
     </div>
 </div>

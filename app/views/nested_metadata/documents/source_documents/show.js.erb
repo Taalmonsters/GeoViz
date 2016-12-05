@@ -1,0 +1,5 @@
+clearMapMarkers("extract-map-fullscreen");
+clearMapMarkers("extract-map");
+$("#annotate-fullscreen").html("<%= escape_javascript(raw render partial: "geo_viz/extracts/annotation/fullscreen", layout: false) %>");
+$("<%= @target %>").html("<%= escape_javascript(raw render partial: "nested_metadata/documents/source_documents/show") %>");
+initializeMaps();

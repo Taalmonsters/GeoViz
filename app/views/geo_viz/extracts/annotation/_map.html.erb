@@ -1,6 +1,1 @@
-<div id="extract-map">
-</div>
-<script>
-	extractMap = displayGoogleMap(<%= @document.get_map.markers.to_json.html_safe %>, "extract-map");
-	resetMapBounds();
-</script>
+<div id="extract-map" class="google-map" data-url="/map.json?source_document_id=<%= @source_document.id %>&<%= @filter_params %>"></div>

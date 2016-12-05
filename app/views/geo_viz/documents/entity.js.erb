@@ -2,7 +2,8 @@
 	$("#extract-controls").html('<%= escape_javascript(raw render partial: "geo_viz/extracts/annotation/controls/edit") %>');
 	setExtractControls(<%= @data.to_json.html_safe %>);
 	clearMapMarkers();
-	addMarkerToMap(<%= @marker.to_json.html_safe %>);
+	addMarkerToMap(extractMap, <%= @marker.to_json.html_safe %>, "extract-map");
+	addMarkerToMap(extractMapFullscreen, <%= @marker.to_json.html_safe %>, "extract-map-fullscreen");
 <% else %>
 	console.log("No data found!");
 <% end %>

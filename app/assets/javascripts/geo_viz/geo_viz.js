@@ -1,37 +1,41 @@
-var geoVizStarted;
-var extractMap = null;
-geoVizStarted = function() {
-	if ($("#alternatives .modal-dialog").length > 0) {
-		$('#alternatives').modal("hide");
-		var body = $( 'show' );
-	}
-	if ($("#annotate-fullscreen .modal-dialog").length > 0) {
-		$('#annotate-fullscreen').modal("hide");
-		var body = $( 'show' );
-	}
-};
+$('#alternatives').modal("hide");
+$('#annotate-fullscreen').modal("hide");
 
-$(document).ready(geoVizStarted);
-
-$(document).ajaxComplete(function() {
-//	taalmonstersReady();
-	annotationsReady();
-//	nestedMetadataReady();
-	geoVizStarted();
+$(document).on('shown.bs.modal', '#annotate-fullscreen', function () {
+	if ($("#extract-map-fullscreen").hasClass("new")) {
+		google.maps.event.trigger(maps["extract-map-fullscreen"], 'resize');
+		focusMap(maps["extract-map-fullscreen"], "extract-map-fullscreen");
+		$("#extract-map-fullscreen").removeClass("new");
+	}
 });
 
 $(document).on("click", "#new-marker", function(e) {
 	e.preventDefault();
-	clearMapMarkers();
-	addMarkerToMap({
-		"lat": 0.0,
-		"lng": 0.0,
-		"label": "Drag me",
-		"letter": "D",
-		"draggable": true,
-		"color": "13986D",
-		"infowindow": "<div>Drag me</div>"
-	});
+	if ($(this).hasClass("disabled")) {
+		if ($(this).hasClass("new")) {
+			alert("Please select one or more words in the text before dropping a marker.");
+			$(this).removeClass("new");
+		}
+	} else {
+		addMarkerToMap(maps["extract-map"], {
+			"lat": 0.0,
+			"lng": 0.0,
+			"label": "Drag me",
+			"letter": "D",
+			"draggable": true,
+			"color": "13986D",
+			"infowindow": "<div>Drag me</div>"
+		});
+		addMarkerToMap(maps["extract-map-fullscreen"], {
+			"lat": 0.0,
+			"lng": 0.0,
+			"label": "Drag me",
+			"letter": "D",
+			"draggable": true,
+			"color": "13986D",
+			"infowindow": "<div>Drag me</div>"
+		});
+	}
 });
 
 $(document).on("change", "#extract-controls #name_content", function(e) {
@@ -54,8 +58,15 @@ $(document).on("click", "div.word.annotated", function(e) {
 });
 
 $(document).on("click", "tr.alternative", function(e) {
+	var json = $(this).data("json");
+	console.log(json);
+	// Update fields in extract-controls
+	setExtractControls(json);
+	clearMarkersForGroup("extract-map", "New");
+	clearMarkersForGroup("extract-map-fullscreen", "New");
+	addMarkerToMap(json, "extract-map");
+	addMarkerToMap(json, "extract-map-fullscreen");
 	if (!$(this).hasClass("selected")) {
-		var json = $(this).data("json");
 		// Move currently selected row to alternatives table
 		var selected = $("#selected-body").find("tr").first().remove();
 		$(selected).removeClass("selected");
@@ -64,13 +75,12 @@ $(document).on("click", "tr.alternative", function(e) {
 		var alternative = $(this).remove();
 		$(alternative).addClass("selected");
 		$("#selected-body").append(alternative);
-		// Update fields in extract-controls
-		setExtractControls($(this).data("json"));
 	}
 });
 
-function addMarkerToMap(item) {
-	var marker = newMapMarker(extractMap, item, "extract-map");
+function addMarkerToMap(item, mapId) {
+	var map = maps[mapId];
+	var marker = newMapMarker(map, item, mapId);
 	google.maps.event.addListener(marker, 'dragend', function(e) {
 		var lat = e.latLng.lat();
 		var lng = e.latLng.lng();
@@ -83,12 +93,14 @@ function addMarkerToMap(item) {
 			$.getScript("/placenames/geocode.js?lat="+lat+"&lng="+lng);
 		}
 	});
-	mapMarkers.push(marker);
-	extractMap.setCenter(marker.getPosition());
+	mapMarkers[mapId].push(marker);
+	map.setCenter(marker.getPosition());
 }
 
-function clearExtractControls() {
+function clearExtractControls(clearId) {
 	$("#name_content").parent().find("a").first().remove();
+	if (clearId)
+		$("#extract-controls #id_content").val("");
 	$("#extract-controls #latitude_content").val("");
 	$("#extract-controls #longitude_content").val("");
 	$("#extract-controls #name_content").val("");
@@ -99,11 +111,25 @@ function clearExtractControls() {
 	$("#extract-controls #type_content").val("");
 }
 
-function loadInfowindowContent(item, infowindow) {
+function clearMarkersForGroup(mapId, group) {
+	var keep = [];
+	for (var i = 0; i < mapMarkers[mapId].length; i++) {
+		var marker = mapMarkers[mapId][i];
+		if (marker.title === group) {
+			marker.setMap(null);
+		} else {
+			keep.push(marker);
+		}
+	}
+	mapMarkers[mapId] = keep;
+}
+
+function loadInfowindowContent(mapId, item, infowindow) {
 	$.ajax({
 	    url: '/placenames/infowindow.json?lat='+item["lat"]+'&lng='+item["lng"],
+	    context: $("#"+mapId),
 	    success: function(data){
-	      infowindow.setContent(data["html"]);
+	    	infowindow.setContent(data["html"]);
 	    }
 	});
 }
@@ -113,12 +139,12 @@ function setExtractControls(data) {
 		$("#extract-controls #id_content").val(data["id"]);
 	$("#extract-controls #latitude_content").val(data["lat"]);
 	$("#extract-controls #longitude_content").val(data["lng"]);
-	$("#extract-controls #name_content").val(data["toponymName"]);
-	$("#extract-controls #country_content").val(data["countryCode"]);
+	$("#extract-controls #name_content").val(data["label"]);
+	$("#extract-controls #country_content").val(data["country"]);
 	$("#extract-controls #population_content").val(data["population"]);
-	$("#extract-controls #gazetteer_content").val("geonames");
-	$("#extract-controls #gazref_content").val(data["geonameId"]);
-	$("#extract-controls #type_content").val(data["fcode"]);
+	$("#extract-controls #gazetteer_content").val(data["gazetteer"]);
+	$("#extract-controls #gazref_content").val(data["gazref"]);
+	$("#extract-controls #type_content").val(data["type"]);
 }
 
 function elementIdsToString(elements) {
@@ -138,12 +164,12 @@ function elementListToString(elements) {
 }
 
 function processAnnotationSelection(parentId, selectedElements) {
-	addClassToSelected(parentId, selectedElements, "selected-for-annotation");
+	addClassToSelected($("#"+parentId).data("label"), selectedElements, "selected-for-annotation");
 	clearMapMarkers();
 	clearExtractControls();
 	var placename = elementListToString(selectedElements);
-	$("#"+parentId).parent().find("#id_content").first().val(elementIdsToString(selectedElements));
-	$("#"+parentId).parent().find("#name_content").first().val(placename);
+	$("[id=id_content]").val(elementIdsToString(selectedElements));
+	$("[id=name_content]").val(placename);
 	
 	var group_entity = $("#extract-controls").find("div.group-entity").first();
 	if ($(group_entity).hasClass("update")) {
@@ -154,13 +180,14 @@ function processAnnotationSelection(parentId, selectedElements) {
 }
 
 function processAnnotationStart(parentId) {
-	clearMapMarkers();
-	clearExtractControls();
+//	$("#new-marker").addClass("disabled");
+//	clearExtractControls(true);
+	$.getScript("/extracts/sources/"+$("#extract-content").data("source-document-id")+"/metadata_groups/"+$("#extract-content").data("metadata-group-id")+"/entity_mention");
 }
 
-function resetMapBounds() {
+function resetMapBounds(map) {
 	var bounds = new google.maps.LatLngBounds();
 	bounds.extend(new google.maps.LatLng(47.0, 1.0));
 	bounds.extend(new google.maps.LatLng(51.0, 10.0));
-	extractMap.fitBounds(bounds);
+	map.fitBounds(bounds);
 }

@@ -4,7 +4,7 @@
 			<button aria-hidden="true" class="close" data-dismiss="modal" type="button">
 				&times;
 			</button>
-			<h4 class="modal-title" id="myModalLabel">Select an alternative location for: "<%= @location_query %>"</h4>
+			<h4 class="modal-title" id="alternativesModal">Select an alternative location for: "<%= @location_query %>"</h4>
 		</div>
         <div class="modal-body">
         	<h4>Currently selected:</h4>
@@ -18,11 +18,11 @@
         			</tr>
         		</thead>
         		<tbody id="selected-body">
-	            	<tr class="alternative selected" data-json="<%= @response[0].to_json %>">
-	            		<td><%= @response[0]["toponymName"] %></td>
-	            		<td><%= @response[0]["lat"] %></td>
-	            		<td><%= @response[0]["lng"] %></td>
-	            		<td><%= @response[0]["countryCode"] %></td>
+	            	<tr class="alternative selected" data-json="<%= @marker.to_json %>">
+	            		<td><%= @marker.label %></td>
+	            		<td><%= @marker.lat %></td>
+	            		<td><%= @marker.lng %></td>
+	            		<td><%= @marker.country %></td>
 	            	</tr>
             	</tbody>
             </table>
@@ -39,10 +39,10 @@
         		<tbody id="alternatives-body">
 	            <% @response[1..@response.count-1].each do |location| %>
 	            	<tr class="alternative" data-json='<%= location.to_json %>'>
-	            		<td><%= location["toponymName"] %></td>
-	            		<td><%= location["lat"] %></td>
-	            		<td><%= location["lng"] %></td>
-	            		<td><%= location["countryCode"] %></td>
+	            		<td><%= location.label %></td>
+	            		<td><%= location.lat %></td>
+	            		<td><%= location.lng %></td>
+	            		<td><%= location.country %></td>
 	            	</tr>
 	            <% end %>
             	</tbody>

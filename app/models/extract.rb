@@ -3,8 +3,11 @@ class Extract < ActiveRecord::Base
   include BlacklabRails::BlacklabDocument
   include SourceDocuments::Base
   
+  scope :grouped_locations, -> { locations.values.flatten
+    .select{|entity_mention| entity_mention.latitude && entity_mention.latitude.content && entity_mention.longitude && entity_mention.longitude.content }
+    .group_by{|entity_mention| [entity_mention.latitude.content.to_f, entity_mention.longitude.content.to_f] } }
   scope :locations, -> { with_locations.map{|extract| [extract,extract.entity_mentions] }.to_h }
-  scope :with_locations, -> { includes(:entity_mentions).merge(NestedMetadata::EntityMention.includes(:metadata_group, :latitude, :longitude, :name, :country)) }
+  scope :with_locations, -> { includes(:entity_mentions).merge(NestedMetadata::EntityMention.as_locations) }
   
   def annotated_locs
     return self.get_group_entity_count("Annotations")
@@ -19,25 +22,13 @@ class Extract < ActiveRecord::Base
     return self.get_group_entity_count("GeoParser")
   end
   
-  def get_map(groups = [])
-    map = Taalmonsters::Maps::Google::SimpleMap.new
-    groups.each do |group|
-      results = self.metadatum_values.in_group(group).by_entity
-      results.each do |entity_id, values|
-        marker = Taalmonsters::Maps::Google::SimpleMapMarker.new
-        marker.set_coordinates(values.select{|mv| mv.metadata_key.name.eql?("latitude") }.first.value.content,values.select{|mv| mv.metadata_key.name.eql?("longitude") }.first.value.content)
-        marker.label = values.select{|mv| mv.metadata_key.name.eql?("name") }.first.value.content
-        marker.letter = marker.label[0]
-        marker.color = "98598E"
-        marker.infowindow = "<div>#{marker.label}</div>"
-        map.add_marker(marker)
-      end
-    end
-    return map
+  def grouped_locations
+    self.locations.select{|entity_mention| entity_mention.latitude && entity_mention.latitude.content && entity_mention.longitude && entity_mention.longitude.content }
+    .group_by{|entity_mention| [entity_mention.latitude.content.to_f, entity_mention.longitude.content.to_f] }
   end
   
   def locations
-    self.source_document.entity_mentions.includes(:metadata_group, :latitude, :longitude, :name, :country)
+    self.source_document.entity_mentions.as_locations
   end
   
   def word_annotated(word_id)

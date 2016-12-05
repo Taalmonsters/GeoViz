@@ -1,17 +1,25 @@
 module GeoViz
-  class PlacenamesController < ApplicationController
+  class PlacenamesController < NestedMetadata::ApplicationController
+    include GeoViz::ApplicationHelper
+    before_action :set_tab, :only => [:locations]
+    before_action :set_document, :only => [:locations]
+    before_action :set_filters, :only => [:locations]
+    before_action :set_source_document_class, :only => [:locations]
+    before_action :set_documents, :only => [:locations]
+    before_action :set_locations, :only => [:locations]
+    before_action :load_map, :only => [:locations]
     
     def geocode
       @response = nil
       if params.has_key?(:q)
         @location_query = params[:q]
-        @response = Taalmonsters::Geonames::Client.search(geocode_params(params))
+        @response = Taalmonsters::Geonames::Client.search(geocode_params(params)).map{|r| get_marker(r) }
       elsif params.has_key?(:lat) && params.has_key?(:lng)
         @location_query = "#{params[:lat]},#{params[:lng]}"
-        @response = Taalmonsters::Geonames::Client.find_nearby_place_name(find_nearby_params(params))
+        @response = Taalmonsters::Geonames::Client.find_nearby_place_name(find_nearby_params(params)).map{|r| get_marker(r) }
       end
       if @response && @response[0]
-        @marker = get_marker(@response[0])
+        @marker = @response[0]
       end
       respond_to do |format|
         format.js
@@ -29,6 +37,14 @@ module GeoViz
             extracts: extracts,
             locations: entity_mentions.map{|entity_mention| entity_mention.siblings }.flatten.uniq.select{|entity_mention| entity_mention.latitude && entity_mention.longitude }.group_by{|entity_mention| [entity_mention.latitude.content.to_f, entity_mention.longitude.content.to_f] }
           }, layout: false) }
+        }
+      end
+    end
+    
+    def locations
+      respond_to do |format|
+        format.json {
+          render :json => { :markers => @map.markers, :opt => { :legend => marker_colors.map{|group, color| ["#{group}","##{color}"] }.to_h } }
         }
       end
     end
