@@ -1,3 +1,4 @@
+<%= link_to "Show fullscreen", "#annotate-fullscreen", :class => "btn btn-xs", "data-toggle" => "modal" %><br/>
 <%= render partial: "geo_viz/extracts/annotation/map" %>
 <div id="extract-controls">
 	<% entity_mention = @source_document.entity_mentions.has_group(@group).new %>

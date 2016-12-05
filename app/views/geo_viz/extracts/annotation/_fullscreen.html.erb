@@ -1,0 +1,52 @@
+<div id="annotate-fullscreen-dialog" class="modal-dialog" role="document">
+	<div class="model-content">
+		<div class="modal-header">
+			<button aria-hidden="true" class="close" data-dismiss="modal" type="button">
+				&times;
+			</button>
+			<h4 class="modal-title" id="annotateFullScreen">Select an alternative location for: "<%= @location_query %>"</h4>
+		</div>
+        <div class="modal-body">
+        	<h4>Currently selected:</h4>
+        	<table class="table table-condensed table-striped">
+        		<thead>
+        			<tr>
+        				<th>Toponym</th>
+        				<th>Lat</th>
+        				<th>Lng</th>
+        				<th>Country</th>
+        			</tr>
+        		</thead>
+        		<tbody id="selected-body">
+	            	<tr class="alternative selected" data-json="<%= @response[0].to_json %>">
+	            		<td><%= @response[0]["toponymName"] %></td>
+	            		<td><%= @response[0]["lat"] %></td>
+	            		<td><%= @response[0]["lng"] %></td>
+	            		<td><%= @response[0]["countryCode"] %></td>
+	            	</tr>
+            	</tbody>
+            </table>
+        	<h4>Alternatives:</h4>
+        	<table class="table table-condensed table-striped">
+        		<thead>
+        			<tr>
+        				<th>Toponym</th>
+        				<th>Lat</th>
+        				<th>Lng</th>
+        				<th>Country</th>
+        			</tr>
+        		</thead>
+        		<tbody id="alternatives-body">
+	            <% @response[1..@response.count-1].each do |location| %>
+	            	<tr class="alternative" data-json='<%= location.to_json %>'>
+	            		<td><%= location["toponymName"] %></td>
+	            		<td><%= location["lat"] %></td>
+	            		<td><%= location["lng"] %></td>
+	            		<td><%= location["countryCode"] %></td>
+	            	</tr>
+	            <% end %>
+            	</tbody>
+            </table>
+        </div>
+    </div>
+</div>

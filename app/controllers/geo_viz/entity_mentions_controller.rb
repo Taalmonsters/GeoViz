@@ -20,11 +20,6 @@ module GeoViz
     end
     
     def edit
-      puts "*************************************"
-      puts @entity_mention.to_json
-      puts @source_document.to_json
-      puts @group.to_json
-      puts "*************************************"
       unless @is_annotator
         unauthorized_request
         redirect_to :controller => 'documents', :action => 'index'

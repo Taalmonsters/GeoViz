@@ -5,15 +5,18 @@ geoVizStarted = function() {
 		$('#alternatives').modal("hide");
 		var body = $( 'show' );
 	}
+	if ($("#annotate-fullscreen .modal-dialog").length > 0) {
+		$('#annotate-fullscreen').modal("hide");
+		var body = $( 'show' );
+	}
 };
 
 $(document).ready(geoVizStarted);
 
 $(document).ajaxComplete(function() {
-	taalmonstersReady();
+//	taalmonstersReady();
 	annotationsReady();
-	nestedMetadataReady();
-	initializeMaps();
+//	nestedMetadataReady();
 	geoVizStarted();
 });
 
@@ -94,6 +97,15 @@ function clearExtractControls() {
 	$("#extract-controls #gazetteer_content").val("");
 	$("#extract-controls #gazref_content").val("");
 	$("#extract-controls #type_content").val("");
+}
+
+function loadInfowindowContent(item, infowindow) {
+	$.ajax({
+	    url: '/placenames/infowindow.json?lat='+item["lat"]+'&lng='+item["lng"],
+	    success: function(data){
+	      infowindow.setContent(data["html"]);
+	    }
+	});
 }
 
 function setExtractControls(data) {
