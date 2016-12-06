@@ -10,7 +10,9 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require taalmonsters/application
 //= require taalmonsters/maps/application
+//= require nested_metadata/application
 //= require geo_viz/geo_viz
 //= require_tree .
 
