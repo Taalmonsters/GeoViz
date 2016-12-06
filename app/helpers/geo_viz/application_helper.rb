@@ -47,9 +47,7 @@ module GeoViz
     
     def marker_colors
       {
-        "GeoParser" => "DE4D60",
-        "Annotations" => "13986D",
-        "Annotations, GeoParser" => "B047A5"
+        "GeoParser" => "DE4D60"
       }
     end
     
