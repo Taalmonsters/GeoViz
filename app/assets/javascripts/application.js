@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require bootstrap
+//= require jquery-ui
 //= require taalmonsters/maps/application
 //= require geo_viz/geo_viz
 //= require_tree .
