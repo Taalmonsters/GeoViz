@@ -3,7 +3,7 @@ $(document).ready(function() {
 	$('#annotate-fullscreen').modal("hide");
 });
 
-$(document).on('shown.bs.modal', '#annotate-fullscreen', function () {
+$(document).on('click', '#open-annotate-fullscreen', function () {
 	google.maps.event.trigger(maps["extract-map-fullscreen"], 'resize');
 	if ($("#extract-map-fullscreen").hasClass("new")) {
 		focusMap(maps["extract-map-fullscreen"], "extract-map-fullscreen");
