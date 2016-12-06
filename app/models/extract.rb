@@ -10,6 +10,8 @@ class Extract < ActiveRecord::Base
   scope :with_locations, -> { includes(:entity_mentions).merge(NestedMetadata::EntityMention.as_locations) }
   
   scope :token_count_in_range, -> boundary { where("token_count >= ? AND token_count <= ?", boundary[0], boundary[1]) }
+  scope :annotated_by_user, -> user_id { joins(:entity_mentions => [:audits]).where("audits.user_id = ?", Extract.get_user_id(user_id[0])) }
+  scope :grouped_by_annotator, -> { joins(:entity_mentions => [:audits]).group("audits.user_id") }
   
   def annotated_locs
     return self.get_group_entity_count("Annotations")
@@ -36,6 +38,10 @@ class Extract < ActiveRecord::Base
   def word_annotated(word_id)
     id_key = NestedMetadata::MetadataGroup.has_name("Annotations").first.metadata_keys.has_name("id").first
     self.source_document.entity_mentions.has_group_name("Annotations").with_metadatum_values.select("(SELECT mv1.content FROM #{NestedMetadata::MetadatumValue.table_name} AS mv1 WHERE mv1.metadata_key_id = #{id_key.id} AND mv1.entity_mention_id = #{NestedMetadata::EntityMention.table_name}.id) AS word_id, #{NestedMetadata::EntityMention.table_name}.*").all.select{|em| em.word_id =~ / *#{word_id} / || em.word_id =~ / *#{word_id}$/ }.first
+  end
+  
+  def self.get_user_id(user_id)
+    return user_id.split(' ')[1].to_i
   end
   
   def self.token_count_boundaries

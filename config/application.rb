@@ -49,6 +49,9 @@ module GeoViz
     # Nested metadata configuration
     config.document_fields = ["geoparser_locs", "annotated_locs"]
     config.hide_document_lock_in_index = true
-    config.custom_filters = {"TokenCount" => { :klass => "Extract", :method => "token_count_in_range" } }
+    config.custom_filters = {
+      "AnnotatedByUser" => { :klass => "Extract", :method => "annotated_by_user" },
+      "TokenCount" => { :klass => "Extract", :method => "token_count_in_range" }
+    }
   end
 end

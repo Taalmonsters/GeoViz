@@ -5,3 +5,9 @@
 	value_type: :integer,
 	active: @filters && @filters.has_key?("TokenCount")
 } %>
+<%= render partial: "nested_metadata/filters/faceted_set_filter", locals: {
+	header: "Extract - Annotated by",
+	label: "AnnotatedByUser",
+	values: @filters && @filters.keys.any? ? Extract.filter(@filters).grouped_by_annotator.count.map{|k,v| ["User #{k}", v] }.to_h : Extract.uniq.grouped_by_annotator.count.map{|k,v| ["User #{k}", v] }.to_h,
+	active: @filters && @filters.has_key?("AnnotatedByUser")
+} %>
