@@ -4,7 +4,10 @@ $(document).ready(function() {
 });
 
 $(document).on('click', '#open-annotate-fullscreen', function () {
-	google.maps.event.trigger(maps["extract-map-fullscreen"], 'resize');
+	google.maps.event.addListenerOnce(maps["extract-map-fullscreen"], 'idle', function() {
+		google.maps.event.trigger(maps["extract-map-fullscreen"], 'resize');
+	});
+//	google.maps.event.trigger(maps["extract-map-fullscreen"], 'resize');
 	if ($("#extract-map-fullscreen").hasClass("new")) {
 		focusMap(maps["extract-map-fullscreen"], "extract-map-fullscreen");
 		$("#extract-map-fullscreen").removeClass("new");
