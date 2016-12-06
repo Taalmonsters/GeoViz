@@ -1,0 +1,7 @@
+<%= render partial: "nested_metadata/filters/faceted_range_filter", locals: {
+	header: "Extract - Token count",
+	label: "TokenCount",
+	boundaries: Extract.token_count_boundaries,
+	value_type: :integer,
+	active: @filters && @filters.has_key?("TokenCount")
+} %>
