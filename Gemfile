@@ -22,14 +22,9 @@ group :production do
 end
 
 source 'https://rubygems.taalmonsters.nl' do
-  # gem "taalmonsters", "0.0.3"
+  gem "taalmonsters", "0.0.3"
   gem "source_documents", "0.0.2"
-  # gem "nested_metadata", "0.0.3"
+  gem "nested_metadata", "0.0.3"
   gem "blacklab_rails", "0.0.2"
-  # gem "annotations", "0.0.1"
+  gem "annotations", "0.0.1"
 end
-
-gem "taalmonsters", path: "/Users/matje/Projects/rubygems/taalmonsters"
-gem "taalmonsters-maps", path: "/Users/matje/Projects/rubygems/taalmonsters-maps"
-gem "nested_metadata", path: "/Users/matje/Projects/rubygems/nested_metadata"
-gem "annotations", path: "/Users/matje/Projects/rubygems/annotations"
