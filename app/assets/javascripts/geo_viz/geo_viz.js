@@ -1,9 +1,11 @@
-$('#alternatives').modal("hide");
-$('#annotate-fullscreen').modal("hide");
+$(document).ready(function() {
+	$('#alternatives').modal("hide");
+	$('#annotate-fullscreen').modal("hide");
+});
 
 $(document).on('shown.bs.modal', '#annotate-fullscreen', function () {
+	google.maps.event.trigger(maps["extract-map-fullscreen"], 'resize');
 	if ($("#extract-map-fullscreen").hasClass("new")) {
-		google.maps.event.trigger(maps["extract-map-fullscreen"], 'resize');
 		focusMap(maps["extract-map-fullscreen"], "extract-map-fullscreen");
 		$("#extract-map-fullscreen").removeClass("new");
 	}
