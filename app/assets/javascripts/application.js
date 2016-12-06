@@ -13,6 +13,7 @@
 //= require taalmonsters/application
 //= require taalmonsters/maps/application
 //= require nested_metadata/application
+//= require annotations/application
 //= require geo_viz/geo_viz
 //= require_tree .
 
