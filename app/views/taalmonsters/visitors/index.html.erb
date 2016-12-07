@@ -1,10 +1,6 @@
 <% @group = NestedMetadata::MetadataGroup.with_name("Annotations").first %>
 <% content_for(:header) do %>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-	<%= stylesheet_link_tag 'nested_metadata/application', media: 'all' %>
-	<%= stylesheet_link_tag 'annotations/application', media: 'all' %>
-	<%= stylesheet_link_tag 'application', media: 'all' %>
-	<%= javascript_include_tag 'application' %>
 	<script src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.config.google_maps_api_key %>&callback=loadGoogleVisualisationAPI" async defer></script>
 <% end %>
 <h3>Places</h3>

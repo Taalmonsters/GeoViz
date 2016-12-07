@@ -10,10 +10,13 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
+ *= require jquery-ui
  *= require_tree .
  *= require_self
  */
 
+@import "taalmonsters";
+@import "nested_metadata";
 @import "annotations";
 
 div.row.main-content {
