@@ -13,5 +13,18 @@ Rails.application.config.to_prepare do
     def siblings
       source_document.entity_mentions.as_locations.where.not(id: self.id)
     end
+    
+    def self.as_locations2(group)
+      select("#{NestedMetadata::EntityMention.table_name}.*, #{self.with_all_values(group).join(", ")}").where("#{NestedMetadata::EntityMention.table_name}.metadata_group_id = ?", group.id)
+    end
+    
+    def self.with_all_values(group)
+      arr = [ "(SELECT em_group.name FROM #{NestedMetadata::MetadataGroup.table_name} AS em_group WHERE em_group.id = #{group.id}) AS group_name" ]
+      group.metadata_keys.each do |key|
+        kkey = key.name.gsub(/ /,'_')
+        arr << "(SELECT mv_#{kkey}.content FROM #{NestedMetadata::MetadatumValue.table_name} AS mv_#{kkey} WHERE mv_#{kkey}.entity_mention_id = #{NestedMetadata::EntityMention.table_name}.id AND mv_#{kkey}.metadata_key_id = #{key.id} LIMIT 1) AS #{key.name}_str"
+      end
+      arr
+    end
   end
 end

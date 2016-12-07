@@ -28,3 +28,4 @@ source 'https://rubygems.taalmonsters.nl' do
   gem "blacklab_rails", "0.0.2"
   gem "annotations", "0.0.2"
 end
+

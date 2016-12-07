@@ -31,8 +31,8 @@ module GeoViz
       locations.each do |coordinates, entity_mentions|
         marker = Taalmonsters::Maps::Google::SimpleMapMarker.new
         marker.set_coordinates(coordinates[0],coordinates[1])
-        names = entity_mentions.map{|p| p.name.content.titleize }.uniq.join('/')
-        groups = entity_mentions.map{|p| p.metadata_group.name }.uniq.sort.join(', ')
+        names = entity_mentions.map{|p| p.respond_to?("name_str") ? p.name_str : p.name.content }.uniq.join('/')
+        groups = entity_mentions.map{|p| p.respond_to?("group_name") ? p.group_name : p.metadata_group.name }.uniq.sort.join(', ')
         marker.color = get_marker_color(groups)
         if names
           marker.label = names

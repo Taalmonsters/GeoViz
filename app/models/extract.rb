@@ -44,6 +44,10 @@ class Extract < ActiveRecord::Base
     return user_id.split(' ')[1].to_i
   end
   
+  def self.locations_in_group(group)
+    NestedMetadata::EntityMention.as_locations2(group)
+  end
+  
   def self.token_count_boundaries
     return self.order(:token_count).limit(1).first.token_count, self.order(token_count: :desc).limit(1).first.token_count
   end

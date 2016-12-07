@@ -18,9 +18,14 @@ class ApplicationController < Taalmonsters::ApplicationController
   end
     
   def set_locations
-    @locations = @document ? @document.grouped_locations : @all_documents.grouped_locations
-    # @locations = @extracts_with_locations.values.flatten
-    # .select{|entity_mention| entity_mention.latitude && entity_mention.latitude.content && entity_mention.longitude && entity_mention.longitude.content }
-    # .group_by{|entity_mention| [entity_mention.latitude.content.to_f, entity_mention.longitude.content.to_f] }
+    if @document
+      @locations = @document.grouped_locations
+    elsif @filters.keys.any?
+      @locations = @all_documents.grouped_locations
+    else
+      @locations = (Extract.locations_in_group(NestedMetadata::MetadataGroup.with_name("GeoParser").with_keys.first) + Extract.locations_in_group(NestedMetadata::MetadataGroup.with_name("Annotations").with_keys.first)).flatten.select{|loc| !loc.latitude_str.blank? && !loc.longitude_str.blank? }.group_by do |loc|
+        [loc.latitude_str.to_f, loc.longitude_str.to_f]
+      end
+    end
   end
 end
