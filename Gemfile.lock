@@ -37,7 +37,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    annotations (0.0.1)
+    annotations (0.0.2)
       jquery-rails
       rails (~> 4.2)
       sass-rails (~> 5.0)
@@ -228,7 +228,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  annotations (= 0.0.1)!
+  annotations (= 0.0.2)!
   better_errors
   blacklab_rails (= 0.0.2)!
   byebug
