@@ -33,10 +33,14 @@ module GeoViz
         marker.set_coordinates(coordinates[0],coordinates[1])
         names = entity_mentions.map{|p| p.respond_to?("name_str") ? p.name_str : p.name.content }.uniq.join('/')
         groups = entity_mentions.map do |p|
-          if p.audits.any?
+          if p.respond_to?("annotated_by_id")
+            "User #{p.annotated_by_id}"
+          elsif p.respond_to?("group_name")
+            p.group_name
+          elsif p.respond_to?("audits") && p.audits.any?
             "User #{p.audits.last.user.id}"
           else
-            p.respond_to?("group_name") ? p.group_name : p.metadata_group.name
+            p.metadata_group.name
           end
         end.uniq.sort.join(', ')
         marker.color = get_marker_color(groups)
