@@ -2,8 +2,11 @@ clearMapMarkers("extract-map-fullscreen");
 clearMapMarkers("extract-map");
 $("#annotate-fullscreen").html("<%= escape_javascript(raw render partial: "geo_viz/extracts/annotation/fullscreen", layout: false) %>");
 $("<%= @target %>").html("<%= escape_javascript(raw render partial: "nested_metadata/documents/source_documents/show") %>");
+var page = $('.pagination').find('em.current').first().html();
+if (!page)
+	page = 1;
 $("#source-document-group").prepend('<button class="clipboard-btn btn btn-xs btn-info" data-clipboard-action="copy" data-clipboard-text="<%= request.base_url %>/documents?'+
-	'id=<%= @document.id %>&group='+$('#group').val()+'&page='+$('.pagination').find('em.current').first().html()+
+	'id=<%= @document.id %>&group='+$('#group').val()+'&page='+page+
 	'&number='+$('#number').val()+'&letter='+$('.alphabet-container').find('a.active').first().html()+
 	'&tab='+$('#tab').val()+'&'+$('.main-content').data('filter')+'">'+
 	'<span class="glyphicon glyphicon-link"></span> Permalink</button>');
