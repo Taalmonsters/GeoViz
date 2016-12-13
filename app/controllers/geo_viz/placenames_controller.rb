@@ -44,7 +44,7 @@ module GeoViz
     def locations
       respond_to do |format|
         format.json {
-          render :json => { :markers => @map.markers, :opt => { :legend => marker_colors.map{|group, color| ["#{group}","##{color}"] }.to_h } }
+          render :json => { :markers => @map.markers }
         }
       end
     end
