@@ -3,7 +3,7 @@
 <% else %>
 	<div class="entities">
 		<% entity_mentions.each do |entity_mention| %>
-			<%= render partial: "nested_metadata/documents/entity_mentions/#{@group.editable_entity_mentions && @is_annotator && (!@document.locked? || @group.editable_when_locked) ? 'edit' : 'show'}", locals: { entity_mention: entity_mention } %>
+			<%= render partial: "nested_metadata/documents/entity_mentions/#{@group.editable_entity_mentions && @is_annotator && (!@document.locked? || @group.editable_when_locked) ? 'edit' : 'show'}", locals: { entity_mention: entity_mention, metadatum_values: entity_mention.metadatum_values } %>
 		<% end %>
 	</div>
 	<% if @group.editable_entity_mentions && @is_annotator && (!@document.locked? || @group.editable_when_locked) %>

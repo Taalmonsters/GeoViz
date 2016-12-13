@@ -1,11 +1,10 @@
 <div class="group-entity new">
 	<%= form_for [:documents, @source_document, @group, entity_mention], :url => "/documents/sources/#{@source_document.id}/metadata_groups/#{@group.id}/entity_mentions/#{entity_mention.id}", :remote => true do |f| %>
 		<%= f.hidden_field :entity_type, :value => "location" %>
-		<%= f.fields_for :metadatum_values do |ff| %>
-			<% metadatum_value = ff.object %>
+		<% entity_mention.metadatum_values.each_with_index do |metadatum_value, i| %>
 			<% key = metadatum_value.metadata_key %>
-			<%= ff.hidden_field :metadata_key_id, :value => key.id %>
-			<% metadatum_value.value = key.typed_values.build %>
+			<%= f.hidden_field "metadatum_values_attributes[#{i}][metadata_key_id]", :value => key.id %>
+			<% metadatum_value.value = key.typed_values.new unless metadatum_value.value %>
 			<div class="entity-mention-value">
 				<div class="col-xs-12 col-lg-3">
 					<label><%= key.name %></label>
@@ -14,13 +13,13 @@
 					<div class="values">
 						<div class="input-group input-group-sm" style="width:100%;">
 							<% if key.date? %>
-								<%= ff.date_field :content, :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : nil, :class => "form-control", :disabled => !key.editable %>
+								<%= f.date_field "metadatum_values_attributes[#{i}][content]", :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : nil, :class => "form-control", :disabled => !key.editable %>
 							<% elsif key.boolean? %>
-								<%= ff.check_box :content, :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : false, :class => "form-control", :disabled => !key.editable %>
+								<%= f.check_box "metadatum_values_attributes[#{i}][content]", :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : false, :class => "form-control", :disabled => !key.editable %>
 							<% elsif key.float? || key.integer? %>
-								<%= ff.number_field :content, :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : nil, :class => "form-control", :step => key.integer? ? "1" : "0.0000001", :disabled => !key.editable %>
+								<%= f.number_field "metadatum_values_attributes[#{i}][content]", :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : nil, :class => "form-control", :step => key.integer? ? "1" : "0.0000001", :disabled => !key.editable %>
 							<% else %>
-								<%= ff.text_field :content, :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : nil, :class => "form-control", :disabled => !key.editable %>
+								<%= f.text_field "metadatum_values_attributes[#{i}][content]", :id => "#{key.name}_content", :value => metadatum_value.value ? metadatum_value.value.content : nil, :class => "form-control", :disabled => !key.editable %>
 							<% end %>
 						</div>
 					</div>
