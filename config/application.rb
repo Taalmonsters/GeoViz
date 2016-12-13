@@ -53,5 +53,7 @@ module GeoViz
       "AnnotatedByUser" => { :klass => "Extract", :method => "annotated_by_user" },
       "TokenCount" => { :klass => "Extract", :method => "token_count_in_range" }
     }
+    config.default_document_sort = "name"
+    config.default_document_order = "asc"
   end
 end
