@@ -1,3 +1,5 @@
+var unsavedMarkers = [];
+
 $(document).ready(function() {
 	$('#alternatives').modal("hide");
 	$('#annotate-fullscreen').modal("hide");
@@ -19,7 +21,8 @@ $(document).on("click", "#new-marker", function(e) {
 			$(this).removeClass("new");
 		}
 	} else {
-		addMarkerToMap(maps["extract-map"], {
+		$("[id='new-marker']").addClass("disabled");
+		var m1 = addMarkerToMap({
 			"lat": 0.0,
 			"lng": 0.0,
 			"label": "Drag me",
@@ -27,8 +30,8 @@ $(document).on("click", "#new-marker", function(e) {
 			"draggable": true,
 			"color": "13986D",
 			"infowindow": "<div>Drag me</div>"
-		});
-		addMarkerToMap(maps["extract-map-fullscreen"], {
+		}, "extract-map");
+		var m2 = addMarkerToMap({
 			"lat": 0.0,
 			"lng": 0.0,
 			"label": "Drag me",
@@ -36,7 +39,8 @@ $(document).on("click", "#new-marker", function(e) {
 			"draggable": true,
 			"color": "13986D",
 			"infowindow": "<div>Drag me</div>"
-		});
+		}, "extract-map-fullscreen");
+		unsavedMarkers.push(m1, m2);
 	}
 });
 
@@ -56,6 +60,7 @@ $(document).on("keypress", "form", function (e) {
 });
 
 $(document).on("click", "div.word.annotated", function(e) {
+	clearUnsavedMarkers();
 	$.getScript("/extracts/sources/"+$("#extract-content").data("source-document-id")+"/metadata_groups/"+$("#extract-content").data("metadata-group-id")+"/entity_mentions/"+$(this).data("entity-mention-id")+".js");
 });
 
@@ -97,6 +102,14 @@ function addMarkerToMap(item, mapId) {
 	});
 	mapMarkers[mapId].push(marker);
 	map.setCenter(marker.getPosition());
+	return marker;
+}
+
+function clearUnsavedMarkers() {
+	for (var i = 0; i < unsavedMarkers.length; i++) {
+		unsavedMarkers[i].setMap(null);
+	}
+	unsavedMarkers = [];
 }
 
 function clearExtractControls(clearId) {
@@ -124,6 +137,16 @@ function clearMarkersForGroup(mapId, group) {
 		}
 	}
 	mapMarkers[mapId] = keep;
+}
+
+function dragMapMarker(e, marker, mapId) {
+	for (var i = 0; i < unsavedMarkers.length; i++) {
+		if (marker !== unsavedMarkers[i])
+			unsavedMarkers[i].setPosition(e.latLng);
+	}
+	unsavedMarkers.push(marker);
+	$("#extract-controls #latitude_content").val(e.latLng.lat());
+	$("#extract-controls #longitude_content").val(e.latLng.lng());
 }
 
 function loadInfowindowContent(mapId, item, infowindow) {
@@ -182,8 +205,7 @@ function processAnnotationSelection(parentId, selectedElements) {
 }
 
 function processAnnotationStart(parentId) {
-//	$("#new-marker").addClass("disabled");
-//	clearExtractControls(true);
+	clearUnsavedMarkers();
 	$.getScript("/extracts/sources/"+$("#extract-content").data("source-document-id")+"/metadata_groups/"+$("#extract-content").data("metadata-group-id")+"/entity_mention");
 }
 

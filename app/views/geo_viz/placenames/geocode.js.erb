@@ -9,8 +9,12 @@
 			$(nameParent).append('<%= link_to content_tag(:span, "", class: "glyphicon glyphicon-globe"), "#alternatives", :class => "btn btn-xs input-group-addon", "data-toggle" => "modal" %>');
 		}
 	<% end %>
-	addMarkerToMap(<%= @marker.to_json.html_safe %>, "extract-map");
-	addMarkerToMap(<%= @marker.to_json.html_safe %>, "extract-map-fullscreen");
+	clearUnsavedMarkers();
+	var m1 = addMarkerToMap(<%= @marker.to_json.html_safe %>, "extract-map");
+	var m2 = addMarkerToMap(<%= @marker.to_json.html_safe %>, "extract-map-fullscreen");
+	unsavedMarkers.push(m1);
+	unsavedMarkers.push(m2);
 <% else %>
-	$("#new-marker").removeClass("disabled");
+	if (unsavedMarkers.length == 0)
+		$("[id='new-marker']").removeClass("disabled");
 <% end %>
