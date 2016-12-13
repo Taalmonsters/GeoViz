@@ -51,9 +51,10 @@ module GeoViz
     config.hide_document_lock_in_index = true
     config.custom_filters = {
       "AnnotatedByUser" => { :klass => "Extract", :method => "annotated_by_user" },
-      "TokenCount" => { :klass => "Extract", :method => "token_count_in_range" }
+      "TokenCount" => { :klass => "Extract", :method => "token_count_in_range" },
+      "Content" => { :klass => "Extract", :method => "content_contains" }
     }
-    config.default_document_sort = "name"
+    config.default_document_sort = "extracts.name"
     config.default_document_order = "asc"
   end
 end

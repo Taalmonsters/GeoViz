@@ -40,6 +40,19 @@ class Extract < ActiveRecord::Base
     self.source_document.entity_mentions.has_group_name("Annotations").with_metadatum_values.select("(SELECT mv1.content FROM #{NestedMetadata::MetadatumValue.table_name} AS mv1 WHERE mv1.metadata_key_id = #{id_key.id} AND mv1.entity_mention_id = #{NestedMetadata::EntityMention.table_name}.id) AS word_id, #{NestedMetadata::EntityMention.table_name}.*").all.select{|em| em.word_id =~ / *#{word_id} / || em.word_id =~ / *#{word_id}$/ }.first
   end
   
+  def self.blacklab_pids_matching_content(value)
+    BlacklabRails::Blacklab.docs({"patt" => "[word=\".*#{value}.*\"]", "number" => self.count})["docs"].map{|doc| doc["docPid"].to_i }
+  end
+  
+  def self.content_contains(values)
+    queries = values.map{|value| self.blacklab_pids_matching_content(value) }
+    pids = queries.shift
+    while queries.count > 0
+      pids = pids & queries.shift
+    end
+    where(:blacklab_pid => pids)
+  end
+  
   def self.get_user_id(user_id)
     return user_id.split(' ')[1].to_i
   end

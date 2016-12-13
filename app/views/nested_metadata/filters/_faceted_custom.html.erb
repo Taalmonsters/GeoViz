@@ -1,3 +1,8 @@
+<%= render partial: "nested_metadata/filters/faceted_search_filter", locals: {
+	header: "Extract - Content",
+	label: "Content",
+	active: @filters && @filters.has_key?("Content")
+} %>
 <%= render partial: "nested_metadata/filters/faceted_range_filter", locals: {
 	header: "Extract - Token count",
 	label: "TokenCount",
