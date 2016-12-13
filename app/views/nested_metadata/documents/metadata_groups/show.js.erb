@@ -1,4 +1,7 @@
 $("#source-document-group").html('<%= escape_javascript(raw render partial: "nested_metadata/documents/metadata_groups/show") %>');
+<% if @document %>
+	$("#source-document-<%= @document.id %>").html("<%= escape_javascript(raw render partial: "nested_metadata/documents/source_documents/row", locals: { document: @document }) %>");
+<% end %>
 <% if @group.name.eql?("Annotations") %>
 	clearMapMarkers("extract-map-fullscreen");
 	clearMapMarkers("extract-map");
