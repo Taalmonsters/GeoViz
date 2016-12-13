@@ -50,6 +50,10 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
   padding: 0 !important;
 }
 
+#source-document #source-document-group {
+  overflow: hidden;
+}
+
 #source-document-group {
   padding-bottom: 0 !important;
 }
@@ -59,7 +63,7 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
   margin: 0;
   padding: 10px 0;
   width: 100%;
-  height: calc(100% - 381px);
+  height: calc(100% - 407px);
   overflow-y: auto;
 }
 

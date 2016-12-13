@@ -1,8 +1,10 @@
 var unsavedMarkers = [];
+var clip = null;
 
 $(document).ready(function() {
 	$('#alternatives').modal("hide");
 	$('#annotate-fullscreen').modal("hide");
+	clip = new Clipboard('.clipboard-btn');
 });
 
 $(document).on('shown.bs.modal', '#annotate-fullscreen', function () {

@@ -13,6 +13,7 @@
 //= require taalmonsters
 //= require nested_metadata
 //= require annotations
+//= require clipboard
 //= require geo_viz/geo_viz
 //= require_tree .
 
