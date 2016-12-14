@@ -41,7 +41,7 @@ class Extract < ActiveRecord::Base
   end
   
   def self.blacklab_pids_matching_content(value)
-    BlacklabRails::Blacklab.docs({"patt" => "[word=\".*#{value}.*\"]", "number" => self.count})["docs"].map{|doc| doc["docPid"].to_i }
+    BlacklabRails::Blacklab.docs({"patt" => '[word=".*'+value.split(" ").join('"][word="')+'.*"]', "number" => self.count})["docs"].map{|doc| doc["docPid"].to_i }
   end
   
   def self.content_contains(values)
