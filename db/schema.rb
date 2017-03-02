@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161205214335) do
+ActiveRecord::Schema.define(version: 20170302155458) do
 
   create_table "audits", force: :cascade do |t|
     t.integer  "auditable_id",    limit: 4
@@ -70,26 +70,26 @@ ActiveRecord::Schema.define(version: 20161205214335) do
   add_index "nested_metadata_entity_mentions", ["source_document_id"], name: "index_nested_metadata_entity_mentions_on_source_document_id", using: :btree
 
   create_table "nested_metadata_float_values", force: :cascade do |t|
-    t.float    "content",    limit: 24
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.decimal  "content",    precision: 16, scale: 6
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
   create_table "nested_metadata_integer_values", force: :cascade do |t|
-    t.integer  "content",    limit: 4
+    t.integer  "content",    limit: 8
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
   end
 
   create_table "nested_metadata_locations", force: :cascade do |t|
-    t.float    "latitude",    limit: 24
-    t.float    "longitude",   limit: 24
+    t.decimal  "latitude",                precision: 9, scale: 6
+    t.decimal  "longitude",               precision: 9, scale: 6
     t.string   "content",     limit: 255
     t.string   "toponym",     limit: 255
     t.string   "country",     limit: 255
     t.integer  "geonames_id", limit: 8
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
   end
 
   create_table "nested_metadata_metadata_groups", force: :cascade do |t|
