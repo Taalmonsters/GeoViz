@@ -23,6 +23,15 @@ div.row.main-content {
     height: calc(100% - 56px);
 }
 
+#source-document #source-document-group {
+    height: calc(100% - 54px);
+    overflow-y: auto;
+}
+
+#source-document > hr.no-bottom-margin {
+    margin-bottom: 4px;
+}
+
 div.paragraph {
   display: block;
   // border: 1px solid white;
@@ -63,7 +72,7 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
   margin: 0;
   padding: 10px 0;
   width: 100%;
-  height: calc(100% - 407px);
+  height: calc(100% - 550px);
   overflow-y: auto;
 }
 

@@ -1,0 +1,7 @@
+<h4>Metadata for <%= @document.name %></h4>
+<hr class="no-bottom-margin">
+<div id="source-document-group">
+	<% if @group %>
+		<%= render partial: "nested_metadata/documents/metadata_groups/show" %>
+	<% end %>
+</div>
