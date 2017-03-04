@@ -25,7 +25,7 @@ Rails.application.config.to_prepare do
       arr << "(SELECT a.user_id FROM #{Audited::Audit.table_name} AS a WHERE a.auditable_type = 'NestedMetadata::EntityMention' AND a.auditable_id = #{NestedMetadata::EntityMention.table_name}.id LIMIT 1) AS annotated_by_id" if group.name.eql?("Annotations")
       group.metadata_keys.each do |key|
         kkey = key.name.gsub(/ /,'_')
-        arr << "(SELECT mv_#{kkey}.content FROM #{NestedMetadata::MetadatumValue.table_name} AS mv_#{kkey} WHERE mv_#{kkey}.entity_mention_id = #{NestedMetadata::EntityMention.table_name}.id AND mv_#{kkey}.metadata_key_id = #{key.id} LIMIT 1) AS #{key.name}_str"
+        arr << "(SELECT mv_#{kkey}.content FROM #{NestedMetadata::MetadatumValue.table_name} AS mv_#{kkey} WHERE mv_#{kkey}.entity_mention_id = #{NestedMetadata::EntityMention.table_name}.id AND mv_#{kkey}.metadata_key_id = #{key.id} LIMIT 1) AS #{kkey}_str"
       end
       arr
     end
