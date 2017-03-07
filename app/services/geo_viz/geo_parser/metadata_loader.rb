@@ -130,7 +130,7 @@ module GeoViz
     
     def self.set_blacklab_pid_and_token_count(document_id, title)
       t = title.gsub(/é/,'e%CC%81').gsub(/É/,'E%CC%81').gsub(/ç/,'c%CC%A7')
-      blacklab_documents = BlacklabRails::Blacklab.docs({ :filter => "HeadWord:#{t}" })["docs"]
+      blacklab_documents = BlacklabRails::Blacklab.docs({ :filter => "HeadWord:#{t}", :number => 15000 })["docs"]
       blacklab_document = blacklab_documents.length == 1 ? blacklab_documents.first : blacklab_documents.select{|doc| doc["docInfo"]["HeadWord"].eql?(title) || I18n.transliterate(doc["docInfo"]["HeadWord"]).gsub('?','').eql?(I18n.transliterate(title)) }.first
       unless blacklab_document
         STDOUT.puts "Warning: Could not find blacklab document for head word '#{title}'"
