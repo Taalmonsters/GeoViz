@@ -68,7 +68,6 @@ $(document).on("click", "div.word.annotated", function(e) {
 
 $(document).on("click", "tr.alternative", function(e) {
 	var json = $(this).data("json");
-	console.log(json);
 	// Update fields in extract-controls
 	setExtractControls(json);
 	clearMarkersForGroup("extract-map", "New");
@@ -153,7 +152,7 @@ function dragMapMarker(e, marker, mapId) {
 
 function loadInfowindowContent(mapId, item, infowindow) {
 	$.ajax({
-	    url: '/placenames/infowindow.json?lat='+item["lat"]+'&lng='+item["lng"],
+	    url: '/placenames/infowindow.json?map='+mapId+'&lat='+item["lat"]+'&lng='+item["lng"],
 	    context: $("#"+mapId),
 	    success: function(data){
 	    	infowindow.setContent(data["html"]);

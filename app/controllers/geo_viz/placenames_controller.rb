@@ -27,18 +27,30 @@ module GeoViz
     end
     
     def infowindow
+      map_id = params[:map]
       entity_mentions = NestedMetadata::EntityMention.includes(:source_document).at_latitude([params[:lat],"#{params[:lat].to_f}"]).includes(:source_document, :name, :country) & NestedMetadata::EntityMention.includes(:source_document).at_longitude([params[:lng],"#{params[:lng].to_f}"]).includes(:source_document, :name, :country)
       names = entity_mentions.map{|p| p.name.content.titleize }.uniq.join('/')
       extracts = entity_mentions.map{|entity_mention| entity_mention.source_document.document }
-      respond_to do |format|
-        format.json { render :json => {
-          'html' => render_to_string(partial: "geo_viz/placenames/infowindow.html.erb", locals: {
-            name: names,
-            extracts: extracts,
-            locations: entity_mentions.map{|entity_mention| entity_mention.siblings }.flatten.uniq.select{|entity_mention| entity_mention.latitude && entity_mention.longitude }.group_by{|entity_mention| [entity_mention.latitude.content.to_f, entity_mention.longitude.content.to_f] }
-          }, layout: false) }
-        }
+      if map_id.eql?("extract-map")
+        respond_to do |format|
+          format.json { render :json => {
+            'html' => render_to_string(partial: "geo_viz/placenames/infowindow.html.erb", locals: {
+              name: names,
+              extracts: nil
+            }, layout: false) }
+          }
+        end
+      else
+        respond_to do |format|
+          format.json { render :json => {
+            'html' => render_to_string(partial: "geo_viz/placenames/infowindow.html.erb", locals: {
+              name: names,
+              extracts: extracts
+            }, layout: false) }
+          }
+        end
       end
+
     end
     
     def locations

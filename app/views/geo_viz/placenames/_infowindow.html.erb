@@ -1,22 +1,13 @@
-<div>
+<div class="infowindow">
 	<h4><%= name %></h4>
-	<p>
-		Found in <%= extracts.count %> extracts:
-		<ul>
-			<% extracts.each do |extract| %>
-				<li><%= extract.name %></li>
-			<% end %>
-		</ul>
-	</p>
-	<p>
-		<% location_count = locations.count %>
-		Mentioned with <%= location_count %> other locations<%= location_count > 0 ? ':' : '.' %>
-		<% if location_count > 0 %>
-			<ul>
-				<% locations.each do |coordinates, entity_mentions| %>
-					<li>[<%= coordinates[0] %>,<%= coordinates[1] %>] <%= entity_mentions.map{|em| em.name.content }.uniq.join("/") %> (<%= entity_mentions.map{|em| em.source_document.id }.uniq.count %> extracts)</li>
-				<% end %>
-			</ul>
-		<% end %>
-	</p>
+	<% if extracts %>
+        <p>
+            Found in <%= extracts.count %> extracts:
+            <ul class="list-inline">
+                <% extracts.each do |extract| %>
+                    <li><a href="/documents?id=<%= extract.id %>&group=Annotations"><%= extract.name %></a></li>
+                <% end %>
+            </ul>
+        </p>
+	<% end %>
 </div>

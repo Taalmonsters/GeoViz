@@ -25,7 +25,7 @@ end
 source 'https://rubygems.taalmonsters.nl' do
   gem "taalmonsters", "0.0.4"
   gem "source_documents", "0.0.3"
-  gem "nested_metadata", :path => "/Users/matje/Projects/rubygems/nested_metadata"
-  gem "blacklab_rails", :path => "/Users/matje/Projects/rubygems/blacklab_rails"
+  gem "nested_metadata", "0.0.8"
+  gem "blacklab_rails", "0.0.5"
   gem "annotations", "0.0.3"
 end

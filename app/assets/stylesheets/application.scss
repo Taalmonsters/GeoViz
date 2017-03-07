@@ -170,3 +170,7 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
 #source-document #source-document-controls, #source-document-locks {
     display: none;
 }
+
+.infowindow {
+    max-width: 400px;
+}
