@@ -44,7 +44,7 @@ module GeoViz
     def locations
       respond_to do |format|
         format.json {
-          render :json => { :markers => @map.markers }
+          render :json => { :markers => @map.markers, :historical_latitude => @document ? @document.historical_latitude : nil, :historical_longitude => @document ? @document.historical_longitude : nil }
         }
       end
     end

@@ -217,3 +217,34 @@ function resetMapBounds(map) {
 	bounds.extend(new google.maps.LatLng(51.0, 10.0));
 	map.fitBounds(bounds);
 }
+
+// Overwrite map generation method from taalmonsters-maps to include historical latitude line
+
+function displayGoogleMap(data, mapId) {
+	var map = new google.maps.Map(document.getElementById(mapId), { zoom: 4,
+        center: {lat: 0.0, lng: 0.0}, styles: mapStyle });
+	clearMapMarkers(mapId);
+	$.each(data["markers"], function(index, item) {
+		var position = new google.maps.LatLng(item["lat"], item["lng"]);
+		mapMarkers[mapId].push(newMapMarker(map, item, mapId));
+	});
+	if (data["historical_latitude"]) {
+	    lat = parseFloat(data["historical_latitude"]);
+	    var pathCoor = [
+            {lat: lat, lng: -180},
+            {lat: lat, lng: 0},
+            {lat: lat, lng: 180}
+        ];
+        var path = new google.maps.Polyline({
+          path: pathCoor,
+          geodesic: false,
+          strokeColor: '#00CC00',
+          strokeOpacity: 1.0,
+          strokeWeight: 1
+        });
+        path.setMap(map);
+	}
+	var markerCluster = new MarkerClusterer(map, mapMarkers[mapId], data["opt"]);
+	focusMap(map, mapId)
+	return map;
+}

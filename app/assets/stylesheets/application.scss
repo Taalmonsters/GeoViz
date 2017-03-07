@@ -94,6 +94,10 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
     input[type="checkbox"] {
         height: 14px;
     }
+    a.input-group-addon {
+        padding: 0px 4px;
+        height: inherit;
+    }
   }
   .controls .btn {
     float: right;
@@ -161,4 +165,8 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
 
 #map {
   padding: 0;
+}
+
+#source-document #source-document-controls, #source-document-locks {
+    display: none;
 }

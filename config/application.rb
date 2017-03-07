@@ -34,6 +34,9 @@ module GeoViz
     
     # Blacklab configuration
     config.blacklab_index_name = "geoviz"
+
+    # Seed number used for selecting documents for gold standard annotation
+    config.seed = 23728976
     
     # Taalmonsters configuration
     config.pages = [["home", "/", "", 0], ["extracts", "/documents", "", 1], ["metadata", "/metadata", "", 2], ["users", "/users", "", 3]]

@@ -1,3 +1,28 @@
+PATH
+  remote: /Users/matje/Projects/rubygems/blacklab_rails
+  specs:
+    blacklab_rails (0.0.5)
+      rails (~> 4.2)
+
+PATH
+  remote: /Users/matje/Projects/rubygems/nested_metadata
+  specs:
+    nested_metadata (0.0.8)
+      audited (~> 4.3)
+      devise
+      elevatezoom-rails
+      font-awesome-rails
+      info_boxes
+      jquery-rails
+      jquery-ui-rails
+      rails (~> 4.2)
+      sass-rails (~> 5.0)
+      source_documents (= 0.0.3)
+      taalmonsters-charts (= 0.0.3)
+      taalmonsters-geonames (= 0.0.1)
+      taalmonsters-maps (= 0.0.6)
+      will_paginate (~> 3.0)
+
 GEM
   remote: https://rubygems.org/
   remote: https://rubygems.taalmonsters.nl/
@@ -54,14 +79,12 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    blacklab_rails (0.0.3)
-      rails (~> 4.2)
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
     builder (3.2.2)
     byebug (9.0.6)
-    chartkick (2.2.1)
+    chartkick (2.2.2)
     clipboard-rails (1.5.16)
     coderay (1.1.1)
     concurrent-ruby (1.0.2)
@@ -76,14 +99,20 @@ GEM
       railties (>= 4.1.0, < 5.1)
       responders
       warden (~> 1.2.3)
+    elevatezoom-rails (1.0.0)
     erubis (2.7.0)
     execjs (2.7.0)
+    font-awesome-rails (4.7.0.1)
+      railties (>= 3.2, < 5.1)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     high_voltage (3.0.0)
     httparty (0.14.0)
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
+    info_boxes (0.1.0)
+      jquery-rails
+      sass-rails (~> 5.0)
     jbuilder (2.6.1)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
@@ -111,17 +140,6 @@ GEM
     multi_json (1.12.1)
     multi_xml (0.6.0)
     mysql2 (0.4.5)
-    nested_metadata (0.0.6)
-      audited (~> 4.3)
-      devise
-      jquery-rails
-      jquery-ui-rails
-      rails (~> 4.2)
-      sass-rails (~> 5.0)
-      taalmonsters-charts (= 0.0.2)
-      taalmonsters-geonames (= 0.0.1)
-      taalmonsters-maps (= 0.0.5)
-      will_paginate (~> 3.0)
     nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
     orm_adapter (0.5.0)
@@ -173,7 +191,7 @@ GEM
     simple_form (3.3.1)
       actionpack (> 4, < 5.1)
       activemodel (> 4, < 5.1)
-    source_documents (0.0.2)
+    source_documents (0.0.3)
       rails (~> 4.2)
     spring (2.0.0)
       activesupport (>= 4.2)
@@ -195,7 +213,7 @@ GEM
       sass-rails (~> 5.0)
       simple_form
       will_paginate (~> 3.0)
-    taalmonsters-charts (0.0.2)
+    taalmonsters-charts (0.0.3)
       bootstrap-sass
       chartkick
       jquery-minicolors-rails
@@ -204,7 +222,7 @@ GEM
     taalmonsters-geonames (0.0.1)
       httparty
       rails (~> 4.2)
-    taalmonsters-maps (0.0.5)
+    taalmonsters-maps (0.0.6)
       d3-rails
       jquery-rails
       rails (~> 4.2)
@@ -231,16 +249,16 @@ PLATFORMS
 DEPENDENCIES
   annotations (= 0.0.3)!
   better_errors
-  blacklab_rails (= 0.0.3)!
+  blacklab_rails!
   byebug
   clipboard-rails
   jbuilder (~> 2.0)
   mysql2
-  nested_metadata (= 0.0.6)!
+  nested_metadata!
   rack-mini-profiler
   rails (~> 4.2)
   sdoc (~> 0.4.0)
-  source_documents (= 0.0.2)!
+  source_documents (= 0.0.3)!
   spring
   sqlite3
   taalmonsters (= 0.0.4)!
@@ -248,4 +266,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.13.6
+   1.14.5

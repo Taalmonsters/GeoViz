@@ -30,6 +30,16 @@ class Extract < ActiveRecord::Base
     self.locations.select{|entity_mention| entity_mention.latitude && entity_mention.latitude.content && entity_mention.longitude && entity_mention.longitude.content }
     .group_by{|entity_mention| [entity_mention.latitude.content.to_f, entity_mention.longitude.content.to_f] }
   end
+
+  def historical_latitude
+    mv = self.source_document.metadatum_values.has_key(NestedMetadata::MetadataKey.in_group("Metadata").with_name("historical latitude").first).first
+    return mv ? mv.value.content : nil
+  end
+
+  def historical_longitude
+    mv = self.source_document.metadatum_values.has_key(NestedMetadata::MetadataKey.in_group("Metadata").with_name("historical longitude").first).first
+    return mv ? mv.value.content : nil
+  end
   
   def locations
     self.source_document.entity_mentions.as_locations
@@ -62,7 +72,9 @@ class Extract < ActiveRecord::Base
   end
   
   def self.token_count_boundaries
-    return self.order(:token_count).limit(1).first.token_count, self.order(token_count: :desc).limit(1).first.token_count
+    if Extract.any?
+      return self.order(:token_count).limit(1).first.token_count, self.order(token_count: :desc).limit(1).first.token_count
+    end
   end
   
   protected

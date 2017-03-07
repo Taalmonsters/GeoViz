@@ -6,29 +6,40 @@
 			<% key = metadatum_value.metadata_key %>
 			<%= ff.hidden_field :metadata_key_id, :value => key.id %>
 			<div class="entity-mention-value">
-				<div class="col-xs-12 col-lg-3">
-					<label><%= key.name %></label>
-				</div>
-				<div class="col-xs-12 col-lg-9">
-					<div class="values">
-						<div class="input-group input-group-sm" style="width:100%;">
-							<% if key.date? %>
-								<%= ff.date_field :content, :id => "#{key.name.gsub(' ','_')}_content", :value => metadatum_value.value ? metadatum_value.value.content : metadatum_value.content.to_date, :class => "form-control", :disabled => !key.editable %>
-							<% elsif key.boolean? %>
-							    <%= ff.check_box :content, { :id => "#{key.name.gsub(' ','_')}_content", :value => metadatum_value.value ? metadatum_value.value.content : false, :class => "form-control", :disabled => !key.editable }, "true", "false" %>
-							<% elsif key.float? || key.integer? %>
-								<%= ff.number_field :content, :id => "#{key.name.gsub(' ','_')}_content", :value => metadatum_value.value ? metadatum_value.value.content : key.integer? ? metadatum_value.content.to_i : metadatum_value.content.to_f, :class => "form-control", :step => key.integer? ? "1" : "0.0000001", :disabled => !key.editable %>
-							<% else %>
-							    <% val = metadatum_value.value ? metadatum_value.value.content : metadatum_value.content %>
-							    <% if val.to_s.length > 30 %>
-							        <%= ff.text_area :content, :id => "#{key.name.gsub(' ','_')}_content", :value => val, :class => "form-control", :disabled => !key.editable %>
-							    <% else %>
-    								<%= ff.text_field :content, :id => "#{key.name.gsub(' ','_')}_content", :value => val, :class => "form-control", :disabled => !key.editable %>
-    						    <% end %>
-							<% end %>
-						</div>
-					</div>
-				</div>
+                <% if key.boolean? %>
+                    <div class="col-xs-12 col-lg-9 col-lg-offset-3 form-inline">
+                        <%= ff.check_box :content, { :id => "#{key.name.gsub(' ','_')}_content", :value => metadatum_value.value ? metadatum_value.value.content : false, :class => "form-control", :readonly => !key.editable }, "true", "false" %>
+                        <label><%= key.name %></label>
+                    </div>
+                <% else %>
+                    <div class="col-xs-12 col-lg-3">
+                        <label><%= key.name %></label>
+                    </div>
+                    <div class="col-xs-12 col-lg-9">
+                        <div class="values">
+                            <div class="input-group input-group-sm" style="width:100%;">
+                                <% if key.name.eql?("location type") %>
+                                    <%= ff.select :content, options_for_select(["real, existing", "real, historical", "real, extra terrestrial", "biblical", "mythical", "unknown"], metadatum_value.content), :id => "#{key.name.gsub(' ','_')}_content", include_blank: true %>
+                                <% elsif key.name.eql?("position wrt main") %>
+                                    <%= ff.select :content, options_for_select(["contains main location", "north", "south", "east", "west", "north east", "north west", "south east", "south west"], metadatum_value.content), :id => "#{key.name.gsub(' ','_')}_content", include_blank: true %>
+                                <% elsif key.date? %>
+                                    <%= ff.date_field :content, :id => "#{key.name.gsub(' ','_')}_content", :value => metadatum_value.value ? metadatum_value.value.content : metadatum_value.content.to_date, :class => "form-control", :readonly => !key.editable %>
+                                <% elsif key.boolean? %>
+                                    <%= ff.check_box :content, { :id => "#{key.name.gsub(' ','_')}_content", :value => metadatum_value.value ? metadatum_value.value.content : false, :class => "form-control", :readonly => !key.editable }, "true", "false" %>
+                                <% elsif key.float? || key.integer? %>
+                                    <%= ff.number_field :content, :id => "#{key.name.gsub(' ','_')}_content", :value => metadatum_value.value ? metadatum_value.value.content : key.integer? ? metadatum_value.content.to_i : metadatum_value.content.to_f, :class => "form-control", :step => key.integer? ? "1" : "0.0000001", :readonly => !key.editable %>
+                                <% else %>
+                                    <% val = metadatum_value.value ? metadatum_value.value.content : metadatum_value.content %>
+                                    <% if val.to_s.length > 30 %>
+                                        <%= ff.text_area :content, :id => "#{key.name.gsub(' ','_')}_content", :value => val, :class => "form-control", :readonly => !key.editable %>
+                                    <% else %>
+                                        <%= ff.text_field :content, :id => "#{key.name.gsub(' ','_')}_content", :value => val, :class => "form-control", :readonly => !key.editable %>
+                                    <% end %>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
 			</div>
 		<% end %>
 		<div class="controls">
