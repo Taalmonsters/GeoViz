@@ -5,7 +5,8 @@
 			<% paragraph.css("s").each do |sentence| %>
 				<div class="sentence">
 					<% sentence.css("w").each do |word| %>
-						<% annotation = annotated[word["id"]] if annotated.has_key?(word["id"]) %>
+					    <% annotation_key = annotated.keys.select{|k| k =~ /(^| )#{word["id"]}( |$)/ }.first %>
+						<% annotation = annotated[annotation_key] if annotation_key %>
 						<div id="<%= word["id"] %>" class="word <%= "no-space" if word["pws"].eql?("no") %> <%= "annotated" if annotation %>" <%= "data-entity-mention-id=#{annotation}" if annotation %>><%= word.content.html_safe %></div>
 					<% end %>
 				</div>
