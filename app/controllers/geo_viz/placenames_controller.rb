@@ -65,7 +65,7 @@ module GeoViz
     
     def geocode_params(params)
       params = params.slice(:q)
-      params["maxRows"] = 10
+      params["maxRows"] = 25
       return params
     end
     
