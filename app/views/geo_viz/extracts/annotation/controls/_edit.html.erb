@@ -21,7 +21,7 @@
                                 <% if key.name.eql?("location type") %>
                                     <%= ff.select :content, options_for_select(["real, existing", "real, historical", "real, extra terrestrial", "biblical", "mythical", "unknown"], metadatum_value.content), :id => "#{key.name.gsub(' ','_')}_content", include_blank: true %>
                                 <% elsif key.name.eql?("position wrt main") %>
-                                    <%= ff.select :content, options_for_select(["contains main location", "north", "south", "east", "west", "north east", "north west", "south east", "south west"], metadatum_value.content), :id => "#{key.name.gsub(' ','_')}_content", include_blank: true %>
+                                    <%= ff.select :content, options_for_select(["contains main location", "inside main location", "north", "south", "east", "west", "north east", "north west", "south east", "south west"], metadatum_value.content), :id => "#{key.name.gsub(' ','_')}_content", include_blank: true %>
                                 <% elsif key.date? %>
                                     <%= ff.date_field :content, :id => "#{key.name.gsub(' ','_')}_content", :value => metadatum_value.value ? metadatum_value.value.content : metadatum_value.content.to_date, :class => "form-control", :readonly => !key.editable %>
                                 <% elsif key.boolean? %>
