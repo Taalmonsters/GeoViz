@@ -82,7 +82,8 @@ Rails.application.configure do
     address: Rails.application.config.email_server_address,
     port: Rails.application.config.email_server_port.to_i,
     domain: Rails.application.config.domain_name,
-    authentication: "plain",
+    authentication: :login,
+    ssl: true,
     enable_starttls_auto: true,
     user_name: Rails.application.config.email_provider_username,
     password: Rails.application.config.email_provider_password
