@@ -65,6 +65,8 @@ $(document).on("keypress", "form", function (e) {
 
 $(document).on("click", "div.word.annotated", function(e) {
 	clearUnsavedMarkers();
+	$('span.loading').removeClass('hidden');
+	$('#extract-controls').addClass('loading');
 	$.getScript("/extracts/sources/"+$("#extract-content").data("source-document-id")+"/metadata_groups/"+$("#extract-content").data("metadata-group-id")+"/entity_mentions/"+$(this).data("entity-mention-id")+".js");
 });
 
@@ -203,6 +205,8 @@ function elementListToString(elements) {
 function processAnnotationSelection(parentId, selectedElements) {
 	addClassToSelected($("#"+parentId).data("label"), selectedElements, "selected-for-annotation");
 	clearMapMarkers();
+	$('span.loading').removeClass('hidden');
+	$('#extract-controls').addClass('loading');
 	clearExtractControls();
 	var placename = elementListToString(selectedElements);
 	$("[id=id_content]").val(elementIdsToString(selectedElements));
