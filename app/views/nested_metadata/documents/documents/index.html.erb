@@ -10,12 +10,12 @@
 			<%= render partial: "nested_metadata/filters/faceted" %>
 		</div>
 	</div>
-	<div class="col-xs-8 col-md-4 col-lg-5 content-box">
+	<div class="col-xs-8 col-md-4 col-lg-3 content-box">
 		<div id="source-documents">
 			<%= render partial: "nested_metadata/documents/source_documents/index" %>
 		</div>
 	</div>
-	<div class="col-xs-12 col-md-5 content-box content-box-contrast">
+	<div class="col-xs-12 col-md-5 col-lg-7 content-box content-box-contrast">
 		<div id="source-document">
 			<% if @document %>
 				<%= render partial: "nested_metadata/documents/source_documents/show" %>

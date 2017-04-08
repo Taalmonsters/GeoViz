@@ -1,0 +1,38 @@
+<% if paginate %>
+	<div class="pagination-container">
+		<%= js_will_paginate(documents, :params => { :controller => "nested_metadata/documents/source_documents", :action => "index" }) if documents.any? %>
+	</div>
+<% end %>
+<div>
+	<table id="document-index" class="table table-condensed">
+		<thead>
+			<tr>
+				<th><%= t(:name).capitalize %></th>
+				<% Rails.application.config.document_fields.each do |field, optional| %>
+					<% unless @document && optional %>
+						<th>
+							<%= i18n_set?(field.gsub(/[^A-Za-z0-9]/,' ')) ? t(:"#{field.gsub(/[^A-Za-z0-9]/,' ')}").capitalize : field.capitalize %>
+						</th>
+					<% end %>
+				<% end %>
+				<% unless Rails.application.config.hide_document_lock_in_index %>
+					<th>Locked</th>
+				<% end %>
+			</tr>
+		</thead>
+		<tbody>
+			<% if documents %>
+				<% documents.each do |document| %>
+				<tr class="<%= 'active' if @document && @document.id == document.id %> clickable" id="source-document-<%= document.id %>" data-url="<%= "#{nested_metadata.documents_source_document_path(document.source_document)}.js" %>">
+					<%= render partial: "nested_metadata/documents/source_documents/row.html.erb", locals: { document: document } %>
+				</tr>
+				<% end %>
+			<% end %>
+		</tbody>
+	</table>
+</div>
+<% if paginate %>
+	<div class="pagination-container">
+		<%= js_will_paginate(documents, :params => { :controller => "nested_metadata/documents/source_documents", :action => "index" }) if documents.any? %>
+	</div>
+<% end %>

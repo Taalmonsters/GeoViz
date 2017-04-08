@@ -67,14 +67,23 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
   padding-bottom: 0 !important;
 }
 
+#source-document-group-entity-mentions > .row {
+    height: calc(100% - 265px);
+    > div {
+        height: 100%;
+    }
+}
+
 #extract-content {
   border-top: 1px solid #EEE;
   margin: 0;
-  padding: 10px 0;
+  padding: 20px;
   width: 100%;
-  height: calc(100% - 408px);
+  height: 100%;
   overflow-y: auto;
   font-size: small;
+  background: #FFF;
+  color: #000;
 }
 
 #extract-map, #extract-controls {
@@ -85,8 +94,12 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
   margin-bottom: 20px;
   width: 50%;
   .entity-mention-value {
-    width: 100%;
+    display: inline-block;
+    width: 49%;
     font-size: x-small;
+    .input-group {
+        margin-bottom: 0px !important;
+    }
     input[type="text"], input[type="number"] {
         padding: 2px 4px;
         height: 20px;
@@ -98,6 +111,18 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
         padding: 0px 4px;
         height: inherit;
     }
+    &.location_type, &.position_wrt_main {
+        width: 49%;
+        > div {
+            padding-right: 0 !important;
+        }
+    }
+    &.part_of_name, &.person {
+        width: 49%;
+    }
+    &.is_main_location, &.near_main_location {
+        width: 25%;
+    }
   }
   .controls .btn {
     float: right;
@@ -107,12 +132,13 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
 
 #extract-map {
   width: calc(50% - 2px);
-  height: 335px;
+  height: inherit;
 }
 
 #extract-controls {
+  padding: 10px 0;
   padding-left: 5px;
-  width: calc(50% - 2px);
+  width: 100%;
 }
 
 #annotate-fullscreen-dialog .model-content {
@@ -126,15 +152,12 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
       }
       #extract-controls {
         width: 100%;
-        height: auto;
-        margin-top: 26px;
-        .entity-mention-value {
-          display: inline-block;
-          width: 49%;
-        }
+        height: 250px;
+        margin: 0;
       }
       #extract-content {
-        height: calc(100% - 347px);
+        height: calc(100% - 240px);
+        border: 1px solid grey;
       }
     }
   }
@@ -182,4 +205,8 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
     input {
         pointer-events: none;
     }
+}
+
+.selected-for-annotation {
+    color: #FFF;
 }

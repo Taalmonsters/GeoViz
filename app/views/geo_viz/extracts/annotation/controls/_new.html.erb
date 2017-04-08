@@ -5,9 +5,9 @@
             <% metadatum_value = ff.object %>
             <% key = metadatum_value.metadata_key %>
             <%= ff.hidden_field :metadata_key_id, :value => key.id %>
-            <div class="entity-mention-value">
+            <div class="entity-mention-value <%= key.name.gsub(' ','_') %>">
                 <% if key.boolean? %>
-                    <div class="col-xs-12 col-lg-9 col-lg-offset-3 form-inline">
+                    <div class="col-xs-12 form-inline">
                         <%= ff.check_box :content, { :id => "#{key.name.gsub(' ','_')}_content", :value => metadatum_value.value ? metadatum_value.value.content : false, :class => "form-control", :readonly => !key.editable }, "true", "false" %>
                         <label><%= key.name %></label>
                     </div>
