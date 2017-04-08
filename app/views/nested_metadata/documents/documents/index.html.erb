@@ -1,0 +1,37 @@
+<% content_for(:header) do %>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.config.google_maps_api_key %>&callback=loadGoogleVisualisationAPI" async defer></script>
+<% end %>
+<h3 class="documents"><%= i18n_set?('document') ? I18n.t("document").pluralize.capitalize : 'Documents' %></h3>
+<div id="documents" class="row main-content" data-path="<%= request.path %>" data-filter="<%= @filter_params %>" data-tab="<%= @tab %>">
+	<div class="col-xs-4 col-md-3 col-lg-2 content-box content-box-light-contrast">
+		<div id="filters">
+			<%= render partial: "nested_metadata/filters/header", locals: { page: request.path } %>
+			<%= render partial: "nested_metadata/filters/faceted" %>
+		</div>
+	</div>
+	<div class="col-xs-8 col-md-4 col-lg-5 content-box">
+		<div id="source-documents">
+			<%= render partial: "nested_metadata/documents/source_documents/index" %>
+		</div>
+	</div>
+	<div class="col-xs-12 col-md-5 content-box content-box-contrast">
+		<div id="source-document">
+			<% if @document %>
+				<%= render partial: "nested_metadata/documents/source_documents/show" %>
+			<% end %>
+		</div>
+	</div>
+</div>
+<% content_for(:footer) do %>
+    <div class="modal fade" id="duplicates" title="Select duplicate documents" role="dialog" aria-labelledby="duplicatesModal">
+    </div>
+    <div class="modal" data-backdrop="static" data-keyboard="false" id="location-alternatives" role="dialog" aria-labelledby="locationAlternatives">
+    </div>
+    <div class="modal" data-backdrop="static" data-keyboard="false" id="locations-fullscreen" role="dialog" aria-labelledby="locationsFullScreen">
+    </div>
+    <%= render partial: "layouts/nested_metadata/tour" %>
+    <script>
+        start_tour = <%= @tour_start ? 'true' : 'false' %>;
+    </script>
+<% end %>

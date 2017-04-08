@@ -18,7 +18,7 @@ module GeoViz
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
+    config.i18n.default_locale = :en
     
     config.app_name = "GeoViz"
     config.app_version = File.read(Rails.root.join("VERSION.txt"))
@@ -51,7 +51,7 @@ module GeoViz
     config.application_host = ENV["GEOVIZ_APPLICATION_HOST"]
     
     # Nested metadata configuration
-    config.document_fields = ["geoparser_locs", "annotated_locs"]
+    config.document_fields = ["geoparser_locs", "annotated_locs_total", "annotated_locs"]
     config.hide_document_lock_in_index = true
     config.custom_filters = {
       "AnnotatedByUser" => { :klass => "Extract", :method => "annotated_by_user" },

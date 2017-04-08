@@ -26,8 +26,8 @@ end
 
 source 'https://rubygems.taalmonsters.nl' do
   gem "taalmonsters", "0.0.4"
-  gem "source_documents", "0.0.3"
-  gem "nested_metadata", "0.0.8"
+  gem "source_documents", "0.0.4"
+  gem "nested_metadata", "0.0.9"
   gem "blacklab_rails", "0.0.5"
   gem "annotations", "0.0.3"
 end

@@ -1,4 +1,4 @@
-<% annotated = @document.annotated_word_ids %>
+<% annotated = @document.annotated_word_ids(current_user.id) %>
 <div id="extract-content" class="col-xs-12 annotatable" data-label="extract-content" data-annotate="word" data-source-document-id="<%= @source_document.id %>" data-metadata-group-id="<%= @group.id %>">
 	<% @document.content.css("text p").each do |paragraph| %>
 		<div class="paragraph">

@@ -1,0 +1,27 @@
+<td class="document-name">
+	<%= document.name %>
+</td>
+<% Rails.application.config.document_fields.each do |field, optional| %>
+	<% unless @document && optional %>
+		<td>
+			<% if document.respond_to? field %>
+			    <% if field.eql?('annotated_locs') %>
+			    	<%= document.send(field.to_sym, current_user.id) %>
+			    <% else %>
+    				<%= document.send(field.to_sym) %>
+    			<% end %>
+			<% else %>
+				<% metadata_group, metadata_key = field.split('.',2) %>
+				<% if metadata_group && metadata_key %>
+					<% metadata = document.metadatum_values.select{|mv| mv.metadata_key.metadata_group.name.eql?(metadata_group) && mv.metadata_key.name.eql?(metadata_key) } %>
+					<%= metadata.first.content if metadata.any? %>
+				<% end %>
+			<% end %>
+		</td>
+	<% end %>
+<% end %>
+<% unless Rails.application.config.hide_document_lock_in_index %>
+	<td class="center document-lock <%= document.locked? ? 'locked' : 'unlocked' %>">
+		<%= fa_icon(document.locked? ? "lock" : "unlock-alt", class: "fa-lg") %>
+	</td>
+<% end %>

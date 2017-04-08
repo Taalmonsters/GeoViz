@@ -7,19 +7,26 @@ class Extract < ActiveRecord::Base
     .select{|entity_mention| entity_mention.latitude && entity_mention.latitude.content && entity_mention.longitude && entity_mention.longitude.content }
     .group_by{|entity_mention| [entity_mention.latitude.content.to_f, entity_mention.longitude.content.to_f] } }
   scope :locations, -> { with_locations.map{|extract| [extract,extract.entity_mentions] }.to_h }
+  scope :user_locations, -> user_id { with_locations.map{|extract| [extract,extract.entity_mentions.select{|entity_mention| entity_mention.audits.where("user_id = ?", user_id).any? }] }.to_h }
   scope :with_locations, -> { includes(:entity_mentions).merge(NestedMetadata::EntityMention.as_locations) }
   
   scope :token_count_in_range, -> boundary { where("token_count >= ? AND token_count <= ?", boundary[0], boundary[1]) }
   scope :annotated_by_user, -> user_id { joins(:entity_mentions => [:audits]).where("audits.user_id = ?", Extract.get_user_id(user_id[0])) }
   scope :grouped_by_annotator, -> { joins(:entity_mentions => [:audits]).group("audits.user_id") }
   
-  def annotated_locs
+  def annotated_locs(user_id)
+    return self.get_group_entity_count("Annotations", user_id)
+  end
+
+  def annotated_locs_total
     return self.get_group_entity_count("Annotations")
   end
   
-  def annotated_word_ids
+  def annotated_word_ids(user_id)
     id_key = NestedMetadata::MetadataGroup.has_name("Annotations").first.metadata_keys.has_name("id").first
-    self.source_document.entity_mentions.has_group_name("Annotations").with_value_for_key(id_key, "word_id").uniq.map{|entity_mention| [entity_mention.word_id, entity_mention.id] }.to_h
+    return self.source_document.entity_mentions.has_group_name("Annotations").with_value_for_key(id_key, "word_id").uniq
+        .select{|entity_mention| entity_mention.audits.where("user_id = ?", user_id).any? }
+        .map{|entity_mention| [entity_mention.word_id, entity_mention.id] }.to_h
   end
   
   def geoparser_locs
@@ -43,6 +50,10 @@ class Extract < ActiveRecord::Base
   
   def locations
     self.source_document.entity_mentions.as_locations
+  end
+
+  def user_locations(group, user_id)
+    self.source_document.entity_mentions.as_locations.has_group_name(group).select{|entity_mention| entity_mention.audits.where("user_id = ?", user_id).any? }
   end
   
   def word_annotated(word_id)
@@ -79,8 +90,12 @@ class Extract < ActiveRecord::Base
   
   protected
   
-  def get_group_entity_count(group)
-    self.locations.has_group_name(group).count
+  def get_group_entity_count(group, user_id = nil)
+    if user_id
+      return self.user_locations(group, user_id).count
+    else
+      return self.locations.has_group_name(group).count
+    end
   end
   
 end
