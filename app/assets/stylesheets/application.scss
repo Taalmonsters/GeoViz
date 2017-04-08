@@ -159,6 +159,9 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
     max-height: calc(100% - 60px);
   }
   &#alternatives-dialog {
+    width: 75%;
+    height: calc(100% - 100px);
+    max-height: calc(100% - 100px);
     box-shadow: 0px 0px 10px #888888;
   }
 }

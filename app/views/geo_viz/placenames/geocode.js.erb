@@ -2,12 +2,11 @@
 	clearMarkersForGroup("extract-map", "New");
 	clearMarkersForGroup("extract-map-fullscreen", "New");
 	setExtractControls(<%= @marker.to_json.html_safe %>);
+	var nameParent = $("[id=name_content]").parent();
+	$(nameParent).find(".btn").remove();
 	<% if @response.count > 1 %>
 		$("#alternatives").html("<%= escape_javascript(raw render partial: "geo_viz/placenames/alternatives", layout: false) %>");
-		var nameParent = $("[id=name_content]").parent();
-		if ($(nameParent).find(".btn").length == 0) {
-			$(nameParent).append('<%= link_to content_tag(:span, "", class: "glyphicon glyphicon-globe"), "#alternatives", :class => "btn btn-xs input-group-addon", "data-toggle" => "modal" %>');
-		}
+		$(nameParent).append('<%= link_to content_tag(:span, "", class: "glyphicon glyphicon-globe"), "#alternatives", :class => "btn btn-xs input-group-addon", "data-toggle" => "modal" %>');
 	<% end %>
 	clearUnsavedMarkers();
 	var m1 = addMarkerToMap(<%= @marker.to_json.html_safe %>, "extract-map");

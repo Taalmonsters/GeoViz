@@ -11,38 +11,59 @@
         	<table class="table table-condensed table-striped">
         		<thead>
         			<tr>
+        				<th>Gazetteer</th>
         				<th>Toponym</th>
         				<th>Lat</th>
         				<th>Lng</th>
         				<th>Country</th>
+        				<th>Type</th>
         			</tr>
         		</thead>
         		<tbody id="selected-body">
 	            	<tr class="alternative selected" data-json="<%= @marker.to_json %>">
+	            		<td><%= @marker.gazetteer %></td>
 	            		<td><%= @marker.label %></td>
 	            		<td><%= @marker.lat %></td>
 	            		<td><%= @marker.lng %></td>
 	            		<td><%= @marker.country %></td>
+	            		<td><%= @marker.type %></td>
 	            	</tr>
             	</tbody>
             </table>
         	<h4>Alternatives:</h4>
-        	<table class="table table-condensed table-striped">
+        	<% geonames = @response[1..@response.count-1].select{|l| l.gazetteer.eql?("geonames") } %>
+        	<% dbpedia = @response[1..@response.count-1].select{|l| l.gazetteer.eql?("dbpedia") } %>
+        	<% current_gazetteer = 'geonames' %>
+        	<% if geonames.any? && dbpedia.any? %>
+        	    <div>
+        	        <button class="btn btn-xs btn-success" onclick="$('#alt-table .geonames').removeClass('hidden'); $('#alt-table .dbpedia').addClass('hidden');">Geonames</button>
+        	        <button class="btn btn-xs btn-primary" onclick="$('#alt-table .dbpedia').removeClass('hidden'); $('#alt-table .geonames').addClass('hidden');">DBPedia</button>
+        	    </div>
+        	<% else %>
+        	    <% current_gazetteer = 'dbpedia' if dbpedia.any? %>
+        	<% end %>
+        	<table id="alt-table" class="table table-condensed table-striped">
         		<thead>
         			<tr>
+        				<th>Gazetteer</th>
         				<th>Toponym</th>
         				<th>Lat</th>
         				<th>Lng</th>
-        				<th>Country</th>
+        				<th class="geonames <%= 'hidden' unless current_gazetteer.eql?('geonames') %>">Country</th>
+        				<th class="geonames <%= 'hidden' unless current_gazetteer.eql?('geonames') %>">Type</th>
+        				<th class="dbpedia <%= 'hidden' unless current_gazetteer.eql?('dbpedia') %>">Description</th>
         			</tr>
         		</thead>
         		<tbody id="alternatives-body">
 	            <% @response[1..@response.count-1].each do |location| %>
-	            	<tr class="alternative" data-json='<%= location.to_json %>'>
+	            	<tr class="alternative <%= location.gazetteer %> <%= 'hidden' unless current_gazetteer.eql?(location.gazetteer) %>" data-json='<%= location.to_json %>'>
+	            		<td><%= location.gazetteer %></td>
 	            		<td><%= location.label %></td>
 	            		<td><%= location.lat %></td>
 	            		<td><%= location.lng %></td>
-	            		<td><%= location.country %></td>
+	            		<td class="geonames <%= 'hidden' unless current_gazetteer.eql?('geonames') %>"><%= location.country %></td>
+	            		<td class="geonames <%= 'hidden' unless current_gazetteer.eql?('geonames') %>"><%= location.type %></td>
+	            		<td class="dbpedia <%= 'hidden' unless current_gazetteer.eql?('dbpedia') %>"><%= location.infowindow %></td>
 	            	</tr>
 	            <% end %>
             	</tbody>

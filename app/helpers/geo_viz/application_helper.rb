@@ -1,5 +1,23 @@
 module GeoViz
   module ApplicationHelper
+
+    def get_dbpedia_marker(data)
+      name = data.label.to_s
+      lat = data["lat"] ? data["lat"].to_s : "0"
+      lng = data["long"] ? data["long"].to_s : "0"
+      marker = Taalmonsters::Maps::Google::SimpleMapMarker.new
+      marker.set_coordinates(lat.to_f,lng.to_f)
+      marker.label = name
+      marker.title = "New"
+      marker.letter = name[0]
+      marker.gazetteer = "dbpedia"
+      marker.gazref = data["id"].to_s
+      marker.type = "Place"
+      marker.color = "17aed4"
+      marker.infowindow = data['desc'].to_s
+      marker.draggable = true
+      return marker
+    end
     
     def get_marker(data)
       name = data.has_key?("name") ? data["name"] : data["toponymName"]
@@ -47,6 +65,28 @@ module GeoViz
         map.add_marker(marker)
       end
       return map
+    end
+
+    def searchDbPedia(query)
+        puts "SEARCHING"
+        return Dbpedia.sparql.query("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"+
+            "PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>\n"+
+            "PREFIX dbo: <http://dbpedia.org/ontology/>\n"+
+            "PREFIX desc:<http://www.w3.org/2000/01/rdf-schema#>\n"+
+            "\n"+
+            "select distinct * where {\n"+
+            "    ?s a dbo:Place .\n"+
+            "    ?s dbo:wikiPageID ?id.\n"+
+            "    ?s rdfs:label ?label.\n"+
+            "    ?s desc:comment ?desc.\n"+
+            "    OPTIONAL { ?s geo:lat ?lat. }\n"+
+            "    OPTIONAL { ?s geo:long ?long. }\n"+
+            "    FILTER langMatches( lang(?label), \"EN\" ).\n"+
+            "    FILTER (langMatches(lang(?desc),\"en\")).\n"+
+            "    ?label bif:contains \"'#{query}'\"\n"+
+            "    FILTER (!regex(?label, \"(articles|involving|Wiki)\",\"i\")) .\n"+
+            "}\n"+
+            "LIMIT 50")
     end
     
   end

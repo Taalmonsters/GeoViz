@@ -7,6 +7,8 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem "better_errors"
 gem 'clipboard-rails'
+gem 'dbpedia'
+gem 'sparql-client'
 
 group :development, :test do
   gem 'byebug'

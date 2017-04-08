@@ -13,7 +13,8 @@ module GeoViz
       @response = nil
       if params.has_key?(:q)
         @location_query = params[:q]
-        @response = Taalmonsters::Geonames::Client.search(geocode_params(params)).map{|r| get_marker(r) }
+        @response = Taalmonsters::Geonames::Client.search(geocode_params(params)).map{|r| get_marker(r) } +
+            searchDbPedia(@location_query).map{|r| get_dbpedia_marker(r) }
       elsif params.has_key?(:lat) && params.has_key?(:lng)
         @location_query = "#{params[:lat]},#{params[:lng]}"
         @response = Taalmonsters::Geonames::Client.find_nearby_place_name(find_nearby_params(params)).map{|r| get_marker(r) }
@@ -65,7 +66,7 @@ module GeoViz
     
     def geocode_params(params)
       params = params.slice(:q)
-      params["maxRows"] = 25
+      params["maxRows"] = 50
       return params
     end
     

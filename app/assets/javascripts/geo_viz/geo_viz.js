@@ -168,8 +168,17 @@ function setExtractControls(data) {
 	$("#extract-controls #name_content").val(data["label"]);
 	$("#extract-controls #country_content").val(data["country"]);
 	$("#extract-controls #population_content").val(data["population"]);
-	$("#extract-controls #gazetteer_content").val(data["gazetteer"]);
-	$("#extract-controls #gazref_content").val(data["gazref"]);
+	if (data["gazetteer"] && data["gazref"]) {
+	    $("#extract-controls #gazetteer_content").val(data["gazetteer"]);
+    	$("#extract-controls #gazref_content").val(data["gazref"]);
+    	var url = data["gazetteer"] === 'geonames' ? 'http://www.geonames.org/' : 'https://en.wikipedia.org/?curid=';
+    	url = url + data["gazref"];
+    	var parent = $("#extract-controls #gazref_content").parent();
+    	$(parent).find(".btn").remove();
+    	$(parent).append('<a href="'+url+'" class="btn btn-xs input-group-addon" target="_blank"><span class="glyphicon glyphicon-link"></span></a>');
+    } else {
+        $("#extract-controls #gazref_content").parent().find(".btn").remove();
+    }
 	$("#extract-controls #type_content").val(data["type"]);
 }
 
