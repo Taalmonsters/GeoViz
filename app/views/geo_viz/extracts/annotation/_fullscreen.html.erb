@@ -8,7 +8,8 @@
 		</div>
         <div class="modal-body">
         	<div class="col-xs-6">
-        		<button id="new-marker" class="btn btn-xs btn-success disabled new"><span class="glyphicon glyphicon-map-marker"></span> Add marker</button><br/>
+        		<button id="new-marker" class="btn btn-xs btn-success disabled new"><span class="glyphicon glyphicon-map-marker"></span> Add marker</button>
+        		<span class="loading hidden"></span><br/>
         		<div id="extract-map-fullscreen" class="google-map new" data-url="/map.json?source_document_id=<%= @source_document.id %>&<%= @filter_params %>"></div>
         	</div>
         	<div class="col-xs-6">

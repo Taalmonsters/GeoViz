@@ -48,6 +48,8 @@ $(document).on("click", "#new-marker", function(e) {
 
 $(document).on("change", "#extract-controls #name_content", function(e) {
 	var group_entity = $("#extract-controls").find("div.group-entity").first();
+	$('span.loading').removeClass('hidden');
+	$('#extract-controls').addClass('loading');
 	if ($(group_entity).hasClass("update")) {
 		$.getScript("/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&q="+$(this).val());
 	} else {
