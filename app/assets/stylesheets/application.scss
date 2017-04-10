@@ -46,6 +46,9 @@ div.paragraph {
         margin-left: -4px;
         // border: 1px solid red;
       }
+      &.geoparser {
+        background-color: #CCC;
+      }
       &.annotated {
         background-color: #13986D;
         color: #FFF;

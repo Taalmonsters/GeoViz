@@ -28,6 +28,12 @@ class Extract < ActiveRecord::Base
         .select{|entity_mention| entity_mention.audits.where("user_id = ?", user_id).any? }
         .map{|entity_mention| [entity_mention.word_id, entity_mention.id] }.to_h
   end
+
+  def geoparser_word_ids
+    id_key = NestedMetadata::MetadataGroup.has_name("GeoParser").first.metadata_keys.has_name("id").first
+    return self.source_document.entity_mentions.has_group_name("GeoParser").with_value_for_key(id_key, "word_id").uniq
+        .map{|entity_mention| [entity_mention.word_id, entity_mention.id] }.to_h
+  end
   
   def geoparser_locs
     return self.get_group_entity_count("GeoParser")
