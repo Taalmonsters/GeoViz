@@ -23,11 +23,6 @@ div.row.main-content {
     height: calc(100% - 56px);
 }
 
-#source-document #source-document-group {
-    height: calc(100% - 54px);
-    overflow-y: auto;
-}
-
 #source-document > hr.no-bottom-margin {
     margin-bottom: 4px;
 }
@@ -62,19 +57,17 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
   padding: 0 !important;
 }
 
-#source-document #source-document-group {
-  overflow: hidden;
-}
-
-#source-document-group {
-  padding-bottom: 0 !important;
-}
-
-#source-document-group-entity-mentions > .row {
-    height: calc(100% - 265px);
-    > div {
-        height: 100%;
+#source-document {
+    padding-bottom: 0;
+    overflow-y: auto;
+    #source-document-group {
+        height: auto;
+        overflow-x: hidden;
     }
+}
+
+#source-document-group-entity-mentions {
+    height: auto;
 }
 
 #extract-content {
@@ -82,7 +75,7 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
   margin: 0;
   padding: 20px;
   width: 100%;
-  height: 100%;
+  height: 300px;
   overflow-y: auto;
   font-size: small;
   background: #FFF;
@@ -94,7 +87,6 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
   position: relative;
   vertical-align: top;
   padding: 0;
-  margin-bottom: 20px;
   width: 50%;
   .entity-mention-value {
     display: inline-block;
@@ -120,11 +112,14 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
             padding-right: 0 !important;
         }
     }
+    &.position_wrt_main {
+        width: 40%;
+    }
     &.part_of_name, &.person {
         width: 49%;
     }
     &.is_main_location, &.near_main_location {
-        width: 25%;
+        width: 140px;
     }
   }
   .controls .btn {
@@ -134,12 +129,13 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
 }
 
 #extract-map {
+  margin-bottom: 20px;
   width: calc(50% - 2px);
-  height: inherit;
+  height: 300px;
 }
 
 #extract-controls {
-  padding: 10px 0;
+  padding-top: 10px;
   padding-left: 5px;
   width: 100%;
 }
@@ -212,4 +208,15 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
 
 .selected-for-annotation {
     color: #FFF;
+}
+
+#footer {
+  width: auto;
+  height: 16px;
+  text-align: left;
+  font-size: 10px;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  background-color: #EEE;
 }
