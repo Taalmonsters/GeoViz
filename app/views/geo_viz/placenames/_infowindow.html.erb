@@ -1,11 +1,19 @@
 <div class="infowindow">
-	<h4><%= name %></h4>
+	<h4><%= names.join('/') %></h4>
+	<% unless description.blank? %>
+	    <p><%= description.desc.to_s.html_safe %></p>
+	    <p><a class="btn btn-xs btn-primary" href="<%= description.s.to_s %>" target="_blank">DBPedia</a> <a class="btn btn-xs btn-default" style="color: #000;" href="https://en.wikipedia.org/?curid=<%= description.id.to_s %>" target="_blank">Wikipedia</a></p>
+	<% end %>
 	<% if extracts %>
         <p>
             Found in <%= extracts.count %> extracts:
             <ul class="list-inline">
                 <% extracts.each do |extract| %>
-                    <li><a href="/documents?id=<%= extract.id %>&group=Annotations"><%= extract.name %></a></li>
+                    <% if current_user %>
+                        <li><a href="/documents?id=<%= extract.id %>&group=Annotations"><%= extract.name %></a></li>
+                    <% else %>
+                        <li><%= extract.name %></li>
+                    <% end %>
                 <% end %>
             </ul>
         </p>

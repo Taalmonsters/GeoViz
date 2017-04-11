@@ -1,7 +1,9 @@
 Rails.application.config.to_prepare do
   NestedMetadata::EntityMention.class_eval do
+    has_one :dbpedia_id, -> { select("#{NestedMetadata::MetadatumValue.table_name}.*").where("#{NestedMetadata::MetadatumValue.table_name}.metadata_key_id IN (#{NestedMetadata::MetadataKey.with_name("dbpedia id").all.map{|key| key.id }.join(",")})") }, class_name: "NestedMetadata::MetadatumValue"
     has_one :latitude, -> { select("#{NestedMetadata::MetadatumValue.table_name}.*").where("#{NestedMetadata::MetadatumValue.table_name}.metadata_key_id IN (#{NestedMetadata::MetadataKey.with_name("latitude").all.map{|key| key.id }.join(",")})") }, class_name: "NestedMetadata::MetadatumValue"
     has_one :longitude, -> { select("#{NestedMetadata::MetadatumValue.table_name}.*").where("#{NestedMetadata::MetadatumValue.table_name}.metadata_key_id IN (#{NestedMetadata::MetadataKey.with_name("longitude").all.map{|key| key.id }.join(",")})") }, class_name: "NestedMetadata::MetadatumValue"
+    has_one :gazetteer, -> { select("#{NestedMetadata::MetadatumValue.table_name}.*").where("#{NestedMetadata::MetadatumValue.table_name}.metadata_key_id IN (#{NestedMetadata::MetadataKey.with_name("gazetteer").all.map{|key| key.id }.join(",")})") }, class_name: "NestedMetadata::MetadatumValue"
     has_one :name, -> { select("#{NestedMetadata::MetadatumValue.table_name}.*").where("#{NestedMetadata::MetadatumValue.table_name}.metadata_key_id IN (#{NestedMetadata::MetadataKey.with_name("name").all.map{|key| key.id }.join(",")})") }, class_name: "NestedMetadata::MetadatumValue"
     has_one :country, -> { select("#{NestedMetadata::MetadatumValue.table_name}.*").where("#{NestedMetadata::MetadatumValue.table_name}.metadata_key_id IN (#{NestedMetadata::MetadataKey.with_name("country").all.map{|key| key.id }.join(",")})") }, class_name: "NestedMetadata::MetadatumValue"
     

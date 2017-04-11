@@ -1,0 +1,68 @@
+<div id="alternatives-dialog" class="modal-dialog" role="document">
+	<div class="model-content">
+		<div class="modal-header">
+			<button aria-hidden="true" class="close" data-dismiss="modal" type="button">
+				&times;
+			</button>
+			<h4 class="modal-title" id="dbpediaAlternativesModal">Select an alternative location for: "<%= @dbp_location_query %>"</h4>
+		</div>
+        <div class="modal-body">
+            <% if @dbp_response.any? %>
+                <h4>Currently selected:</h4>
+                <table class="table table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>Gazetteer</th>
+                            <th>Toponym</th>
+                            <th>Lat</th>
+                            <th>Lng</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dbp-selected-body">
+                        <tr class="dbp-alternative selected" data-json="<%= @dbp_response[0].to_json %>">
+                            <td><%= @dbp_response[0].gazetteer %></td>
+                            <td><%= @dbp_response[0].label %></td>
+                            <td><%= @dbp_response[0].lat %></td>
+                            <td><%= @dbp_response[0].lng %></td>
+                            <td><%= @dbp_response[0].type %></td>
+                            <td><%= @dbp_response[0].infowindow %></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <% if @dbp_response.count > 1 %>
+                    <h4>Alternatives:</h4>
+                    <table id="alt-table" class="table table-condensed table-striped">
+                        <thead>
+                            <tr>
+                                <th>Gazetteer</th>
+                                <th>Toponym</th>
+                                <th>Lat</th>
+                                <th>Lng</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dbp-alternatives-body">
+                        <% @dbp_response[1..@dbp_response.count-1].each do |location| %>
+                            <tr class="dbp-alternative" data-json='<%= location.to_json %>'>
+                                <td><%= location.gazetteer %></td>
+                                <td><%= location.label %></td>
+                                <td><%= location.lat %></td>
+                                <td><%= location.lng %></td>
+                                <td><%= location.type %></td>
+                                <td><%= location.infowindow %></td>
+                            </tr>
+                        <% end %>
+                        </tbody>
+                    </table>
+                <% else %>
+                    <p>No alternatives found on DBPedia.</p>
+                <% end %>
+            <% else %>
+                <p>No matches found on DBPedia.</p>
+            <% end %>
+        </div>
+    </div>
+</div>

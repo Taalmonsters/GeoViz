@@ -12,7 +12,7 @@ module GeoViz
       marker.letter = name[0]
       marker.gazetteer = "dbpedia"
       marker.gazref = data["id"].to_s
-      marker.type = "Place"
+      marker.type = data["type"].to_s.sub('http://dbpedia.org/ontology/','')
       marker.color = "17aed4"
       marker.infowindow = data['desc'].to_s
       marker.draggable = true
@@ -68,24 +68,43 @@ module GeoViz
     end
 
     def searchDbPedia(query)
-        return Dbpedia.sparql.query("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"+
-            "PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>\n"+
-            "PREFIX dbo: <http://dbpedia.org/ontology/>\n"+
-            "PREFIX desc:<http://www.w3.org/2000/01/rdf-schema#>\n"+
-            "\n"+
-            "select distinct * where {\n"+
-            "    ?s a dbo:Place .\n"+
-            "    ?s dbo:wikiPageID ?id.\n"+
-            "    ?s rdfs:label ?label.\n"+
-            "    ?s desc:comment ?desc.\n"+
-            "    OPTIONAL { ?s geo:lat ?lat. }\n"+
-            "    OPTIONAL { ?s geo:long ?long. }\n"+
-            "    FILTER langMatches( lang(?label), \"EN\" ).\n"+
-            "    FILTER (langMatches(lang(?desc),\"en\")).\n"+
-            "    ?label bif:contains \"'#{query}'\"\n"+
-            "    FILTER (!regex(?label, \"(articles|involving|Wiki)\",\"i\")) .\n"+
-            "}\n"+
-            "LIMIT 50")
+      return [] if query.blank?
+      return Dbpedia.sparql.query("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"+
+        "PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>\n"+
+        "PREFIX dbo: <http://dbpedia.org/ontology/>\n"+
+        "PREFIX desc:<http://www.w3.org/2000/01/rdf-schema#>\n"+
+        "\n"+
+        "SELECT DISTINCT ?id (SAMPLE(?s) AS ?s) (SAMPLE(?label) AS ?label) (SAMPLE(?type) AS ?type) (SAMPLE(?desc) AS ?desc) (SAMPLE(?lat) AS ?lat) (SAMPLE(?lng) AS ?lng) WHERE {\n"+
+        "    ?s a ?type .\n"+
+        "    FILTER (?type = dbo:ArchitecturalStructure || ?type = dbo:CelestialBody || ?type = dbo:HistoricPlace || ?type = dbo:Monument || ?type = dbo:NaturalPlace || ?type = dbo:Park || ?type = dbo:PopulatedPlace).\n"+
+        "    ?s dbo:wikiPageID ?id.\n"+
+        "    ?s rdfs:label ?label.\n"+
+        "    ?s desc:comment ?desc.\n"+
+        "    OPTIONAL { ?s geo:lat ?lat. }\n"+
+        "    OPTIONAL { ?s geo:long ?lng. }\n"+
+        "    FILTER langMatches( lang(?label), \"EN\" ).\n"+
+        "    FILTER (langMatches(lang(?desc),\"EN\")).\n"+
+        "    ?label bif:contains \"'#{query}'\".\n"+
+        "}\n"+
+        "ORDER BY strlen(str(?label))\n"+
+        "LIMIT 50")
+    end
+
+    def get_dbpedia_descriptions(ids = [])
+      return [] unless ids.any?
+      ids = '?id = '+ids.join(' || ?id = ')
+      return Dbpedia.sparql.query("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"+
+          "PREFIX dbo: <http://dbpedia.org/ontology/>\n"+
+          "PREFIX desc:<http://www.w3.org/2000/01/rdf-schema#>\n"+
+          "\n"+
+          "select distinct * where {\n"+
+          "    ?s dbo:wikiPageID ?id.\n"+
+          "    FILTER (#{ids}).\n"+
+          "    ?s rdfs:label ?label.\n"+
+          "    ?s desc:comment ?desc.\n"+
+          "    FILTER langMatches( lang(?label),\"EN\" ).\n"+
+          "    FILTER (langMatches(lang(?desc),\"EN\")).\n"+
+          "}")
     end
     
   end

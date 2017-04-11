@@ -36,6 +36,16 @@
                                         <%= ff.text_field :content, :id => "#{key.name.gsub(' ','_')}_content", :value => val, :class => "form-control", :readonly => !key.editable %>
                                     <% end %>
                                 <% end %>
+
+                                <% if key.name.eql?('dbpedia id') %>
+                                    <a href="https://en.wikipedia.org/?curid=<%= metadatum_value.content %>" class="btn btn-xs input-group-addon" target="_blank"><span class="glyphicon glyphicon-link"></span></a>
+                                <% elsif key.name.eql?('gazref') %>
+                                    <%  if entity_mention.gazetteer.eql?('dbpedia') %>
+                                        <a href="https://en.wikipedia.org/?curid=<%= metadatum_value.content %>" class="btn btn-xs input-group-addon" target="_blank"><span class="glyphicon glyphicon-link"></span></a>
+                                    <% else %>
+                                        <a href="http://www.geonames.org/<%= metadatum_value.content %>" class="btn btn-xs input-group-addon" target="_blank"><span class="glyphicon glyphicon-link"></span></a>
+                                    <% end %>
+                                <% end %>
                             </div>
                         </div>
                     </div>

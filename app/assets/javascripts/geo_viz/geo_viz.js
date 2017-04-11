@@ -2,7 +2,8 @@ var unsavedMarkers = [];
 var clip = null;
 
 $(document).ready(function() {
-	$('#alternatives').modal("hide");
+	$('#dbpedia_alternatives').modal("hide");
+	$('#geonames_alternatives').modal("hide");
 	$('#annotate-fullscreen').modal("hide");
 	clip = new Clipboard('.clipboard-btn');
 });
@@ -57,6 +58,18 @@ $(document).on("change", "#extract-controls #name_content", function(e) {
 	}
 });
 
+$(document).on("change", "#extract-controls #dbpedia_content", function(e) {
+	var group_entity = $("#extract-controls").find("div.group-entity").first();
+	$('span.loading').removeClass('hidden');
+	$('#extract-controls').addClass('loading');
+	var upd_gn = $('#extract-controls #name_content').val().length == 0;
+	if ($(group_entity).hasClass("update")) {
+		$.getScript("/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&dbpedia="+$(this).val()+"&update_gn="+upd_gn);
+	} else {
+		$.getScript("/placenames/geocode.js?dbpedia="+$(this).val()+"&update_gn="+upd_gn);
+	}
+});
+
 $(document).on("keypress", "form", function (e) {
     if (e.keyCode == 13) {
         return false;
@@ -90,6 +103,28 @@ $(document).on("click", "tr.alternative", function(e) {
 	}
 });
 
+$(document).on("click", "tr.dbp-alternative", function(e) {
+	var json = $(this).data("json");
+	// Update fields in extract-controls
+	setDBPediaExtractControls(json);
+	if (json["lat"] && json["lng"]) {
+        clearMarkersForGroup("extract-map", "New");
+        clearMarkersForGroup("extract-map-fullscreen", "New");
+        addMarkerToMap(json, "extract-map");
+        addMarkerToMap(json, "extract-map-fullscreen");
+	}
+	if (!$(this).hasClass("selected")) {
+		// Move currently selected row to alternatives table
+		var selected = $("#dbp-selected-body").find("tr").first().remove();
+		$(selected).removeClass("selected");
+		$("#dbp-alternatives-body").append(selected);
+		// Move newly selected row from alternatives table to selected table
+		var alternative = $(this).remove();
+		$(alternative).addClass("selected");
+		$("#dbp-selected-body").append(alternative);
+	}
+});
+
 function addMarkerToMap(item, mapId) {
 	var map = maps[mapId];
 	var marker = newMapMarker(map, item, mapId);
@@ -99,10 +134,11 @@ function addMarkerToMap(item, mapId) {
 		$("#extract-controls").find("#latitude_content").first().val(lat);
 		$("#extract-controls").find("#longitude_content").first().val(lng);
 		var group_entity = $("#extract-controls").find("div.group-entity").first();
+	    var upd_dbp = $('#extract-controls #dbpedia_content').val().length == 0;
 		if ($(group_entity).hasClass("update")) {
-			$.getScript("/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&lat="+lat+"&lng="+lng);
+			$.getScript("/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&lat="+lat+"&lng="+lng+"&update_dbp="+upd_dbp);
 		} else {
-			$.getScript("/placenames/geocode.js?lat="+lat+"&lng="+lng);
+			$.getScript("/placenames/geocode.js?lat="+lat+"&lng="+lng+"&update_dbp="+upd_dbp);
 		}
 	});
 	mapMarkers[mapId].push(marker);
@@ -128,7 +164,14 @@ function clearExtractControls(clearId) {
 	$("#extract-controls #population_content").val("");
 	$("#extract-controls #gazetteer_content").val("");
 	$("#extract-controls #gazref_content").val("");
+	$("#extract-controls #dbpedia_content").val("");
+	$("#extract-controls #dbpedia_id_content").val("");
 	$("#extract-controls #type_content").val("");
+	$("#extract-controls #location_type_content").val("");
+	$("#extract-controls #position_wrt_main_content").val("");
+	$("#extract-controls #is_main_location_content").attr('checked', false);
+	$("#extract-controls #near_main_location_content").attr('checked', false);
+	$("#extract-controls #person_content").attr('checked', false);
 }
 
 function clearMarkersForGroup(mapId, group) {
@@ -175,15 +218,38 @@ function setExtractControls(data) {
 	if (data["gazetteer"] && data["gazref"]) {
 	    $("#extract-controls #gazetteer_content").val(data["gazetteer"]);
     	$("#extract-controls #gazref_content").val(data["gazref"]);
-    	var url = data["gazetteer"] === 'geonames' ? 'http://www.geonames.org/' : 'https://en.wikipedia.org/?curid=';
-    	url = url + data["gazref"];
+    	var url = 'http://www.geonames.org/' + data["gazref"];
     	var parent = $("#extract-controls #gazref_content").parent();
     	$(parent).find(".btn").remove();
     	$(parent).append('<a href="'+url+'" class="btn btn-xs input-group-addon" target="_blank"><span class="glyphicon glyphicon-link"></span></a>');
     } else {
         $("#extract-controls #gazref_content").parent().find(".btn").remove();
     }
+    if (data["dbpedia"] && data["dbpedia_id"]) {
+        $("#extract-controls #dbpedia_content").val(data["dbpedia"]);
+        $("#extract-controls #dbpedia_id_content").val(data["dbpedia_id"]);
+        var url = 'https://en.wikipedia.org/?curid=' + data["dbpedia_id"];
+        var parent = $("#extract-controls #dbpedia_id_content").parent();
+        $(parent).find(".btn").remove();
+        $(parent).append('<a href="'+url+'" class="btn btn-xs input-group-addon" target="_blank"><span class="glyphicon glyphicon-link"></span></a>');
+    } else {
+        $("#extract-controls #dbpedia_id_content").parent().find(".btn").remove();
+    }
 	$("#extract-controls #type_content").val(data["type"]);
+}
+
+function setDBPediaExtractControls(data) {
+    console.log(data);
+    if (data["label"] && data["gazref"]) {
+	    $("#extract-controls #dbpedia_content").val(data["label"]);
+    	$("#extract-controls #dbpedia_id_content").val(data["gazref"]);
+    	var url = 'https://en.wikipedia.org/?curid=' + data["gazref"];
+    	var parent = $("#extract-controls #dbpedia_id_content").parent();
+    	$(parent).find(".btn").remove();
+    	$(parent).append('<a href="'+url+'" class="btn btn-xs input-group-addon" target="_blank"><span class="glyphicon glyphicon-link"></span></a>');
+    } else {
+        $("#extract-controls #dbpedia_id_content").parent().find(".btn").remove();
+    }
 }
 
 function elementIdsToString(elements) {

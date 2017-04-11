@@ -43,6 +43,9 @@ div.paragraph {
       }
       &.geoparser {
         background-color: #CCC;
+        &.selected-for-annotation {
+          background-color: #17aed4;
+        }
       }
       &.annotated {
         background-color: #13986D;
@@ -58,16 +61,31 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
 }
 
 #source-document {
-    padding-bottom: 0;
+    padding-bottom: 0 !important;
+    overflow: hidden;
     overflow-y: auto;
     #source-document-group {
-        height: auto;
-        overflow-x: hidden;
+        height: calc(100% - 54px);
+        min-height: 580px;
+        overflow: hidden;
+        padding-bottom: 0 !important;
+        margin: 0 !important;
     }
 }
 
 #source-document-group-entity-mentions {
-    height: auto;
+    height: 100% !important;
+    overflow: hidden;
+}
+
+#annotate-top-row {
+  margin-bottom: 10px;
+  height: calc(100% - 290px);
+  min-height: 290px;
+  overflow: hidden;
+  > div {
+    height: 100%;
+  }
 }
 
 #extract-content {
@@ -75,7 +93,7 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
   margin: 0;
   padding: 20px;
   width: 100%;
-  height: 300px;
+  height: 100%;
   overflow-y: auto;
   font-size: small;
   background: #FFF;
@@ -119,7 +137,7 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
         width: 49%;
     }
     &.is_main_location, &.near_main_location {
-        width: 140px;
+        width: 24%;
     }
   }
   .controls .btn {
@@ -131,11 +149,10 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
 #extract-map {
   margin-bottom: 20px;
   width: calc(50% - 2px);
-  height: 300px;
+  height: 100%;
 }
 
 #extract-controls {
-  padding-top: 10px;
   padding-left: 5px;
   width: 100%;
 }
@@ -146,16 +163,19 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
     height: calc(100% - 56px);
     > div {
       height: calc(100% - 30px);
+      &:nth-child(2) {
+        overflow-y: auto;
+      }
       #extract-map-fullscreen {
         height: 100%;
       }
       #extract-controls {
         width: 100%;
-        height: 250px;
+        height: auto;
         margin: 0;
       }
       #extract-content {
-        height: calc(100% - 240px);
+        height: auto;
         border: 1px solid grey;
       }
     }
@@ -164,7 +184,7 @@ form.new_entity_mention > div, form.edit_entity_mention > div {
 
 .modal-dialog {
   background-color: #EEE;
-  tr.alternative {
+  tr.alternative, tr.dbp-alternative {
     cursor: pointer;
     &:hover {
       background-color: #17aed4;

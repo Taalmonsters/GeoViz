@@ -1,7 +1,7 @@
 <%= link_to "<span class='glyphicon glyphicon-fullscreen'></span> Show fullscreen".html_safe, "#annotate-fullscreen", :id => "open-annotate-fullscreen", :class => "btn btn-xs btn-primary", "data-toggle" => "modal" %>
 <button id="new-marker" class="btn btn-xs btn-success disabled new"><span class="glyphicon glyphicon-map-marker"></span> Add marker</button>
 <span class="loading hidden"></span><br/>
-<div class="row">
+<div class="row" id="annotate-top-row">
     <div class="col-xs-6">
         <%= render partial: "geo_viz/extracts/annotation/map" %>
     </div>

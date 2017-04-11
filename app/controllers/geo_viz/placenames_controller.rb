@@ -10,17 +10,26 @@ module GeoViz
     before_action :load_map, :only => [:locations]
     
     def geocode
-      @response = nil
-      if params.has_key?(:q)
-        @location_query = params[:q]
-        @response = Taalmonsters::Geonames::Client.search(geocode_params(params)).map{|r| get_marker(r) } +
-            searchDbPedia(@location_query).map{|r| get_dbpedia_marker(r) }
+      if params.has_key?(:q) || (params.has_key?(:dbpedia) && params[:update_gn].eql?("true"))
+        @gn_location_query = params.has_key?(:dbpedia) ? params[:dbpedia] : params[:q]
+        @gn_response = Taalmonsters::Geonames::Client.search(geocode_params(params)).map{|r| get_marker(r) }
+        @dbp_location_query = params.has_key?(:dbpedia) ? params[:dbpedia] : @gn_response.any? ? @gn_response.sort_by{|gn| gn.label.length }.first.label : @gn_location_query
+        @dbp_response = searchDbPedia(@dbp_location_query).map{|r| get_dbpedia_marker(r) }
+        @marker = @gn_response && @gn_response.any? ? @gn_response[0] : @dbp_response && @dbp_response.any? ? @dbp_response[0] : nil
       elsif params.has_key?(:lat) && params.has_key?(:lng)
+        @marker = nil
         @location_query = "#{params[:lat]},#{params[:lng]}"
-        @response = Taalmonsters::Geonames::Client.find_nearby_place_name(find_nearby_params(params)).map{|r| get_marker(r) }
-      end
-      if @response && @response[0]
-        @marker = @response[0]
+        @gn_response = Taalmonsters::Geonames::Client.find_nearby_place_name(find_nearby_params(params)).map{|r| get_marker(r) }
+        if @gn_response && @gn_response.any?
+          @marker = @gn_response[0]
+          if params[:update_dbp].eql?("true")
+            @dbp_location_query = @gn_response.sort_by{|gn| gn.label.length }.first.label
+            @dbp_response = searchDbPedia(@dbp_location_query).map{|r| get_dbpedia_marker(r) }
+          end
+        end
+      elsif params.has_key?(:dbpedia)
+        @dbp_location_query = params[:dbpedia]
+        @dbp_response = searchDbPedia(@dbp_location_query).map{|r| get_dbpedia_marker(r) }
       end
       respond_to do |format|
         format.js
@@ -29,23 +38,27 @@ module GeoViz
     
     def infowindow
       map_id = params[:map]
-      entity_mentions = NestedMetadata::EntityMention.includes(:source_document).at_latitude([params[:lat],"#{params[:lat].to_f}"]).includes(:source_document, :name, :country) & NestedMetadata::EntityMention.includes(:source_document).at_longitude([params[:lng],"#{params[:lng].to_f}"]).includes(:source_document, :name, :country)
-      names = entity_mentions.map{|p| p.name.content.titleize }.uniq.join('/')
-      extracts = entity_mentions.map{|entity_mention| entity_mention.source_document.document }
+      entity_mentions = NestedMetadata::EntityMention.includes(:source_document).at_latitude([params[:lat],"#{params[:lat].to_f}"]).includes(:source_document, :name, :dbpedia_id) & NestedMetadata::EntityMention.includes(:source_document).at_longitude([params[:lng],"#{params[:lng].to_f}"]).includes(:source_document, :name, :dbpedia_id)
+      ids = entity_mentions.select{|em| !em.dbpedia_id.blank? }.map{|em| em.dbpedia_id.content.to_i }.uniq
+      names = entity_mentions.map{|em| em.name.content.titleize }.uniq
+      desc = ids.any? ? get_dbpedia_descriptions(ids) : searchDbPedia(names.first)
       if map_id.eql?("extract-map")
         respond_to do |format|
           format.json { render :json => {
             'html' => render_to_string(partial: "geo_viz/placenames/infowindow.html.erb", locals: {
-              name: names,
+              names: names,
+              description: desc.any? ? desc.first : nil,
               extracts: nil
             }, layout: false) }
           }
         end
       else
+        extracts = entity_mentions.map{|entity_mention| entity_mention.source_document.document }.uniq
         respond_to do |format|
           format.json { render :json => {
             'html' => render_to_string(partial: "geo_viz/placenames/infowindow.html.erb", locals: {
-              name: names,
+              names: names,
+              description: desc.any? ? desc.first : nil,
               extracts: extracts
             }, layout: false) }
           }

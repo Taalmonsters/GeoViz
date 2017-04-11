@@ -1,0 +1,68 @@
+<div id="alternatives-dialog" class="modal-dialog" role="document">
+	<div class="model-content">
+		<div class="modal-header">
+			<button aria-hidden="true" class="close" data-dismiss="modal" type="button">
+				&times;
+			</button>
+			<h4 class="modal-title" id="geonamesAlternativesModal">Select an alternative location for: "<%= @gn_location_query %>"</h4>
+		</div>
+        <div class="modal-body">
+            <% if @gn_response.any? %>
+                <h4>Currently selected:</h4>
+                <table class="table table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>Gazetteer</th>
+                            <th>Toponym</th>
+                            <th>Lat</th>
+                            <th>Lng</th>
+                            <th>Country</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody id="selected-body">
+                        <tr class="alternative selected" data-json="<%= @gn_response[0].to_json %>">
+                            <td><%= @gn_response[0].gazetteer %></td>
+                            <td><%= @gn_response[0].label %></td>
+                            <td><%= @gn_response[0].lat %></td>
+                            <td><%= @gn_response[0].lng %></td>
+                            <td><%= @gn_response[0].country %></td>
+                            <td><%= @gn_response[0].type %></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <% if @gn_response.count > 1 %>
+                    <h4>Alternatives:</h4>
+                    <table id="alt-table" class="table table-condensed table-striped">
+                        <thead>
+                            <tr>
+                                <th>Gazetteer</th>
+                                <th>Toponym</th>
+                                <th>Lat</th>
+                                <th>Lng</th>
+                                <th>Country</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tbody id="alternatives-body">
+                        <% @gn_response[1..@gn_response.count-1].each do |location| %>
+                            <tr class="alternative" data-json='<%= location.to_json %>'>
+                                <td><%= location.gazetteer %></td>
+                                <td><%= location.label %></td>
+                                <td><%= location.lat %></td>
+                                <td><%= location.lng %></td>
+                                <td><%= location.country %></td>
+                                <td><%= location.type %></td>
+                            </tr>
+                        <% end %>
+                        </tbody>
+                    </table>
+                <% else %>
+                    <p>No alternatives found on Geonames.</p>
+                <% end %>
+            <% else %>
+                <p>No matches found on Geonames.</p>
+            <% end %>
+        </div>
+    </div>
+</div>
