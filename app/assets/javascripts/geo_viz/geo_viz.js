@@ -127,6 +127,9 @@ $(document).on("click", "tr.dbp-alternative", function(e) {
 
 function addMarkerToMap(item, mapId) {
 	var map = maps[mapId];
+	if (item["color"].indexOf('#') == 0) {
+	    item["color"] = item["color"].substr(1);
+	}
 	var marker = newMapMarker(map, item, mapId);
 	google.maps.event.addListener(marker, 'dragend', function(e) {
 		var lat = e.latLng.lat();
