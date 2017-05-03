@@ -65,7 +65,7 @@ GEM
     concurrent-ruby (1.0.5)
     cookies_eu (1.6.0)
       js_cookie_rails
-    d3-rails (4.7.0)
+    d3-rails (4.8.0)
       railties (>= 3.1)
     dbpedia (0.0.1)
       nokogiri (>= 1.5.5)
@@ -79,8 +79,8 @@ GEM
     elevatezoom-rails (1.0.0)
     erubis (2.7.0)
     execjs (2.7.0)
-    font-awesome-rails (4.7.0.1)
-      railties (>= 3.2, < 5.1)
+    font-awesome-rails (4.7.0.2)
+      railties (>= 3.2, < 5.2)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     hamster (3.0.0)
@@ -120,7 +120,7 @@ GEM
     multi_json (1.12.1)
     multi_xml (0.6.0)
     mysql2 (0.4.5)
-    nested_metadata (0.0.9)
+    nested_metadata (0.0.10)
       audited (~> 4.3)
       devise
       elevatezoom-rails
@@ -130,10 +130,10 @@ GEM
       jquery-ui-rails
       rails (~> 4.2)
       sass-rails (~> 5.0)
-      source_documents (= 0.0.3)
+      source_documents (= 0.0.4)
       taalmonsters-charts (= 0.0.3)
       taalmonsters-geonames (= 0.0.1)
-      taalmonsters-maps (= 0.0.6)
+      taalmonsters-maps (= 0.0.7)
       will_paginate (~> 3.0)
     net-http-persistent (2.9.4)
     nokogiri (1.7.1)
@@ -222,7 +222,7 @@ GEM
     taalmonsters-geonames (0.0.1)
       httparty
       rails (~> 4.2)
-    taalmonsters-maps (0.0.6)
+    taalmonsters-maps (0.0.7)
       d3-rails
       jquery-rails
       rails (~> 4.2)
@@ -255,7 +255,7 @@ DEPENDENCIES
   dbpedia
   jbuilder (~> 2.0)
   mysql2
-  nested_metadata (= 0.0.9)!
+  nested_metadata (= 0.0.10)!
   rack-mini-profiler
   rails (~> 4.2)
   sdoc (~> 0.4.0)
