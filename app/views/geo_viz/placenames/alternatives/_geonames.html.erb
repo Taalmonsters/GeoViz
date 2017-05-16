@@ -7,7 +7,7 @@
 			<h4 class="modal-title" id="geonamesAlternativesModal">Select an alternative location for: "<%= @gn_location_query %>"</h4>
 		</div>
         <div class="modal-body">
-            <% if @gn_response.any? %>
+            <% if @gn_response && @gn_response.any? %>
                 <h4>Currently selected:</h4>
                 <table class="table table-condensed table-striped">
                     <thead>

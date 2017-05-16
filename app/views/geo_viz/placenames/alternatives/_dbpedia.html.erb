@@ -7,7 +7,7 @@
 			<h4 class="modal-title" id="dbpediaAlternativesModal">Select an alternative location for: "<%= @dbp_location_query %>"</h4>
 		</div>
         <div class="modal-body">
-            <% if @dbp_response.any? %>
+            <% if @dbp_response && @dbp_response.any? %>
                 <h4>Currently selected:</h4>
                 <table class="table table-condensed table-striped">
                     <thead>

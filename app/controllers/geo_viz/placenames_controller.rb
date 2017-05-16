@@ -10,7 +10,9 @@ module GeoViz
     before_action :load_map, :only => [:locations]
     
     def geocode
+      @update_gn = false
       if params.has_key?(:q) || (params.has_key?(:dbpedia) && params[:update_gn].eql?("true"))
+        @update_gn = true
         @gn_location_query = params.has_key?(:dbpedia) ? params[:dbpedia] : params[:q]
         @gn_response = Taalmonsters::Geonames::Client.search(geocode_params(params)).map{|r| get_marker(r) }
         @dbp_location_query = params.has_key?(:dbpedia) ? params[:dbpedia] : @gn_response.any? ? @gn_response.sort_by{|gn| gn.label.length }.first.label : @gn_location_query

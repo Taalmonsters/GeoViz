@@ -48,25 +48,46 @@ $(document).on("click", "#new-marker", function(e) {
 });
 
 $(document).on("change", "#extract-controls #name_content", function(e) {
-	var group_entity = $("#extract-controls").find("div.group-entity").first();
-	$('span.loading').removeClass('hidden');
-	$('#extract-controls').addClass('loading');
-	if ($(group_entity).hasClass("update")) {
-		$.getScript("/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&q="+$(this).val());
+	var q = $(this).val();
+	if (q.length > 0) {
+        var group_entity = $("#extract-controls").find("div.group-entity").first();
+        $('span.loading').removeClass('hidden');
+        $('#extract-controls').addClass('loading');
+        if ($(group_entity).hasClass("update")) {
+            $.getScript("/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&q="+q);
+        } else {
+            $.getScript("/placenames/geocode.js?q="+q);
+        }
 	} else {
-		$.getScript("/placenames/geocode.js?q="+$(this).val());
+        $("#extract-controls #latitude_content").val('');
+        $("#extract-controls #longitude_content").val('');
+        $("#extract-controls #name_content").val('');
+        $("#extract-controls #country_content").val('');
+        $("#extract-controls #population_content").val('');
+	    $("#extract-controls #gazetteer_content").val('');
+    	$("#extract-controls #gazref_content").val('');
+    	$("#extract-controls #type_content").val('');
+    	var parent = $("#extract-controls #gazref_content").parent();
+    	$(parent).find(".btn").remove();
 	}
 });
 
 $(document).on("change", "#extract-controls #dbpedia_content", function(e) {
-	var group_entity = $("#extract-controls").find("div.group-entity").first();
-	$('span.loading').removeClass('hidden');
-	$('#extract-controls').addClass('loading');
-	var upd_gn = $('#extract-controls #name_content').val().length == 0;
-	if ($(group_entity).hasClass("update")) {
-		$.getScript("/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&dbpedia="+$(this).val()+"&update_gn="+upd_gn);
+    var q = $(this).val();
+    if (q.length > 0) {
+        var group_entity = $("#extract-controls").find("div.group-entity").first();
+        $('span.loading').removeClass('hidden');
+        $('#extract-controls').addClass('loading');
+        var upd_gn = $('#extract-controls #name_content').val().length == 0;
+        if ($(group_entity).hasClass("update")) {
+            $.getScript("/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&dbpedia="+q+"&update_gn="+upd_gn);
+        } else {
+            $.getScript("/placenames/geocode.js?dbpedia="+q+"&update_gn="+upd_gn);
+        }
 	} else {
-		$.getScript("/placenames/geocode.js?dbpedia="+$(this).val()+"&update_gn="+upd_gn);
+        $("#extract-controls #dbpedia_id_content").val('');
+        var parent = $("#extract-controls #dbpedia_id_content").parent();
+        $(parent).find(".btn").remove();
 	}
 });
 
@@ -205,6 +226,23 @@ function loadInfowindowContent(mapId, item, infowindow) {
 	    	infowindow.setContent(data["html"]);
 	    }
 	});
+}
+
+function resetExtractControls(updateGN) {
+    if (updateGN) {
+        $("#extract-controls #latitude_content").val('');
+        $("#extract-controls #longitude_content").val('');
+        $("#extract-controls #country_content").val('');
+        $("#extract-controls #population_content").val('');
+	    $("#extract-controls #gazetteer_content").val('');
+    	$("#extract-controls #gazref_content").val('');
+    	$("#extract-controls #type_content").val('');
+    	var parent = $("#extract-controls #gazref_content").parent();
+    	$(parent).find(".btn").remove();
+    }
+    $("#extract-controls #dbpedia_id_content").val('');
+    var parent = $("#extract-controls #dbpedia_id_content").parent();
+    $(parent).find(".btn").remove();
 }
 
 function setExtractControls(data) {
