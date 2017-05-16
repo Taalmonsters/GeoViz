@@ -307,20 +307,22 @@ function elementListToString(elements) {
 }
 
 function processAnnotationSelection(parentId, selectedElements) {
-	addClassToSelected($("#"+parentId).data("label"), selectedElements, "selected-for-annotation");
 	clearMapMarkers();
-	$('span.loading').removeClass('hidden');
-	$('#extract-controls').addClass('loading');
 	clearExtractControls();
 	var placename = elementListToString(selectedElements);
-	$("[id=id_content]").val(elementIdsToString(selectedElements));
-	$("[id=name_content]").val(placename);
-	
-	var group_entity = $("#extract-controls").find("div.group-entity").first();
-	if ($(group_entity).hasClass("update")) {
-		$.getScript("/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&q="+placename);
-	} else {
-		$.getScript("/placenames/geocode.js?q="+placename);
+	var id = elementIdsToString(selectedElements);
+	if (id.length > 0 && placename.length > 0) {
+	    addClassToSelected($("#"+parentId).data("label"), selectedElements, "selected-for-annotation");
+        $('span.loading').removeClass('hidden');
+        $('#extract-controls').addClass('loading');
+        $("[id=id_content]").val(id);
+        $("[id=name_content]").val(placename);
+        var group_entity = $("#extract-controls").find("div.group-entity").first();
+        if ($(group_entity).hasClass("update")) {
+            $.getScript("/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&q="+placename);
+        } else {
+            $.getScript("/placenames/geocode.js?q="+placename);
+        }
 	}
 }
 
