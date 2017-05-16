@@ -15,8 +15,7 @@ module GeoViz
         @update_gn = true
         @gn_location_query = params.has_key?(:dbpedia) ? params[:dbpedia] : params[:q]
         @gn_response = Taalmonsters::Geonames::Client.search(geocode_params(params)).map{|r| get_marker(r) }
-        @dbp_location_query = params.has_key?(:dbpedia) ? params[:dbpedia] : @gn_response.any? ? @gn_response.sort_by{|gn| gn.label.length }.first.label : @gn_location_query
-        @dbp_response = searchDbPedia(@dbp_location_query).map{|r| get_dbpedia_marker(r) }
+        @dbp_response = searchDbPedia(@gn_location_query).map{|r| get_dbpedia_marker(r) }
         @marker = @gn_response && @gn_response.any? ? @gn_response[0] : @dbp_response && @dbp_response.any? ? @dbp_response[0] : nil
       elsif params.has_key?(:lat) && params.has_key?(:lng)
         @marker = nil
