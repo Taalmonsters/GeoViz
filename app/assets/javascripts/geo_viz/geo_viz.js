@@ -186,6 +186,7 @@ function clearExtractControls(clearId) {
 	$("#name_content").parent().find("a").first().remove();
 	if (clearId) {
 		$("#extract-controls #id_content").val("");
+		$("#open-unattached-annotations").addClass("hidden");
     }
 	$("#extract-controls #latitude_content").val("");
 	$("#extract-controls #longitude_content").val("");
@@ -255,6 +256,7 @@ function resetExtractControls(updateGN) {
 }
 
 function setExtractControls(data) {
+    $("#open-unattached-annotations").removeClass("hidden");
 	if (data["id"] && typeof data["id"] !== 'undefined' && data["id"].length > 0) {
 		$("#extract-controls #id_content").val(data["id"]);
 	}
