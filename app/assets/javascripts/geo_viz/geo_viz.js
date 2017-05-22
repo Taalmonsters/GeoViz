@@ -4,6 +4,7 @@ var clip = null;
 $(document).ready(function() {
 	$('#dbpedia_alternatives').modal("hide");
 	$('#geonames_alternatives').modal("hide");
+	$('#unattached_annotations').modal("hide");
 	$('#annotate-fullscreen').modal("hide");
 	clip = new Clipboard('.clipboard-btn');
 });
@@ -14,6 +15,13 @@ $(document).on('shown.bs.modal', '#annotate-fullscreen', function () {
 		focusMap(maps["extract-map-fullscreen"], "extract-map-fullscreen");
 		$("#extract-map-fullscreen").removeClass("new");
 	}
+});
+
+$(document).on('click', 'button.btn-select-unattached', function() {
+	clearUnsavedMarkers();
+	$('span.loading').removeClass('hidden');
+	$('#extract-controls').addClass('loading');
+	$.getScript("/extracts/sources/"+$("#extract-content").data("source-document-id")+"/metadata_groups/"+$("#extract-content").data("metadata-group-id")+"/entity_mentions/"+$(this).data("entity-mention-id")+".js?keep_id=1");
 });
 
 $(document).on("click", "#new-marker", function(e) {
@@ -176,8 +184,9 @@ function clearUnsavedMarkers() {
 
 function clearExtractControls(clearId) {
 	$("#name_content").parent().find("a").first().remove();
-	if (clearId)
+	if (clearId) {
 		$("#extract-controls #id_content").val("");
+    }
 	$("#extract-controls #latitude_content").val("");
 	$("#extract-controls #longitude_content").val("");
 	$("#extract-controls #name_content").val("");
@@ -246,8 +255,9 @@ function resetExtractControls(updateGN) {
 }
 
 function setExtractControls(data) {
-	if (data["id"])
+	if (data["id"] && typeof data["id"] !== 'undefined' && data["id"].length > 0) {
 		$("#extract-controls #id_content").val(data["id"]);
+	}
 	$("#extract-controls #latitude_content").val(data["lat"]);
 	$("#extract-controls #longitude_content").val(data["lng"]);
 	$("#extract-controls #name_content").val(data["label"]);
@@ -255,11 +265,20 @@ function setExtractControls(data) {
 	$("#extract-controls #population_content").val(data["population"]);
 	if (data["gazetteer"] && data["gazref"]) {
 	    $("#extract-controls #gazetteer_content").val(data["gazetteer"]);
-    	$("#extract-controls #gazref_content").val(data["gazref"]);
-    	var url = 'http://www.geonames.org/' + data["gazref"];
-    	var parent = $("#extract-controls #gazref_content").parent();
-    	$(parent).find(".btn").remove();
-    	$(parent).append('<a href="'+url+'" class="btn btn-xs input-group-addon" target="_blank"><span class="glyphicon glyphicon-link"></span></a>');
+	    if (data["gazetteer"] === 'dbpedia') {
+            $("#extract-controls #dbpedia_content").val(data["label"]);
+            $("#extract-controls #dbpedia_id_content").val(data["gazref"]);
+            var url = 'https://en.wikipedia.org/?curid=' + data["gazref"];
+            var parent = $("#extract-controls #dbpedia_id_content").parent();
+            $(parent).find(".btn").remove();
+            $(parent).append('<a href="'+url+'" class="btn btn-xs input-group-addon" target="_blank"><span class="glyphicon glyphicon-link"></span></a>');
+	    } else {
+            $("#extract-controls #gazref_content").val(data["gazref"]);
+            var url = 'http://www.geonames.org/' + data["gazref"];
+            var parent = $("#extract-controls #gazref_content").parent();
+            $(parent).find(".btn").remove();
+            $(parent).append('<a href="'+url+'" class="btn btn-xs input-group-addon" target="_blank"><span class="glyphicon glyphicon-link"></span></a>');
+    	}
     } else {
         $("#extract-controls #gazref_content").parent().find(".btn").remove();
     }
@@ -315,8 +334,8 @@ function processAnnotationSelection(parentId, selectedElements) {
 	    addClassToSelected($("#"+parentId).data("label"), selectedElements, "selected-for-annotation");
         $('span.loading').removeClass('hidden');
         $('#extract-controls').addClass('loading');
-        $("[id=id_content]").val(id);
-        $("[id=name_content]").val(placename);
+        $("#id_content").val(id);
+        $("#name_content").val(placename);
         var group_entity = $("#extract-controls").find("div.group-entity").first();
         if ($(group_entity).hasClass("update")) {
             $.getScript("/placenames/geocode.js?entity_id="+$(group_entity).data("entity-id")+"&q="+placename);

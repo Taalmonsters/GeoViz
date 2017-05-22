@@ -30,6 +30,7 @@
                                     <%= ff.number_field :content, :id => "#{key.name.gsub(' ','_')}_content", :value => metadatum_value.value ? metadatum_value.value.content : key.integer? ? metadatum_value.content.to_i : metadatum_value.content.to_f, :class => "form-control", :step => key.integer? ? "1" : "0.0000001", :readonly => !key.editable %>
                                 <% else %>
                                     <% val = metadatum_value.value ? metadatum_value.value.content : metadatum_value.content %>
+                                    <% val = word_id unless !key.name.eql?('id') || word_id.nil? %>
                                     <% if val.to_s.length > 30 %>
                                         <%= ff.text_area :content, :id => "#{key.name.gsub(' ','_')}_content", :value => val, :class => "form-control", :readonly => !key.editable %>
                                     <% else %>

@@ -1,3 +1,3 @@
 $('span.loading').addClass('hidden');
 $('#extract-controls').removeClass('loading');
-$("[id=extract-controls]").html("<%= escape_javascript(render partial: "geo_viz/extracts/annotation/controls/edit", locals: { entity_mention: @entity_mention }) %>");
+$("#extract-controls").html("<%= escape_javascript(render partial: "geo_viz/extracts/annotation/controls/edit", locals: { entity_mention: @entity_mention, word_id: @word_id }) %>");

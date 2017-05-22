@@ -1,6 +1,9 @@
 clearMapMarkers("extract-map-fullscreen");
 clearMapMarkers("extract-map");
 $("#annotate-fullscreen").html("<%= escape_javascript(raw render partial: "geo_viz/extracts/annotation/fullscreen", layout: false) %>");
+<% if @document.unattached_annotations(current_user.id).any? %>
+$("#unattached_annotations").html("<%= escape_javascript(raw render partial: "geo_viz/extracts/annotation/unattached", layout: false) %>");
+<% end %>
 $("<%= @target %>").html("<%= escape_javascript(raw render partial: "nested_metadata/documents/source_documents/show") %>");
 var page = $('.pagination').find('em.current').first().html();
 if (!page)
