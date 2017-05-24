@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3aa7603a-26da-4579-a5d1-97603cebb533" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/geo_viz/geo_viz.js" afterPath="$PROJECT_DIR$/app/assets/javascripts/geo_viz/geo_viz.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/geo_viz/entity_mentions_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/geo_viz/entity_mentions_controller.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/geo_viz/extracts/annotation/controls/_edit.html.erb" afterPath="$PROJECT_DIR$/app/views/geo_viz/extracts/annotation/controls/_edit.html.erb" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -23,8 +22,8 @@
       <file leaf-file-name="_new.html.erb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/geo_viz/extracts/annotation/controls/_new.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="645">
-              <caret line="43" column="105" lean-forward="false" selection-start-line="43" selection-start-column="105" selection-end-line="43" selection-end-column="132" />
+            <state relative-caret-position="630">
+              <caret line="42" column="18" lean-forward="true" selection-start-line="42" selection-start-column="18" selection-end-line="44" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -50,7 +49,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="entity_mentions_controller.rb" pinned="false" current-in-tab="true">
+      <file leaf-file-name="entity_mentions_controller.rb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/geo_viz/entity_mentions_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="330">
@@ -60,11 +59,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_edit.html.erb" pinned="false" current-in-tab="false">
+      <file leaf-file-name="_edit.html.erb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/geo_viz/extracts/annotation/controls/_edit.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="645">
-              <caret line="43" column="86" lean-forward="false" selection-start-line="43" selection-start-column="86" selection-end-line="43" selection-end-column="86" />
+            <state relative-caret-position="796">
+              <caret line="57" column="16" lean-forward="false" selection-start-line="57" selection-start-column="16" selection-end-line="57" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -153,12 +152,12 @@
         <option value="$PROJECT_DIR$/app/views/layouts/taalmonsters/_footer.html.erb" />
         <option value="$PROJECT_DIR$/app/views/nested_metadata/documents/source_documents/show.js.erb" />
         <option value="$PROJECT_DIR$/app/views/geo_viz/entity_mentions/edit.js.erb" />
-        <option value="$PROJECT_DIR$/app/views/geo_viz/extracts/annotation/controls/_edit.html.erb" />
         <option value="$PROJECT_DIR$/app/views/geo_viz/extracts/annotation/controls/_new.html.erb" />
         <option value="$PROJECT_DIR$/config/application.rb" />
         <option value="$PROJECT_DIR$/app/views/geo_viz/extracts/annotation/_unattached.html.erb" />
-        <option value="$PROJECT_DIR$/app/controllers/geo_viz/entity_mentions_controller.rb" />
         <option value="$PROJECT_DIR$/app/assets/javascripts/geo_viz/geo_viz.js" />
+        <option value="$PROJECT_DIR$/app/controllers/geo_viz/entity_mentions_controller.rb" />
+        <option value="$PROJECT_DIR$/app/views/geo_viz/extracts/annotation/controls/_edit.html.erb" />
       </list>
     </option>
   </component>
@@ -1464,26 +1463,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/geo_viz/extracts/annotation/controls/_edit.html.erb">
+    <entry file="file://$PROJECT_DIR$/app/views/geo_viz/entity_mentions/edit.js.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="43" column="86" lean-forward="false" selection-start-line="43" selection-start-column="86" selection-end-line="43" selection-end-column="86" />
+        <state relative-caret-position="30">
+          <caret line="2" column="120" lean-forward="false" selection-start-line="2" selection-start-column="120" selection-end-line="2" selection-end-column="120" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/geo_viz/entity_mentions_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="61" lean-forward="false" selection-start-line="22" selection-start-column="61" selection-end-line="22" selection-end-column="61" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/geo_viz/extracts/annotation/controls/_new.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="43" column="105" lean-forward="false" selection-start-line="43" selection-start-column="105" selection-end-line="43" selection-end-column="132" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/geo_viz/entity_mentions/edit.js.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="120" lean-forward="false" selection-start-line="2" selection-start-column="120" selection-end-line="2" selection-end-column="120" />
+        <state relative-caret-position="630">
+          <caret line="42" column="18" lean-forward="true" selection-start-line="42" selection-start-column="18" selection-end-line="44" selection-end-column="21" />
           <folding />
         </state>
       </provider>
@@ -1496,10 +1495,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/geo_viz/entity_mentions_controller.rb">
+    <entry file="file://$PROJECT_DIR$/app/views/geo_viz/extracts/annotation/controls/_edit.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="61" lean-forward="false" selection-start-line="22" selection-start-column="61" selection-end-line="22" selection-end-column="61" />
+        <state relative-caret-position="796">
+          <caret line="57" column="16" lean-forward="false" selection-start-line="57" selection-start-column="16" selection-end-line="57" selection-end-column="16" />
           <folding />
         </state>
       </provider>
