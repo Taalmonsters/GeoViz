@@ -21,7 +21,7 @@ $(document).on('click', 'button.btn-select-unattached', function() {
 	clearUnsavedMarkers();
 	$('span.loading').removeClass('hidden');
 	$('#extract-controls').addClass('loading');
-	$.getScript("/extracts/sources/"+$("#extract-content").data("source-document-id")+"/metadata_groups/"+$("#extract-content").data("metadata-group-id")+"/entity_mentions/"+$(this).data("entity-mention-id")+".js?keep_id=1");
+	$.getScript("/extracts/sources/"+$("#extract-content").data("source-document-id")+"/metadata_groups/"+$("#extract-content").data("metadata-group-id")+"/entity_mentions/"+$(this).data("entity-mention-id")+".js?word_id="+$("#id_content").val());
 });
 
 $(document).on("click", "#new-marker", function(e) {
@@ -32,7 +32,7 @@ $(document).on("click", "#new-marker", function(e) {
 			$(this).removeClass("new");
 		}
 	} else {
-		$("[id='new-marker']").addClass("disabled");
+		$("#new-marker").addClass("disabled");
 		var m1 = addMarkerToMap({
 			"lat": 0.0,
 			"lng": 0.0,
