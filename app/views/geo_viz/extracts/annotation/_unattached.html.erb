@@ -8,8 +8,10 @@
 		</div>
         <div class="modal-body">
             <% NestedMetadata::EntityMention.includes(:metadatum_values).where(id: @document.unattached_annotations(current_user.id)).each do |entity_mention| %>
-                <%= render partial: "nested_metadata/documents/entity_mentions/show", locals: { entity_mention: entity_mention, metadatum_values: entity_mention.metadatum_values } %>
-                <button class="btn btn-xs btn-success btn-select-unattached" data-entity-mention-id="<%= entity_mention.id %>">Select</button>
+                <div class="col-xs-12 col-sm-6 unattached-entity-mention">
+                    <%= render partial: "nested_metadata/documents/entity_mentions/show", locals: { entity_mention: entity_mention, metadatum_values: entity_mention.metadatum_values } %>
+                    <button class="btn btn-xs btn-success btn-select-unattached" data-entity-mention-id="<%= entity_mention.id %>">Select</button>
+                </div>
             <% end %>
         </div>
     </div>
