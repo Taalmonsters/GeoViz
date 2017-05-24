@@ -7,7 +7,7 @@
 			<h4 class="modal-title" id="alternativesModal">Select an unattached annotation:</h4>
 		</div>
         <div class="modal-body">
-            <% EntityMention.where(id: @document.unattached_annotations(current_user.id)).each do |entity_mention| %>
+            <% NestedMetadata::EntityMention.includes(:nested_metadata_metadatum_values).where(id: @document.unattached_annotations(current_user.id)).each do |entity_mention| %>
                 <%= render partial: "nested_metadata/documents/entity_mentions/show", locals: { entity_mention: entity_mention, metadatum_values: entity_mention.metadatum_values } %>
                 <button class="btn btn-xs btn-success btn-select-unattached" data-entity-mention-id="<%= entity_mention.id %>">Select</button>
             <% end %>
