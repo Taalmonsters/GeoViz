@@ -63,9 +63,6 @@ class Extract < ActiveRecord::Base
     data = self.source_document.entity_mentions.has_group_name("Annotations").with_value_for_key(id_key, "word_id").uniq
                    .select{|entity_mention| entity_mention.audits.where("user_id = ?", user_id).any? }
                    .map{|entity_mention| entity_mention.id }.uniq.sort
-    puts "*********************************************"
-    puts data.to_json
-    puts "*********************************************"
     return data
   end
 

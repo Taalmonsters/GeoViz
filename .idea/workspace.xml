@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3aa7603a-26da-4579-a5d1-97603cebb533" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/extract.rb" afterPath="$PROJECT_DIR$/app/models/extract.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/nested_metadata/documents/metadatum_values/_show.html.erb" afterPath="$PROJECT_DIR$/app/views/nested_metadata/documents/metadatum_values/_show.html.erb" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -79,21 +79,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_show.html.erb" pinned="false" current-in-tab="false">
+      <file leaf-file-name="_show.html.erb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/nested_metadata/documents/metadatum_values/_show.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+            <state relative-caret-position="225">
+              <caret line="15" column="92" lean-forward="false" selection-start-line="15" selection-start-column="92" selection-end-line="15" selection-end-column="92" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="extract.rb" pinned="false" current-in-tab="true">
+      <file leaf-file-name="extract.rb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/models/extract.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="346">
-              <caret line="67" column="56" lean-forward="false" selection-start-line="67" selection-start-column="56" selection-end-line="67" selection-end-column="56" />
+            <state relative-caret-position="301">
+              <caret line="64" column="70" lean-forward="false" selection-start-line="64" selection-start-column="70" selection-end-line="64" selection-end-column="70" />
               <folding />
             </state>
           </provider>
@@ -177,8 +177,8 @@
         <option value="$PROJECT_DIR$/app/views/geo_viz/extracts/annotation/controls/_edit.html.erb" />
         <option value="$PROJECT_DIR$/app/views/geo_viz/extracts/annotation/controls/_new.html.erb" />
         <option value="$PROJECT_DIR$/app/views/geo_viz/extracts/annotation/_unattached.html.erb" />
-        <option value="$PROJECT_DIR$/app/views/nested_metadata/documents/metadatum_values/_show.html.erb" />
         <option value="$PROJECT_DIR$/app/models/extract.rb" />
+        <option value="$PROJECT_DIR$/app/views/nested_metadata/documents/metadatum_values/_show.html.erb" />
       </list>
     </option>
   </component>
@@ -1337,18 +1337,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/nested_metadata/documents/metadatum_values/_show.html.erb">
+    <entry file="file://$PROJECT_DIR$/app/models/extract.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+        <state relative-caret-position="301">
+          <caret line="64" column="70" lean-forward="false" selection-start-line="64" selection-start-column="70" selection-end-line="64" selection-end-column="70" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/extract.rb">
+    <entry file="file://$PROJECT_DIR$/app/views/nested_metadata/documents/metadatum_values/_show.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="346">
-          <caret line="67" column="56" lean-forward="false" selection-start-line="67" selection-start-column="56" selection-end-line="67" selection-end-column="56" />
+        <state relative-caret-position="225">
+          <caret line="15" column="92" lean-forward="false" selection-start-line="15" selection-start-column="92" selection-end-line="15" selection-end-column="92" />
           <folding />
         </state>
       </provider>
