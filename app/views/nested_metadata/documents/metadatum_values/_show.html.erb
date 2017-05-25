@@ -10,7 +10,7 @@
 				<%= date_field_tag "content", metadatum_value.value.content, :class => "form-control", :readonly => true %>
 			<% elsif key.float? || key.integer? %>
                 <%= number_field_tag "content", metadatum_value.value.content, :class => "form-control", :readonly => true %>
-            <% elsif metadatum_value.content && metadatum_value.content.length > 40 %>
+            <% elsif metadatum_value && metadatum_value.content && metadatum_value.content.length > 40 %>
                 <%= text_area_tag "content", metadatum_value.content, :class => "form-control", :readonly => true %>
             <% else %>
 				<%= text_field_tag "content", metadatum_value.content, :class => "form-control", :readonly => true %>
