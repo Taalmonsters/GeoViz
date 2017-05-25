@@ -41,7 +41,7 @@
 			<% if entity_mention.id %>
 				<%= link_to 'Cancel', {:controller => "geo_viz/entity_mentions", :action => 'destroy', :id => entity_mention.id, :source_document_id => entity_mention.source_document.id, :metadata_group_id => entity_mention.metadata_group.id, :target => '#source-document-group', :format => :js, :remote => true }, :method => :delete, :class => "btn btn-xs btn-danger" %>
 			<% elsif @document.unattached_annotations(current_user.id).any? %>
-                <%= link_to "Select unattached annotation".html_safe, "#unattached_annotations", :id => "open-unattached-annotations", :class => "btn btn-xs btn-primary hidden", "data-toggle" => "modal" %>
+                <%= link_to "Select existing annotation".html_safe, "#unattached_annotations", :id => "open-unattached-annotations", :class => "btn btn-xs btn-primary hidden", "data-toggle" => "modal" %>
 			<% end %>
 			<%= submit_tag "Save", class: "btn btn-xs btn-success", onclick: '$("#extract-controls").addClass("loading"); $("span.loading").removeClass("hidden");' %>
 		</div>

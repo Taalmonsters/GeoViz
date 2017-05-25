@@ -61,7 +61,7 @@ class Extract < ActiveRecord::Base
   def unattached_annotations(user_id)
     id_key = NestedMetadata::MetadataGroup.has_name("Annotations").first.metadata_keys.has_name("id").first
     return self.source_document.entity_mentions.has_group_name("Annotations").with_value_for_key(id_key, "word_id").uniq
-        .select{|entity_mention| entity_mention.audits.where("user_id = ?", user_id).any? && entity_mention.word_id.length == 0 }
+        .select{|entity_mention| entity_mention.audits.where("user_id = ?", user_id).any? }
         .map{|entity_mention| entity_mention.id }.uniq.sort
   end
 

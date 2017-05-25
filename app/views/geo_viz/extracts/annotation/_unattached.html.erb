@@ -4,7 +4,7 @@
 			<button aria-hidden="true" class="close" data-dismiss="modal" type="button">
 				&times;
 			</button>
-			<h4 class="modal-title" id="alternativesModal">Select an unattached annotation:</h4>
+			<h4 class="modal-title" id="alternativesModal">Select an existing annotation:</h4>
 		</div>
         <div class="modal-body">
             <% NestedMetadata::EntityMention.includes(:metadatum_values).where(id: @document.unattached_annotations(current_user.id)).each do |entity_mention| %>
