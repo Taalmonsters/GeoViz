@@ -1,0 +1,20 @@
+<% key = metadatum_value.metadata_key %>
+<div class="col-xs-12">
+	<div class="input-group input-group-sm" style="width:100%;">
+		<% if key.location? %>
+			<%= render partial: "nested_metadata/documents/metadatum_values/locations/show", locals: { metadatum_value: metadatum_value, include_map: include_map } %>
+		<% else %>
+			<% if key.boolean? %>
+                <%= check_box_tag "content", "true", metadatum_value.value.content, :class => "form-control", :disabled => true %>
+            <% elsif key.date? %>
+				<%= date_field_tag "content", metadatum_value.value.content, :class => "form-control", :readonly => true %>
+			<% elsif key.float? || key.integer? %>
+                <%= number_field_tag "content", metadatum_value.value.content, :class => "form-control", :readonly => true %>
+            <% elsif metadatum_value.content && metadatum_value.content.length > 40 %>
+                <%= text_area_tag "content", metadatum_value.content, :class => "form-control", :readonly => true %>
+            <% else %>
+				<%= text_field_tag "content", metadatum_value.content, :class => "form-control", :readonly => true %>
+			<% end %>
+		<% end %>
+	</div>
+</div>
