@@ -1,3 +1,12 @@
 $('span.loading').addClass('hidden');
 $('#extract-controls').removeClass('loading');
-$("#extract-controls").html("<%= escape_javascript(render partial: "geo_viz/extracts/annotation/controls/edit", locals: { entity_mention: @entity_mention, word_id: @word_id }) %>");
+<% if @word_id.nil? %>
+    $("#extract-controls").html("<%= escape_javascript(render partial: "geo_viz/extracts/annotation/controls/edit", locals: { entity_mention: @entity_mention }) %>");
+<% else %>
+    <% ['name', 'latitude', 'longitude', 'country', 'population', 'gazetteer', 'gazref', 'dbpedia', 'dbpedia id', 'type', 'remarks', 'location type', 'is main location', 'near main location', 'person', 'position wrt main'].each do |key| %>
+        <% metadatum_value = @entity_mention.value(key) %>
+        <% unless key.eql?("id") || metadatum_value.nil? %>
+            $("#<%= key %>_content").val('<%= metadatum_value.content %>');
+        <% end %>
+    <% end %>
+<% end %>

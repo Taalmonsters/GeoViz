@@ -20,10 +20,13 @@ module GeoViz
     end
     
     def edit
-      @word_id = params.has_key?(:word_id) ? params[:word_id] : nil
       unless @is_annotator
         unauthorized_request
         redirect_to :controller => 'documents', :action => 'index'
+      end
+      @word_id = nil
+      if params.has_key?(:word_id)
+        @word_id = params[:word_id]
       end
     end
     

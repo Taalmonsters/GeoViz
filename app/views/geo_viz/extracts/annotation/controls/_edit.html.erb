@@ -30,7 +30,6 @@
                                     <%= ff.number_field :content, :id => "#{key.name.gsub(' ','_')}_content", :value => metadatum_value.value ? metadatum_value.value.content : key.integer? ? metadatum_value.content.to_i : metadatum_value.content.to_f, :class => "form-control", :step => key.integer? ? "1" : "0.0000001", :readonly => !key.editable %>
                                 <% else %>
                                     <% val = metadatum_value.value ? metadatum_value.value.content : metadatum_value.content %>
-                                    <% val = word_id unless !key.name.eql?('id') || word_id.nil? %>
                                     <% if val.to_s.length > 30 %>
                                         <%= ff.text_area :content, :id => "#{key.name.gsub(' ','_')}_content", :value => val, :class => "form-control", :readonly => !key.editable %>
                                     <% else %>
@@ -57,8 +56,8 @@
 		    <% if @source_document.document.unattached_annotations(current_user.id).any? %>
                 <%= link_to "Select existing annotation".html_safe, "#unattached_annotations", :id => "open-unattached-annotations", :class => "btn btn-xs btn-primary hidden", "data-toggle" => "modal" %>
             <% end %>
-			<%= link_to 'Delete', {:controller => "geo_viz/entity_mentions", :action => 'destroy', :id => entity_mention.id, :source_document_id => entity_mention.source_document.id, :metadata_group_id => entity_mention.metadata_group.id, :target => '#source-document-group', :format => :js, :remote => true }, :method => :delete, :class => "btn btn-xs btn-danger" %>
-			<%= submit_tag "Update", class: "btn btn-xs btn-success", onclick: '$("#extract-controls").addClass("loading"); $("span.loading").removeClass("hidden");' %>
+            <%= link_to 'Delete', {:controller => "geo_viz/entity_mentions", :action => 'destroy', :id => entity_mention.id, :source_document_id => entity_mention.source_document.id, :metadata_group_id => entity_mention.metadata_group.id, :target => '#source-document-group', :format => :js, :remote => true }, :method => :delete, :class => "btn btn-xs btn-danger" %>
+            <%= submit_tag "Update", class: "btn btn-xs btn-success", onclick: '$("#extract-controls").addClass("loading"); $("span.loading").removeClass("hidden");' %>
 		</div>
 	<% end %>
 </div>
